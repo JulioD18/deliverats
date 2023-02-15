@@ -1,14 +1,47 @@
-Please use this repository for project files.
+# CSC C09 Project Proposal
 
-- Do not publish your project code to a public repository.
-- You must only write your project proposal in this `README.md`
+## Project Info
+- Project Name: DeliveRats
+- Team Name: Calidosos
+- Team Members:
+  - Juan Corral - 1005890010
+  - Julio Delgado - 1005638160
 
-This README.md is to be replaced by your project proposal:
+## Description of Web Application:
+Many small restaurants do not have presence in delivery Apps such as Uber Eats. Consequently, they recur to informal channels such as phone and social media to receive deliveries. However, this makes it difficult to track and record. Our web application solves this by allowing small businesses to host delivery forms in our platform.
 
-- Project title and team name
-- Your focus (frontend focused or backend focused)
-- Team members with student numbers
-- Description of the web application
-- What complexity points will this project contain
-- (optional) What complexity points will be attempted as bonus for the challenge factor
-- What you aim to complete for the alpha version, beta version, and final version
+Workflow:
+  1. The business creates an account
+  2. The business creates a form using the dynamic form builder
+  3. The business copies the form link and shares it with customers
+  4. The customer enters to the link, fills, and sends the form
+  5. The customer receives a tracking link via email
+  6. The business receives a ‘new delivery request’ notification via email
+  7. The business prepares the dish and delivers it (updating the progress on the app on each step)
+  8. The customer can track the progress via the link
+  9. The business can view all of its current and past deliveries
+
+## Complexity Points:
+- Auth0 - 1
+- Google API - Geocoding API, Maps JavaScript API, - Places API - 1
+- SendGrid (Email) - 2
+- Sentry - 1
+- Form Recognizer - 1
+- Socket - 1
+
+## Complexity Point Bonus:
+- Twilio (SMS) - 2
+
+## Stages of Completion:
+- Alpha Version:
+  - Project setup
+  - Authentication (integration with Google’s Auth0)
+  - 'Form builder’ page
+- Beta Version:
+  - ‘Form’ page
+  - Maps (integration with Google Maps API)
+  - SMS and Email confirmation messages (integration with Twilio and SendGrid)
+- Final Version:
+  - ‘My forms’ page
+  - ‘My Deliveries’ page
+  - ‘Track delivery’ page
