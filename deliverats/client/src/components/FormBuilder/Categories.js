@@ -31,7 +31,6 @@ export default function Categories({ formValues, setFormValues }) {
         <Grid item xs={12}>
           <Autocomplete
             multiple
-            id="tags-filled"
             options={exampleCategories}
             freeSolo
             limitTags={3}

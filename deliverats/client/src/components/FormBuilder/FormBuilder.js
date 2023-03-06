@@ -11,9 +11,10 @@ import Typography from "@mui/material/Typography";
 import Details from "./Details";
 import Categories from "./Categories";
 import Items from "./Items";
+import Options from "./Options";
 import Share from "./Share";
 
-const steps = ["Details", "Categories", "Items"];
+const steps = ["Details", "Categories", "Items", "Options"];
 
 export default function FormBuilder() {
   const [activeStep, setActiveStep] = useState(0);
@@ -24,6 +25,7 @@ export default function FormBuilder() {
     phone: undefined,
     categories: [],
     items: [],
+    options: [],
   });
 
   function getStepContent(step) {
@@ -38,6 +40,10 @@ export default function FormBuilder() {
         );
       case 2:
         return <Items formValues={formValues} setFormValues={setFormValues} />;
+      case 3:
+        return (
+          <Options formValues={formValues} setFormValues={setFormValues} />
+        );
       default:
         return <Share />;
     }

@@ -1,20 +1,20 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
+import Autocomplete from "@mui/material/Autocomplete";
+import Chip from "@mui/material/Chip";
 import Typography from "@mui/material/Typography";
-import Input from "@mui/material/Input";
-import InputAdornment from "@mui/material/InputAdornment";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
+import Input from "@mui/material/Input";
+import InputAdornment from "@mui/material/InputAdornment";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-export default function Item({
-  categories,
+export default function Option({
+  items,
   element,
   index,
   handleChange,
@@ -34,7 +34,7 @@ export default function Item({
               alignItems: "center",
             }}
           >
-            <Typography gutterBottom>Item {index + 1}</Typography>
+            <Typography gutterBottom>Option {index + 1}</Typography>
             <IconButton variant="outlined" onClick={() => removeField(index)}>
               <DeleteIcon fontSize="small" />
             </IconButton>
@@ -55,26 +55,29 @@ export default function Item({
             />
           </Grid>
           <Grid item xs={12} md={6}>
-            <FormControl
-              variant="standard"
-              sx={{ minWidth: "100%", maxWidth: "100%" }}
-            >
-              <InputLabel id="categoryLabel">Category</InputLabel>
-              <Select
-                labelId="categoryLabel"
-                name="category"
-                value={element.category ?? ""}
-                onChange={(e) =>
-                  handleChange(index, e.target.name, e.target.value)
-                }
-              >
-                {categories.map((category) => (
-                  <MenuItem key={category} value={category}>
-                    {category}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            <Autocomplete
+              multiple
+              options={items.map((item) => item.name)}
+              limitTags={1}
+              renderTags={(value, getTagProps) =>
+                value.map((option, index) => (
+                  <Chip
+                    variant="outlined"
+                    label={option}
+                    {...getTagProps({ index })}
+                  />
+                ))
+              }
+              onChange={(e, val) => handleChange(index, "items", val)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  variant="standard"
+                  label="Apply to"
+                  required
+                />
+              )}
+            />
           </Grid>
           <Grid item xs={12} md={9}>
             <TextField
