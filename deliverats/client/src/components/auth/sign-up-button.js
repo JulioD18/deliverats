@@ -1,6 +1,6 @@
 import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 
 const SignUpButton = () => {
   const { loginWithRedirect } = useAuth0();
@@ -17,11 +17,10 @@ const SignUpButton = () => {
   };
 
   return (
-    <Button
-      color="success"
-      onClick={handleSignUp}
-    >
-      Sign Up
+    <Button color="secondary" onClick={handleSignUp}>
+      <Typography variant="h6">
+        Sign Up
+        </Typography>
     </Button>
   );
 };
