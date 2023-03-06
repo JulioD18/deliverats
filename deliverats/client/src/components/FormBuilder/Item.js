@@ -11,12 +11,7 @@ import Paper from "@mui/material/Paper";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-export default function FormField({
-  element,
-  index,
-  handleChange,
-  removeField,
-}) {
+export default function Item({ element, index, handleChange, removeField }) {
   return (
     <React.Fragment>
       <Paper
@@ -31,7 +26,7 @@ export default function FormField({
               alignItems: "center",
             }}
           >
-            <Typography gutterBottom>Field {index + 1}</Typography>
+            <Typography gutterBottom>Item {index + 1}</Typography>
             <IconButton variant="outlined" onClick={() => removeField(index)}>
               <DeleteIcon fontSize="small" />
             </IconButton>
@@ -42,11 +37,11 @@ export default function FormField({
             <TextField
               required
               name="name"
-              label="Field Name"
+              label="Name"
               fullWidth
               variant="standard"
               onChange={(e) => handleChange(index, e)}
-              value={element.name}
+              value={element.name ?? ""}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -54,22 +49,32 @@ export default function FormField({
               variant="standard"
               sx={{ minWidth: "100%", maxWidth: "100%" }}
             >
-              <InputLabel id="typeLabel">Type</InputLabel>
+              <InputLabel id="categoryLabel">Category</InputLabel>
               <Select
-                labelId="typeLabel"
-                value={element.type}
+                labelId="categoryLabel"
+                name="category"
+                value={element.category ?? ""}
                 onChange={(e) => handleChange(index, e)}
-                label="Type"
               >
-                <MenuItem value={"select"}>
-                  Multiple choice (Single answer)
+                <MenuItem value={"single-answer"}>
+                  Options (Single answer)
                 </MenuItem>
-                <MenuItem value={20}>
-                  Multiple choice (Multiple answers)
+                <MenuItem value={"multiple-answer"}>
+                  Options (Multiple answers)
                 </MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
+                <MenuItem value={"checkbox"}>Checkbox</MenuItem>
               </Select>
             </FormControl>
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              name="description"
+              label="Description"
+              fullWidth
+              variant="standard"
+              value={element.description ?? ""}
+              onChange={(e) => handleChange(index, e)}
+            />
           </Grid>
         </Grid>
       </Paper>

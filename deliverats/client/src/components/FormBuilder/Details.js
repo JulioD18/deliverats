@@ -6,11 +6,11 @@ import Box from "@mui/material/Box";
 import Tooltip from "@mui/material/Tooltip";
 import InfoIcon from "@mui/icons-material/Info";
 
-export default function FormShare() {
+export default function Details() {
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
-        Share the form
+        Form details
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12}>

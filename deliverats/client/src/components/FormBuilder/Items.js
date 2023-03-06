@@ -1,13 +1,14 @@
-import React, { useState } from "react";
-import FormField from "./FormField";
+import React from "react";
+import Item from "./Item";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 
-export default function FormConstruct() {
-  const [formValues, setFormValues] = useState([]);
-
+export default function Items({
+  formValues,
+  setFormValues,
+}) {
   /**
    * Add a new field to the form
    */
@@ -40,11 +41,11 @@ export default function FormConstruct() {
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
-        Construct the form
+        Add your menu items
       </Typography>
       {formValues.map((element, index) => (
         <div key={index}>
-          <FormField
+          <Item
             element={element}
             index={index}
             handleChange={handleChange}
@@ -54,12 +55,8 @@ export default function FormConstruct() {
       ))}
       <Grid container spacing={3}>
         <Grid item xs={12} container justifyContent="center">
-          <Button
-            variant="contained"
-            startIcon={<AddIcon />}
-            onClick={addField}
-          >
-            Add Field
+          <Button variant="outlined" startIcon={<AddIcon />} onClick={addField}>
+            Add item
           </Button>
         </Grid>
       </Grid>
