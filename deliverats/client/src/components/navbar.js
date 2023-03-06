@@ -8,28 +8,31 @@ import { Toolbar } from "@mui/material";
 import { Typography, Avatar } from "@mui/material";
 import { useAuth0 } from "@auth0/auth0-react";
 
-
 const NavBar = () => {
   const { isAuthenticated } = useAuth0();
 
   return (
-      <Box sx={{ flexGrow: 1 }}>
-        <AppBar color="primary" position="absolute">
-          <Toolbar>
-            <Avatar sx={{mr: "10px"}} alt="logo" src="../../public/logo-no-background.png"/>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              DELIVERATS
-            </Typography>
-            {isAuthenticated ? (
-              <LogOutButton />
-            ) : (
-              <Box>
-                <SignUpButton /> <LoginButton />
-              </Box>
-            )}
-          </Toolbar>
-        </AppBar>
-      </Box>
+    <Box sx={{ flexGrow: 1 }}>
+      <AppBar color="primary" position="absolute">
+        <Toolbar>
+          <Avatar
+            sx={{ mr: "10px" }}
+            alt="logo"
+            src="../../public/logo-no-background.png"
+          />
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            DELIVERATS
+          </Typography>
+          {isAuthenticated ? (
+            <LogOutButton />
+          ) : (
+            <Box>
+              <SignUpButton /> <LoginButton />
+            </Box>
+          )}
+        </Toolbar>
+      </AppBar>
+    </Box>
   );
 };
 

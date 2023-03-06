@@ -18,9 +18,7 @@ const SignUpButton = () => {
 
   return (
     <Button color="secondary" onClick={handleSignUp}>
-      <Typography variant="h6">
-        Sign Up
-        </Typography>
+      <Typography variant="h6">Sign Up</Typography>
     </Button>
   );
 };
