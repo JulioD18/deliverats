@@ -1,22 +1,22 @@
-import { createStore, applyMiddleware, compose } from "redux";
-import thunk from "redux-thunk";
-import rootReducer from "./reducers/index.js";
-import { loadState, saveState } from "./localStorage.js";
+// import { applyMiddleware, compose } from "redux";
+// import { configureStore } from "@reduxjs/toolkit";
+// import thunk from "redux-thunk";
+// import rootReducer from "./reducers/index.js";
+// import { loadState, saveState } from "./localStorage.js";
 
-const persistedState = loadState();
+// const persistedState = loadState();
 
-const middleware = [thunk];
+// const middleware = [thunk];
 
-const store = createStore(
-  rootReducer,
-  persistedState,
-  compose(
-    applyMiddleware(...middleware)
-  )
-);
+// const store = configureStore(
+//   persistedState,
+//   compose(
+//     applyMiddleware(...middleware)
+//   )
+// );
 
-store.subscribe(() => {
-  saveState(store.getState());
-});
+// store.subscribe(() => {
+//   saveState(store.getState());
+// });
 
-export default store;
+// export default store;

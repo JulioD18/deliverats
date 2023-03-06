@@ -1,13 +1,16 @@
 import Routes from "./components/routes.js";
-import store from "./store.js";
 
-import { Provider } from "react-redux";
+// import { configureStore } from "@reduxjs/toolkit";
+// import { Provider } from "react-redux";
+// import reducers from "./reducers/index.js";
+
+// const store = configureStore({ reducers });
 
 function App() {
   return (
-    <Provider store={store}>
+    // <Provider store={store}>
       <Routes />
-    </Provider>
+    // </Provider>
   );
 }
 
