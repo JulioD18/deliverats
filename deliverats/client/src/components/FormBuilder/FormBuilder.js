@@ -29,9 +29,13 @@ export default function FormBuilder() {
   function getStepContent(step) {
     switch (step) {
       case 0:
-        return <Details formValues={formValues} setFormValues={setFormValues} />;
+        return (
+          <Details formValues={formValues} setFormValues={setFormValues} />
+        );
       case 1:
-        return <Categories formValues={formValues} setFormValues={setFormValues} />;
+        return (
+          <Categories formValues={formValues} setFormValues={setFormValues} />
+        );
       case 2:
         return <Items formValues={formValues} setFormValues={setFormValues} />;
       default:

@@ -7,6 +7,6 @@ export const app = express();
 app.use(bodyParser.json());
 
 app.listen(PORT, (err) => {
-    if (err) console.log(err);
-    else console.log("HTTP server on http://localhost:%s", PORT);
+  if (err) console.log(err);
+  else console.log("HTTP server on http://localhost:%s", PORT);
 });

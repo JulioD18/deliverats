@@ -10,11 +10,7 @@ import InfoIcon from "@mui/icons-material/Info";
 
 const exampleCategories = ["Appetizers", "Main Plates", "Drinks", "Desserts"];
 
-export default function Categories({
-  formValues,
-  setFormValues,
-}) {
-
+export default function Categories({ formValues, setFormValues }) {
   /**
    * Sets the categories in the form
    * @param {Object[]} categories The list of categories to set

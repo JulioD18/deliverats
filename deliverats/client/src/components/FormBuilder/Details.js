@@ -6,17 +6,13 @@ import Box from "@mui/material/Box";
 import Tooltip from "@mui/material/Tooltip";
 import InfoIcon from "@mui/icons-material/Info";
 
-export default function Details({
-  formValues,
-  setFormValues,
-}) {
-
+export default function Details({ formValues, setFormValues }) {
   /**
    * Handles the change of an input field
    * @param {*} e The event object
    */
   function handleChange(e) {
-    const values = {...formValues};
+    const values = { ...formValues };
     values[e.target.name] = e.target.value;
     setFormValues(values);
   }
