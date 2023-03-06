@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
@@ -10,7 +10,12 @@ import InfoIcon from "@mui/icons-material/Info";
 
 const exampleCategories = ["Appetizers", "Main Plates", "Drinks", "Desserts"];
 
-export default function Categories({ formValues, setFormValues }) {
+export default function Categories({
+  formValues,
+  setFormValues,
+  attempt,
+  setError,
+}) {
   /**
    * Sets the categories in the form
    * @param {Object[]} categories The list of categories to set
@@ -18,6 +23,17 @@ export default function Categories({ formValues, setFormValues }) {
   function setCategories(categories) {
     setFormValues({ ...formValues, categories });
   }
+
+  useEffect(() => {
+    const validateFields = () => {
+      if (formValues.categories.length > 0) {
+        setError(false);
+      } else {
+        setError(true);
+      }
+    };
+    validateFields(formValues);
+  }, [formValues, setError]);
 
   return (
     <React.Fragment>
@@ -50,6 +66,12 @@ export default function Categories({ formValues, setFormValues }) {
                 variant="standard"
                 label="Item Categories"
                 required
+                error={attempt && formValues.categories.length === 0}
+                helperText={
+                  attempt && formValues.categories.length === 0
+                    ? "Required"
+                    : ""
+                }
               />
             )}
           />

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Item from "./Item";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
@@ -8,7 +8,12 @@ import Tooltip from "@mui/material/Tooltip";
 import InfoIcon from "@mui/icons-material/Info";
 import AddIcon from "@mui/icons-material/Add";
 
-export default function Items({ formValues, setFormValues }) {
+export default function Items({
+  formValues,
+  setFormValues,
+  attempt,
+  setError,
+}) {
   /**
    * Sets the items in the form
    * @param {Object[]} items The list of items to set
@@ -46,6 +51,28 @@ export default function Items({ formValues, setFormValues }) {
     setItems(items);
   }
 
+  useEffect(() => {
+    const validateFields = () => {
+      let error = false;
+      for (let item of formValues.items) {
+        if (
+          !item.name ||
+          item.name === "" ||
+          !item.category ||
+          item.category === "" ||
+          !item.description ||
+          item.description === "" ||
+          !item.price ||
+          item.price === ""
+        ) {
+          error = true;
+        }
+      }
+      setError(error);
+    };
+    validateFields(formValues);
+  }, [formValues, setError]);
+
   return (
     <React.Fragment>
       <Box sx={{ display: "flex", alignItems: "center" }} mb={1.5}>
@@ -62,6 +89,8 @@ export default function Items({ formValues, setFormValues }) {
             index={index}
             handleChange={handleChange}
             removeField={removeField}
+            attempt={attempt}
+            key={index}
           />
         </div>
       ))}

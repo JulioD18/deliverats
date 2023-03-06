@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
@@ -6,7 +6,12 @@ import Box from "@mui/material/Box";
 import Tooltip from "@mui/material/Tooltip";
 import InfoIcon from "@mui/icons-material/Info";
 
-export default function Details({ formValues, setFormValues }) {
+export default function Details({
+  formValues,
+  setFormValues,
+  attempt,
+  setError,
+}) {
   /**
    * Handles the change of an input field
    * @param {*} e The event object
@@ -16,6 +21,17 @@ export default function Details({ formValues, setFormValues }) {
     values[e.target.name] = e.target.value;
     setFormValues(values);
   }
+
+  useEffect(() => {
+    const validateFields = () => {
+      if (formValues.name !== "" && formValues.description !== "") {
+        setError(false);
+      } else {
+        setError(true);
+      }
+    };
+    validateFields(formValues);
+  }, [formValues, setError]);
 
   return (
     <React.Fragment>
@@ -32,16 +48,23 @@ export default function Details({ formValues, setFormValues }) {
             variant="standard"
             onChange={(e) => handleChange(e)}
             value={formValues.name ?? ""}
+            error={attempt && formValues.name === ""}
+            helperText={attempt && formValues.name === "" ? "Required" : ""}
           />
         </Grid>
         <Grid item xs={12}>
           <TextField
+            required
             name="description"
             label="Description"
             fullWidth
             variant="standard"
             onChange={(e) => handleChange(e)}
             value={formValues.description ?? ""}
+            error={attempt && formValues.description === ""}
+            helperText={
+              attempt && formValues.description === "" ? "Required" : ""
+            }
           />
         </Grid>
         <Grid item xs={12} md={6}>
@@ -67,6 +90,7 @@ export default function Details({ formValues, setFormValues }) {
             <TextField
               name="phone"
               label="Phone"
+              type="number"
               fullWidth
               variant="standard"
               onChange={(e) => handleChange(e)}

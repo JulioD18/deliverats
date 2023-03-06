@@ -8,6 +8,7 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Input from "@mui/material/Input";
 import InputAdornment from "@mui/material/InputAdornment";
+import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import IconButton from "@mui/material/IconButton";
@@ -19,6 +20,7 @@ export default function Option({
   index,
   handleChange,
   removeField,
+  attempt
 }) {
   return (
     <React.Fragment>
@@ -52,6 +54,12 @@ export default function Option({
                 handleChange(index, e.target.name, e.target.value)
               }
               value={element.name ?? ""}
+              error={attempt && (element.name === "" || !element.name)}
+              helperText={
+                attempt && (element.name === "" || !element.name)
+                  ? "Required"
+                  : ""
+              }
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -75,12 +83,19 @@ export default function Option({
                   variant="standard"
                   label="Apply to"
                   required
+                  error={attempt && (!element.items || element.items.length === 0)}
+                  helperText={
+                    attempt && (!element.items || element.items.length === 0)
+                      ? "Required"
+                      : ""
+                  }
                 />
               )}
             />
           </Grid>
           <Grid item xs={12} md={9}>
             <TextField
+              required
               name="description"
               label="Description"
               fullWidth
@@ -89,11 +104,21 @@ export default function Option({
               onChange={(e) =>
                 handleChange(index, e.target.name, e.target.value)
               }
+              error={attempt && (element.description === "" || !element.description)}
+              helperText={
+                attempt && (element.description === "" || !element.description)
+                  ? "Required"
+                  : ""
+              }
             />
           </Grid>
           <Grid item xs={12} md={3}>
-            <FormControl variant="standard">
-              <InputLabel htmlFor="price">Price</InputLabel>
+            <FormControl variant="standard" required>
+              <InputLabel htmlFor="price" style={
+                attempt && (!element.price || element.price === "")
+                  ? { color: "#d32f2f" }
+                  : {}
+              }>Price</InputLabel>
               <Input
                 id="price"
                 name="price"
@@ -105,6 +130,11 @@ export default function Option({
                   <InputAdornment position="start">$</InputAdornment>
                 }
               />
+              {attempt && (!element.price || element.preice === "") && (
+                <FormHelperText style={{ color: "#d32f2f" }}>
+                  Required
+                </FormHelperText>
+              )}
             </FormControl>
           </Grid>
         </Grid>

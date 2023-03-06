@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Option from "./Option";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
@@ -8,7 +8,7 @@ import Tooltip from "@mui/material/Tooltip";
 import InfoIcon from "@mui/icons-material/Info";
 import AddIcon from "@mui/icons-material/Add";
 
-export default function Options({ formValues, setFormValues }) {
+export default function Options({ formValues, setFormValues, attempt, setError }) {
   /**
    * Sets the options in the form
    * @param {Object[]} options The list of options to set
@@ -46,6 +46,28 @@ export default function Options({ formValues, setFormValues }) {
     setOptions(options);
   }
 
+  useEffect(() => {
+    const validateFields = () => {
+      let error = false;
+      for (let option of formValues.options) {
+        if (
+          !option.name ||
+          option.name === "" ||
+          !option.items ||
+          option.items.length === 0 ||
+          !option.description ||
+          option.description === "" ||
+          !option.price ||
+          option.price === ""
+        ) {
+          error = true;
+        }
+      }
+      setError(error);
+    };
+    validateFields(formValues);
+  }, [formValues, setError]);
+
   return (
     <React.Fragment>
       <Box sx={{ display: "flex", alignItems: "center" }} mb={1.5}>
@@ -62,6 +84,7 @@ export default function Options({ formValues, setFormValues }) {
             index={index}
             handleChange={handleChange}
             removeField={removeField}
+            attempt={attempt}
           />
         </div>
       ))}

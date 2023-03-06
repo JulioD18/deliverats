@@ -18,6 +18,8 @@ const steps = ["Details", "Categories", "Items", "Options"];
 
 export default function FormBuilder() {
   const [activeStep, setActiveStep] = useState(0);
+  const [error, setError] = useState(true);
+  const [attempt, setAttempt] = useState(false);
   const [formValues, setFormValues] = useState({
     name: "",
     description: "",
@@ -32,17 +34,39 @@ export default function FormBuilder() {
     switch (step) {
       case 0:
         return (
-          <Details formValues={formValues} setFormValues={setFormValues} />
+          <Details
+            formValues={formValues}
+            setFormValues={setFormValues}
+            attempt={attempt}
+            setError={setError}
+          />
         );
       case 1:
         return (
-          <Categories formValues={formValues} setFormValues={setFormValues} />
+          <Categories
+            formValues={formValues}
+            setFormValues={setFormValues}
+            attempt={attempt}
+            setError={setError}
+          />
         );
       case 2:
-        return <Items formValues={formValues} setFormValues={setFormValues} />;
+        return (
+          <Items
+            formValues={formValues}
+            setFormValues={setFormValues}
+            attempt={attempt}
+            setError={setError}
+          />
+        );
       case 3:
         return (
-          <Options formValues={formValues} setFormValues={setFormValues} />
+          <Options
+            formValues={formValues}
+            setFormValues={setFormValues}
+            attempt={attempt}
+            setError={setError}
+          />
         );
       default:
         return <Share />;
@@ -53,7 +77,13 @@ export default function FormBuilder() {
     if (activeStep >= steps.length) {
       // TODO: Routing to forms page
     } else {
-      setActiveStep(activeStep + 1);
+      if (error) {
+        setAttempt(true);
+      } else {
+        setAttempt(false);
+        setError(true);
+        setActiveStep(activeStep + 1);
+      }
     }
   };
 

@@ -10,6 +10,7 @@ import Input from "@mui/material/Input";
 import InputAdornment from "@mui/material/InputAdornment";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
+import FormHelperText from "@mui/material/FormHelperText";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -19,6 +20,7 @@ export default function Item({
   index,
   handleChange,
   removeField,
+  attempt,
 }) {
   return (
     <React.Fragment>
@@ -52,14 +54,26 @@ export default function Item({
                 handleChange(index, e.target.name, e.target.value)
               }
               value={element.name ?? ""}
+              error={attempt && (element.name === "" || !element.name)}
+              helperText={
+                attempt && (element.name === "" || !element.name)
+                  ? "Required"
+                  : ""
+              }
             />
           </Grid>
           <Grid item xs={12} md={6}>
             <FormControl
               variant="standard"
               sx={{ minWidth: "100%", maxWidth: "100%" }}
+              required
             >
-              <InputLabel id="categoryLabel">Category</InputLabel>
+              <InputLabel
+                style={attempt && !element.category ? { color: "#d32f2f" } : {}}
+                id="categoryLabel"
+              >
+                Category
+              </InputLabel>
               <Select
                 labelId="categoryLabel"
                 name="category"
@@ -67,6 +81,7 @@ export default function Item({
                 onChange={(e) =>
                   handleChange(index, e.target.name, e.target.value)
                 }
+                error={attempt && !element.category}
               >
                 {categories.map((category) => (
                   <MenuItem key={category} value={category}>
@@ -74,10 +89,16 @@ export default function Item({
                   </MenuItem>
                 ))}
               </Select>
+              {attempt && !element.category && (
+                <FormHelperText style={{ color: "#d32f2f" }}>
+                  Required
+                </FormHelperText>
+              )}
             </FormControl>
           </Grid>
           <Grid item xs={12} md={9}>
             <TextField
+              required
               name="description"
               label="Description"
               fullWidth
@@ -86,14 +107,32 @@ export default function Item({
               onChange={(e) =>
                 handleChange(index, e.target.name, e.target.value)
               }
+              error={
+                attempt && (element.description === "" || !element.description)
+              }
+              helperText={
+                attempt && (element.description === "" || !element.description)
+                  ? "Required"
+                  : ""
+              }
             />
           </Grid>
           <Grid item xs={12} md={3}>
-            <FormControl variant="standard">
-              <InputLabel htmlFor="price">Price</InputLabel>
+            <FormControl variant="standard" required>
+              <InputLabel
+                htmlFor="price"
+                style={
+                  attempt && (!element.price || element.price === "")
+                    ? { color: "#d32f2f" }
+                    : {}
+                }
+              >
+                Price
+              </InputLabel>
               <Input
                 id="price"
                 name="price"
+                type="number"
                 value={element.price ?? ""}
                 onChange={(e) =>
                   handleChange(index, e.target.name, e.target.value)
@@ -102,6 +141,11 @@ export default function Item({
                   <InputAdornment position="start">$</InputAdornment>
                 }
               />
+              {attempt && (!element.price || element.preice === "") && (
+                <FormHelperText style={{ color: "#d32f2f" }}>
+                  Required
+                </FormHelperText>
+              )}
             </FormControl>
           </Grid>
         </Grid>
