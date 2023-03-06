@@ -10,10 +10,18 @@ export default function Items({
   setFormValues,
 }) {
   /**
+   * Sets the items in the form
+   * @param {Object[]} items The list of items to set
+   */
+  function setItems(items) {
+    setFormValues({ ...formValues, items });
+  }
+
+  /**
    * Add a new field to the form
    */
   function addField() {
-    setFormValues([...formValues, {}]);
+    setItems([...formValues.items, {}]);
   }
 
   /**
@@ -21,9 +29,9 @@ export default function Items({
    * @param {number} i The index of the field to remove
    */
   function removeField(i) {
-    let newFormValues = [...formValues];
-    newFormValues.splice(i, 1);
-    setFormValues(newFormValues);
+    const items = [...formValues.items];
+    items.splice(i, 1);
+    setItems(items);
   }
 
   /**
@@ -32,9 +40,9 @@ export default function Items({
    * @param {*} e The event object
    */
   function handleChange(i, e) {
-    let newFormValues = [...formValues];
-    newFormValues[i][e.target.name] = e.target.value;
-    setFormValues(newFormValues);
+    const items = [...formValues.items];
+    items[i][e.target.name] = e.target.value;
+    setItems(items);
     console.log(formValues);
   }
 
@@ -43,7 +51,7 @@ export default function Items({
       <Typography variant="h6" gutterBottom>
         Add your menu items
       </Typography>
-      {formValues.map((element, index) => (
+      {formValues.items.map((element, index) => (
         <div key={index}>
           <Item
             element={element}

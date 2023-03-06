@@ -8,8 +8,20 @@ import Tooltip from "@mui/material/Tooltip";
 import Box from "@mui/material/Box";
 import InfoIcon from "@mui/icons-material/Info";
 
-export default function Categories() {
-  const exampleCategories = ["Appetizers", "Main Plates", "Drinks", "Desserts"];
+const exampleCategories = ["Appetizers", "Main Plates", "Drinks", "Desserts"];
+
+export default function Categories({
+  formValues,
+  setFormValues,
+}) {
+
+  /**
+   * Sets the categories in the form
+   * @param {Object[]} categories The list of categories to set
+   */
+  function setCategories(categories) {
+    setFormValues({ ...formValues, categories });
+  }
 
   return (
     <React.Fragment>
@@ -36,6 +48,7 @@ export default function Categories() {
                 />
               ))
             }
+            onChange={(e, val) => setCategories(val)}
             renderInput={(params) => (
               <TextField
                 {...params}

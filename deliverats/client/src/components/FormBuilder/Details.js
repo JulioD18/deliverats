@@ -6,7 +6,21 @@ import Box from "@mui/material/Box";
 import Tooltip from "@mui/material/Tooltip";
 import InfoIcon from "@mui/icons-material/Info";
 
-export default function Details() {
+export default function Details({
+  formValues,
+  setFormValues,
+}) {
+
+  /**
+   * Handles the change of an input field
+   * @param {*} e The event object
+   */
+  function handleChange(e) {
+    const values = {...formValues};
+    values[e.target.name] = e.target.value;
+    setFormValues(values);
+  }
+
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
@@ -16,30 +30,33 @@ export default function Details() {
         <Grid item xs={12}>
           <TextField
             required
-            id="formName"
-            name="formName"
+            name="name"
             label="Name"
             fullWidth
             variant="standard"
+            onChange={(e) => handleChange(e)}
+            value={formValues.name ?? ""}
           />
         </Grid>
         <Grid item xs={12}>
           <TextField
-            id="formDescription"
-            name="formDescription"
+            name="description"
             label="Description"
             fullWidth
             variant="standard"
+            onChange={(e) => handleChange(e)}
+            value={formValues.description ?? ""}
           />
         </Grid>
         <Grid item xs={12} md={6}>
           <Box sx={{ display: "flex", alignItems: "flex-end" }}>
             <TextField
-              id="formEmail"
-              name="formEmail"
+              name="email"
               label="Email"
               fullWidth
               variant="standard"
+              onChange={(e) => handleChange(e)}
+              value={formValues.email ?? ""}
             />
             <Tooltip title="This email will receive notifications when clients complete the form.">
               <InfoIcon
@@ -52,11 +69,12 @@ export default function Details() {
         <Grid item xs={12} md={6}>
           <Box sx={{ display: "flex", alignItems: "flex-end" }}>
             <TextField
-              id="formPhone"
-              name="formPhone"
+              name="phone"
               label="Phone"
               fullWidth
               variant="standard"
+              onChange={(e) => handleChange(e)}
+              value={formValues.phone ?? ""}
             />
             <Tooltip title="This phone will receive SMS notifications when clients complete the form.">
               <InfoIcon

@@ -15,19 +15,6 @@ import Share from "./Share";
 
 const steps = ["Details", "Categories", "Items"];
 
-function getStepContent(step) {
-  switch (step) {
-    case 0:
-      return <Details />;
-    case 1:
-      return <Categories />;
-    case 2:
-      return <Items />;
-    default:
-      return <Share />;
-  }
-}
-
 export default function FormBuilder() {
   const [activeStep, setActiveStep] = useState(0);
   const [formValues, setFormValues] = useState({
@@ -38,6 +25,19 @@ export default function FormBuilder() {
     categories: [],
     items: [],
   });
+
+  function getStepContent(step) {
+    switch (step) {
+      case 0:
+        return <Details formValues={formValues} setFormValues={setFormValues} />;
+      case 1:
+        return <Categories formValues={formValues} setFormValues={setFormValues} />;
+      case 2:
+        return <Items formValues={formValues} setFormValues={setFormValues} />;
+      default:
+        return <Share />;
+    }
+  }
 
   const handleNext = () => {
     if (activeStep >= steps.length) {
