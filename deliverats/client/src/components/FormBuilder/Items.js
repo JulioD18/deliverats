@@ -54,6 +54,7 @@ export default function Items({
   useEffect(() => {
     const validateFields = () => {
       let error = false;
+      if (formValues.items.length === 0) error = true;
       for (let item of formValues.items) {
         if (
           !item.name ||
