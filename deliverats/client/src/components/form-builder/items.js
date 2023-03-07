@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import Item from "./Item";
+import Item from "./item.js";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";

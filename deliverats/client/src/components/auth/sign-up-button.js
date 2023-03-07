@@ -1,19 +1,14 @@
 import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Button, Typography } from "@mui/material";
+import { signUp } from "../../redux/actions/auth-action";
+import { connect } from "react-redux";
 
-const SignUpButton = () => {
+const SignUpButton = ({ isAuthenticated, user }) => {
   const { loginWithRedirect } = useAuth0();
 
   const handleSignUp = async () => {
-    await loginWithRedirect({
-      state: {
-        returnTo: "/",
-      },
-      authorizationParams: {
-        screen_hint: "signup",
-      },
-    });
+    await signUp({ loginWithRedirect });
   };
 
   return (
@@ -23,4 +18,9 @@ const SignUpButton = () => {
   );
 };
 
-export default SignUpButton;
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+  user: state.auth.user,
+});
+
+export default connect(mapStateToProps, { signUp })(SignUpButton);

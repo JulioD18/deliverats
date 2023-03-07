@@ -2,7 +2,7 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Home from "./components/home.js";
 import NavBar from "./components/navbar.js";
-import FormBuilder from "./components/FormBuilder/FormBuilder.js";
+import FormBuilder from "./components/form-builder/form-builder.js";
 import { AuthenticationGuard } from "./components/auth/auth-guard.js";
 import { greyTheme } from "./components/theme.js";
 import { ThemeProvider } from "@mui/material/styles";

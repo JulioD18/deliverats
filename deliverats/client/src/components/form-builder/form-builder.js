@@ -8,11 +8,11 @@ import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import Details from "./Details";
-import Categories from "./Categories";
-import Items from "./Items";
-import Options from "./Options";
-import Share from "./Share";
+import Details from "./details.js";
+import Categories from "./categories.js";
+import Items from "./items.js";
+import Options from "./options.js";
+import Share from "./share.js";
 
 const steps = ["Details", "Categories", "Items", "Options"];
 
