@@ -3,13 +3,17 @@ import { Box, Avatar } from "@mui/material";
 
 const Home = () => {
   return (
-    <Box>
-      <Avatar
-        sx={{ height: "100%", width: "100%" }}
-        src="../../public/logo-no-background.png"
-        alt="logo"
-      />
-    </Box>
+    <Box
+      component="img"
+      src="https://i.imgur.com/jNpbDyN.png"
+      sx={{
+        width: "40%",
+        height: "40%",
+        display: "flex",
+        justifyContent: "center",
+        mx: "auto"
+      }}
+    ></Box>
   );
 };
 
