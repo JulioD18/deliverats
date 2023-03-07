@@ -20,7 +20,7 @@ export default function Option({
   index,
   handleChange,
   removeField,
-  attempt
+  attempt,
 }) {
   return (
     <React.Fragment>
@@ -83,7 +83,9 @@ export default function Option({
                   variant="standard"
                   label="Apply to"
                   required
-                  error={attempt && (!element.items || element.items.length === 0)}
+                  error={
+                    attempt && (!element.items || element.items.length === 0)
+                  }
                   helperText={
                     attempt && (!element.items || element.items.length === 0)
                       ? "Required"
@@ -104,7 +106,9 @@ export default function Option({
               onChange={(e) =>
                 handleChange(index, e.target.name, e.target.value)
               }
-              error={attempt && (element.description === "" || !element.description)}
+              error={
+                attempt && (element.description === "" || !element.description)
+              }
               helperText={
                 attempt && (element.description === "" || !element.description)
                   ? "Required"
@@ -114,14 +118,20 @@ export default function Option({
           </Grid>
           <Grid item xs={12} md={3}>
             <FormControl variant="standard" required>
-              <InputLabel htmlFor="price" style={
-                attempt && (!element.price || element.price === "")
-                  ? { color: "#d32f2f" }
-                  : {}
-              }>Price</InputLabel>
+              <InputLabel
+                htmlFor="price"
+                style={
+                  attempt && (!element.price || element.price === "")
+                    ? { color: "#d32f2f" }
+                    : {}
+                }
+              >
+                Price
+              </InputLabel>
               <Input
                 id="price"
                 name="price"
+                type="number"
                 value={element.price ?? ""}
                 onChange={(e) =>
                   handleChange(index, e.target.name, e.target.value)

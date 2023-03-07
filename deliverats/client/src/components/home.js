@@ -11,7 +11,7 @@ const Home = () => {
         height: "40%",
         display: "flex",
         justifyContent: "center",
-        mx: "auto"
+        mx: "auto",
       }}
     ></Box>
   );

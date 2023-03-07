@@ -74,16 +74,12 @@ export default function FormBuilder() {
   }
 
   const handleNext = () => {
-    if (activeStep >= steps.length) {
-      // TODO: Routing to forms page
+    if (error) {
+      setAttempt(true);
     } else {
-      if (error) {
-        setAttempt(true);
-      } else {
-        setAttempt(false);
-        setError(true);
-        setActiveStep(activeStep + 1);
-      }
+      setAttempt(false);
+      setError(true);
+      setActiveStep(activeStep + 1);
     }
   };
 

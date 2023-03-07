@@ -15,29 +15,29 @@ const NavBar = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar color="primary" position="absolute">
-        <Toolbar>
+      <AppBar color="primary" position="fixed">
+        <Toolbar style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Box style={{ display: 'flex', alignItems: 'center' }}>
             <Avatar
-              as = {Link}
+              as = {Link} 
               to = "/"
               sx={{ mr: "10px", alignItems: "bottom", borderRadius: "80%" }}
               alt="logo"
               src="https://i.imgur.com/91B3bsp.png"
             />
-          <Typography as={Link} to="/" variant="h6" component="div" sx={{ flexGrow: 1, textDecoration: "none", color: "black" }}>
-            DELIVERATS
-          </Typography>
+            <Typography as={Link} to="/" variant="h6" component="div" sx={{ textDecoration: "none", color: "black" }}>
+              DELIVERATS
+            </Typography>
+          </Box>
 
-          {isAuthenticated ? (
+          {isAuthenticated && (
             <Box>
-              <NavButton url="form" name="Form" />
-              <LogOutButton />
-            </Box>
-          ) : (
-            <Box>
-              <SignUpButton /> <LoginButton />
+              <NavButton url="deliveries" name="Deliveries" />
+              <NavButton url="forms" name="Forms" />
             </Box>
           )}
+
+          {isAuthenticated ? (<LogOutButton />) : (<LoginButton />)}
         </Toolbar>
       </AppBar>
     </Box>

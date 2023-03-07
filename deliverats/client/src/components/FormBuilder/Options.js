@@ -8,7 +8,12 @@ import Tooltip from "@mui/material/Tooltip";
 import InfoIcon from "@mui/icons-material/Info";
 import AddIcon from "@mui/icons-material/Add";
 
-export default function Options({ formValues, setFormValues, attempt, setError }) {
+export default function Options({
+  formValues,
+  setFormValues,
+  attempt,
+  setError,
+}) {
   /**
    * Sets the options in the form
    * @param {Object[]} options The list of options to set

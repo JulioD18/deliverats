@@ -23,7 +23,10 @@ function App() {
       <Grid container>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/form" element={<AuthenticationGuard component={FormBuilder} />} />
+          <Route
+            path="/forms"
+            element={<AuthenticationGuard component={FormBuilder} />}
+          />
         </Routes>
       </Grid>
     </ThemeProvider>
