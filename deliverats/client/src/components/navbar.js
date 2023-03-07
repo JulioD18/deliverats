@@ -1,6 +1,5 @@
 import React from "react";
 import LoginButton from "./auth/login-button.js";
-import SignUpButton from "./auth/sign-up-button.js";
 import LogOutButton from "./auth/logout-button.js";
 import NavButton from "./nav-button.js";
 import { AppBar } from "@mui/material";

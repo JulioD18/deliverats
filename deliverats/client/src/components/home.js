@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Avatar } from "@mui/material";
+import { Box } from "@mui/material";
 
 const Home = () => {
   return (
