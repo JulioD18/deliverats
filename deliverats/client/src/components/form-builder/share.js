@@ -16,7 +16,7 @@ const Share = ({ form, postForms }) => {
   );
 
   useEffect(() => {
-    postForms({undefined, form}).then((res) => {
+    postForms({ undefined, form }).then((res) => {
       const returnLink = `http://localhost:3000/forms/${res.id}`;
       setLink(
         <Typography variant="h6" gutterBottom>
