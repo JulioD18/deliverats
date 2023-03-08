@@ -25,7 +25,7 @@ const Share = ({ form, postForms }) => {
         </Typography>
       );
     });
-  }, []);
+  }, [form, postForms]);
 
   return (
     <Fragment>

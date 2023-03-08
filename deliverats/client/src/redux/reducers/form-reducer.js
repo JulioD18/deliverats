@@ -4,7 +4,7 @@ const initialState = {
   forms: [],
 }
 
-export default function (state = initialState, action) {
+export default function formReducer (state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
     case GET_FORMS:
