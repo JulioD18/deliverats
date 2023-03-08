@@ -52,6 +52,7 @@ formsRouter.get("/", isAuthenticated, async function (req, res, next) {
   // Retrieve parameters
   const offset = req.query.offset ?? 0;
   const limit = req.query.limit ?? 12;
+  const userId = req.query.userId ?? undefined;
 
   // Make query
   const forms = await Form.findAll({
@@ -61,7 +62,7 @@ formsRouter.get("/", isAuthenticated, async function (req, res, next) {
   });
 
   // Count forms
-  const subQuery = false ? { UserId: userId } : {};
+  const subQuery = userId ? { UserId: userId } : {};
   const count = (await Form.findAll({ where: subQuery })).length;
 
   return res.json({ forms, count });
@@ -83,13 +84,14 @@ formsRouter.delete("/:id", isAuthenticated, async function (req, res, next) {
   const formId = req.params.id;
 
   // Check that form exists
-  const form = await Form.findByPk(formId, { include: ["User"] });
+  const form = await Form.findByPk(formId);
+  //const form = await Form.findByPk(formId, { include: ["User"] });
   if (!form) return notFoundError(res, "form", formId);
 
   // Check that user owns form
-  if (form.UserId !== userId) {
-    return apiError(res, 403, "The user does not own this form");
-  }
+  // if (form.UserId !== userId) {
+  //   return apiError(res, 403, "The user does not own this form");
+  // }
 
   // Delete form
   await form.destroy();
