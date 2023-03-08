@@ -1,20 +1,20 @@
-import jwt from "jsonwebtoken";
-import { ManagementClient } from "auth0";
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
 
-export const verifyToken = (req, res, next) => {
-  const bearerHeader = req.headers["authorization"];
+const { expressjwt: jwt } = require("express-jwt");
+import jwksRsa from "jwks-rsa";
 
-  if (typeof bearerHeader !== "undefined") {
-    const bearerToken = bearerHeader.split(" ")[1];
-    jwt.verify(bearerToken, process.env.AUTH0_CLIENT_SECRET, (err, decoded) => {
-      if (err) {
-        res.status(401).json({ error: "Invalid token" });
-      } else {
-        req.user = decoded;
-        next();
-      }
-    });
-  } else {
-    res.status(401).json({ error: "Unauthorized" });
-  }
-};
+const domain = process.env.REACT_APP_AUTH0_DOMAIN;
+
+export const checkJwt = jwt({
+  secret: jwksRsa.expressJwtSecret({
+    cache: true,
+    rateLimit: true,
+    jwksRequestsPerMinute: 5,
+    jwksUri: `https://${domain}/.well-known/jwks.json`,
+  }),
+
+  audience: `https://${domain}/api/v2/`,
+  issuer: `https://${domain}/`,
+  algorithms: ["RS256"],
+});

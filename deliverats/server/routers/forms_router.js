@@ -8,10 +8,11 @@ import {
   notFoundError,
 } from "../utils/api-errors.js";
 import { validateForm } from "../utils/validators.js";
+import { checkJwt } from "../utils/token-validation.js";
 
 export const formsRouter = Router();
 
-formsRouter.post("/", isAuthenticated, async function (req, res, next) {
+formsRouter.post("/", checkJwt, async function (req, res, next) {
   // Validate parameters
   const missingParams = findMissingParams(req, [
     "name",

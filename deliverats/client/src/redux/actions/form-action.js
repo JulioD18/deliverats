@@ -21,7 +21,8 @@ export const getForms = ({ token }) => {
   };
 };
 
-export const postForms = ({ token, form }) => {
+export const postForms = ({ user, token, form }) => {
+  console.log(token);
   return async (dispatch) => {
     try {
       const response = await fetch("/api/forms", {

@@ -17,6 +17,7 @@ const AuthNavigate = ({ children }) => {
       domain={domain}
       clientId={clientId}
       redirectUri={window.location.origin}
+      audience={`https://${domain}/api/v2/`}
       onRedirectCallback={onRedirectCallback}
     >
       {children}
