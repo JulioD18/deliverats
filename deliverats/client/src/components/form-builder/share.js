@@ -1,4 +1,6 @@
+import React from "react"
 import { useEffect, useState, Fragment } from "react";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { postForms } from "../../redux/actions/form-action";
 
@@ -7,7 +9,7 @@ import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
 
 const Share = ({ form, postForms }) => {
-  
+
   const [link, setLink] = useState(
     <Fragment>
       <CircularProgress />
