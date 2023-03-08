@@ -31,7 +31,7 @@ formsRouter.post("/", isAuthenticated, async function (req, res, next) {
   const options = req.body.options;
 
   // Validate form
-  const formError = validateForm(categories, items, options);
+  const formError = validateForm(req.body);
   if (formError) return apiError(res, 400, formError);
 
   // Create form
@@ -44,6 +44,7 @@ formsRouter.post("/", isAuthenticated, async function (req, res, next) {
     options,
     categories,
   });
+
   return res.json(form);
 });
 
@@ -92,5 +93,6 @@ formsRouter.delete("/:id", isAuthenticated, async function (req, res, next) {
 
   // Delete form
   await form.destroy();
+
   return res.json(form);
 });
