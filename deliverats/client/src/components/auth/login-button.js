@@ -15,7 +15,9 @@ const LoginButton = () => {
 
   return (
     <Button color="secondary" onClick={handleLogin}>
-      <Typography variant="h6" sx={{ color: 'black' }}>Log In / Sign up</Typography>
+      <Typography variant="h6" sx={{ color: "black" }}>
+        Log In / Sign up
+      </Typography>
     </Button>
   );
 };

@@ -1,6 +1,6 @@
 import { GET_FORMS, POST_FORMS } from "./actions.js";
 
-export const getForms = ({token}) => {
+export const getForms = ({ token }) => {
   return async (dispatch) => {
     try {
       const res = await fetch("/api/forms", {
@@ -11,17 +11,17 @@ export const getForms = ({token}) => {
         },
       });
       const data = await res.json();
-      if(data.statusCode === 200) {
+      if (data.statusCode === 200) {
         dispatch({ type: GET_FORMS, payload: data });
-      } 
+      }
       return data;
     } catch (error) {
       console.log(error);
     }
   };
-}
+};
 
-export const postForms = ({token, form}) => {
+export const postForms = ({ token, form }) => {
   return async (dispatch) => {
     try {
       const response = await fetch("/api/forms", {
@@ -42,4 +42,4 @@ export const postForms = ({token, form}) => {
       console.log(error);
     }
   };
-}
+};

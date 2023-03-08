@@ -15,16 +15,22 @@ const NavBar = () => {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar color="primary" position="fixed">
-        <Toolbar style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Box style={{ display: 'flex', alignItems: 'center' }}>
+        <Toolbar style={{ display: "flex", justifyContent: "space-between" }}>
+          <Box style={{ display: "flex", alignItems: "center" }}>
             <Avatar
-              as = {Link} 
-              to = "/"
+              as={Link}
+              to="/"
               sx={{ mr: "10px", alignItems: "bottom", borderRadius: "80%" }}
               alt="logo"
               src="https://i.imgur.com/91B3bsp.png"
             />
-            <Typography as={Link} to="/" variant="h6" component="div" sx={{ textDecoration: "none", color: "black" }}>
+            <Typography
+              as={Link}
+              to="/"
+              variant="h6"
+              component="div"
+              sx={{ textDecoration: "none", color: "black" }}
+            >
               DELIVERATS
             </Typography>
           </Box>
@@ -36,7 +42,7 @@ const NavBar = () => {
             </Box>
           )}
 
-          {isAuthenticated ? (<LogOutButton />) : (<LoginButton />)}
+          {isAuthenticated ? <LogOutButton /> : <LoginButton />}
         </Toolbar>
       </AppBar>
     </Box>
