@@ -18,7 +18,11 @@ export function validateForm(form) {
   }
 
   // Check phone validity if it exists
-  if (form.phone && form.phone !== "" && (isNaN(parseInt(form.phone)) || parseInt(form.phone) <= 0)) {
+  if (
+    form.phone &&
+    form.phone !== "" &&
+    (isNaN(parseInt(form.phone)) || parseInt(form.phone) <= 0)
+  ) {
     return "Form has an invalid phone";
   }
 
@@ -48,7 +52,12 @@ export function validateForm(form) {
       return "Item '" + item.name + "' has no categories";
     } else if (!categories.includes(item.category)) {
       return "Item '" + item.name + "' has an invalid category";
-    } else if (!item.price || item.price === "" || isNaN(parseFloat(item.price)) || parseFloat(item.price) <= 0) {
+    } else if (
+      !item.price ||
+      item.price === "" ||
+      isNaN(parseFloat(item.price)) ||
+      parseFloat(item.price) <= 0
+    ) {
       return "Item '" + item.name + "' has an invalid price";
     }
   }
@@ -62,7 +71,12 @@ export function validateForm(form) {
       return "Option '" + option.name + "' has an invalid description";
     } else if (!option.items || option.items.length === 0) {
       return "Option '" + option.name + "' has no items";
-    } else if (!option.price || option.price === "" || isNaN(parseFloat(option.price)) || parseFloat(option.price) <= 0) {
+    } else if (
+      !option.price ||
+      option.price === "" ||
+      isNaN(parseFloat(option.price)) ||
+      parseFloat(option.price) <= 0
+    ) {
       return "Option '" + option.name + "' has an invalid price";
     }
     // Check that all items in the option are valid
@@ -72,6 +86,6 @@ export function validateForm(form) {
       }
     }
   }
-  
+
   return null;
 }
