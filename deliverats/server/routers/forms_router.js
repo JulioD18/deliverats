@@ -5,6 +5,7 @@ import {
   apiError,
   findMissingParams,
   missingParamsError,
+  notFoundError
 } from "../utils/api-errors.js";
 import { validateForm } from "../utils/validators.js";
 
