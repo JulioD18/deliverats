@@ -16,7 +16,7 @@ import Share from "./share.js";
 
 const steps = ["Details", "Categories", "Items", "Options"];
 
-export default function FormBuilder() {
+const FormBuilder = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [error, setError] = useState(true);
   const [attempt, setAttempt] = useState(false);
@@ -69,7 +69,7 @@ export default function FormBuilder() {
           />
         );
       default:
-        return <Share />;
+        return <Share form={formValues} />;
     }
   }
 
@@ -113,4 +113,6 @@ export default function FormBuilder() {
       </Paper>
     </Container>
   );
-}
+};
+
+export default FormBuilder;

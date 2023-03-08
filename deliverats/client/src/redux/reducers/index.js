@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
-import authReducer from "./auth-reducer";
+import formReducer from "./form-reducer";
 
 export default combineReducers({
-  auth: authReducer,
+  form: formReducer
 });
