@@ -30,4 +30,8 @@ export const Form = sequelize.define("Form", {
     type: DataTypes.JSON,
     defaultValue: [],
   },
+  owner: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  }
 });

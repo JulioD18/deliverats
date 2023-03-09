@@ -31,6 +31,8 @@ formsRouter.post("/", checkJwt, async function (req, res, next) {
   const items = req.body.items;
   const options = req.body.options;
 
+  const owner = req.auth.sub;
+
   // Validate form
   const formError = validateForm(req.body);
   if (formError) return apiError(res, 400, formError);
@@ -44,6 +46,7 @@ formsRouter.post("/", checkJwt, async function (req, res, next) {
     items,
     options,
     categories,
+    owner,
   });
 
   return res.json(form);
@@ -53,18 +56,20 @@ formsRouter.get("/", checkJwt, async function (req, res, next) {
   // Retrieve parameters
   const offset = req.query.offset ?? 0;
   const limit = req.query.limit ?? 12;
-  const userId = req.query.userId ?? undefined;
+  const owner = req.query.owner ?? undefined;
+
+  const query = owner ? { owner } : {};
 
   // Make query
   const forms = await Form.findAll({
     order: [["id", "DESC"]],
+    where: query,
     offset,
     limit,
   });
 
   // Count forms
-  const subQuery = userId ? { UserId: userId } : {};
-  const count = (await Form.findAll({ where: subQuery })).length;
+  const count = (await Form.findAll({ where: query })).length;
 
   return res.json({ forms, count });
 });
