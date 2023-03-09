@@ -14,6 +14,8 @@ import Items from "./items.js";
 import Options from "./options.js";
 import Share from "./share.js";
 
+import { useNavigate } from "react-router-dom";
+
 const steps = ["Details", "Categories", "Items", "Options"];
 
 const FormBuilder = () => {
@@ -83,6 +85,12 @@ const FormBuilder = () => {
     }
   };
 
+  const navigate = useNavigate();
+
+  const cancel = () => {
+    navigate('/forms');
+  };
+
   return (
     <Container component="main" maxWidth="sm" sx={{ mt: 4, mb: 4 }}>
       <Paper variant="outlined" sx={{ p: { xs: 2, md: 3 } }}>
@@ -99,7 +107,14 @@ const FormBuilder = () => {
         <React.Fragment>
           {getStepContent(activeStep)}
           {activeStep < steps.length && (
-            <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+              <Button
+                variant="contained"
+                onClick={cancel}
+                sx={{ mt: 3, ml: 1 }}
+              >
+                Cancel
+              </Button>
               <Button
                 variant="contained"
                 onClick={handleNext}

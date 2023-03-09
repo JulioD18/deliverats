@@ -1,8 +1,5 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import Home from "./components/home.js";
-import NavBar from "./components/navbar.js";
-import FormBuilder from "./components/form-builder/form-builder.js";
 import { AuthenticationGuard } from "./components/auth/auth-guard.js";
 import { greyTheme } from "./components/theme.js";
 import { ThemeProvider } from "@mui/material/styles";
@@ -10,6 +7,11 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
 // import { configureStore } from "@reduxjs/toolkit";
 // import reducers from "./reducers/index.js";
+
+import Home from "./components/home.js";
+import NavBar from "./components/navbar.js";
+import FormBuilder from "./components/form-builder/form-builder.js";
+import Forms from "./components/forms/forms.js";
 
 // const store = configureStore({ reducers });
 
@@ -24,7 +26,11 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route
-            path="/forms"
+            path="/my-forms"
+            element={<AuthenticationGuard component={Forms} />}
+          />
+          <Route
+            path="/form-builder"
             element={<AuthenticationGuard component={FormBuilder} />}
           />
         </Routes>
