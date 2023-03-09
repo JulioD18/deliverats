@@ -1,6 +1,5 @@
 import { Form } from "../models/forms.js";
 import { Router } from "express";
-import { isAuthenticated } from "../middleware/auth.js";
 import {
   apiError,
   findMissingParams,
@@ -8,7 +7,7 @@ import {
   notFoundError,
 } from "../utils/api-errors.js";
 import { validateForm } from "../utils/validators.js";
-import { checkJwt } from "../utils/token-validation.js";
+import { checkJwt } from "../middleware/token-validation.js";
 
 export const formsRouter = Router();
 
@@ -50,7 +49,7 @@ formsRouter.post("/", checkJwt, async function (req, res, next) {
   return res.json(form);
 });
 
-formsRouter.get("/", isAuthenticated, async function (req, res, next) {
+formsRouter.get("/", checkJwt, async function (req, res, next) {
   // Retrieve parameters
   const offset = req.query.offset ?? 0;
   const limit = req.query.limit ?? 12;
@@ -70,7 +69,7 @@ formsRouter.get("/", isAuthenticated, async function (req, res, next) {
   return res.json({ forms, count });
 });
 
-formsRouter.get("/:id", isAuthenticated, async (req, res) => {
+formsRouter.get("/:id", checkJwt, async (req, res) => {
   // Retrieve parameters
   const formId = req.params.id;
 
@@ -81,7 +80,7 @@ formsRouter.get("/:id", isAuthenticated, async (req, res) => {
   res.json(form);
 });
 
-formsRouter.delete("/:id", isAuthenticated, async function (req, res, next) {
+formsRouter.delete("/:id", checkJwt, async function (req, res, next) {
   // Retrieve data
   const formId = req.params.id;
 
