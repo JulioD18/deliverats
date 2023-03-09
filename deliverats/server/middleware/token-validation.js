@@ -1,5 +1,6 @@
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
+require("dotenv").config();
 
 const { expressjwt: jwt } = require("express-jwt");
 import jwksRsa from "jwks-rsa";
