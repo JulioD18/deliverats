@@ -1,20 +1,11 @@
 import express from "express";
 import bodyParser from "body-parser";
 import { sequelize } from "./datasource.js";
-import session from "express-session";
 import { formsRouter } from "./routers/forms_router.js";
 
 export const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
-app.use(
-  session({
-    secret: "(TE4?[[i~0Y?>?H",
-    resave: false,
-    saveUninitialized: true,
-  })
-);
 
 try {
   await sequelize.authenticate();
