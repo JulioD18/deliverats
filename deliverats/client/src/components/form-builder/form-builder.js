@@ -88,7 +88,7 @@ const FormBuilder = () => {
   const navigate = useNavigate();
 
   const cancel = () => {
-    navigate('/forms');
+    navigate('/my-forms');
   };
 
   return (

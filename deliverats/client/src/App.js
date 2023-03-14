@@ -13,6 +13,15 @@ import NavBar from "./components/navbar.js";
 import FormBuilder from "./components/form-builder/form-builder.js";
 import Forms from "./components/forms/forms.js";
 
+import * as Sentry from "@sentry/react";
+import { BrowserTracing } from "@sentry/tracing";
+
+Sentry.init({
+  dsn: "https://947ce92a43184e528087e72aee89945a@o4504838835404800.ingest.sentry.io/4504838840516608",
+  integrations: [new BrowserTracing()],
+  tracesSampleRate: 1.0,
+});
+
 // const store = configureStore({ reducers });
 
 function App() {
