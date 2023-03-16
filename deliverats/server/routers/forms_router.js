@@ -8,6 +8,7 @@ import {
 } from "../utils/api-errors.js";
 import { validateForm } from "../utils/validators.js";
 import { checkJwt } from "../middleware/token-validation.js";
+import { sendEmail } from "../utils/send-grid.js";
 
 export const formsRouter = Router();
 

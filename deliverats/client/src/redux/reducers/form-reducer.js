@@ -10,12 +10,12 @@ export default function formReducer(state = initialState, action) {
     case GET_FORMS:
       return {
         ...state,
-        forms: payload.forms,
+        forms: payload,
       };
     case POST_FORMS:
       return {
         ...state,
-        forms: payload.forms,
+        forms: payload,
       };
     default:
       return state;

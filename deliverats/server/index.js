@@ -1,13 +1,16 @@
 import express from "express";
 import bodyParser from "body-parser";
+import cors from "cors";
 import { sequelize } from "./datasource.js";
 import { formsRouter } from "./routers/forms_router.js";
+import { sendEmail } from "./utils/send-grid.js";
 import * as Sentry from "@sentry/node";
 import * as Tracing from "@sentry/tracing";
 
 export const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(cors());
 
 Sentry.init({
   dsn: "https://a771fa69fcb74977b17d20e40ec7c43e@o4504838835404800.ingest.sentry.io/4504838968246272",
@@ -52,7 +55,7 @@ app.use("/api/forms", formsRouter);
 // The error handler must be before any other error middleware and after all controllers
 app.use(Sentry.Handlers.errorHandler());
 
-const PORT = 3000;
+const PORT = 3001;
 
 app.listen(PORT, (err) => {
   if (err) console.log(err);

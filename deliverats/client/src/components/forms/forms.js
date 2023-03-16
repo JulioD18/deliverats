@@ -1,19 +1,35 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+
+import { useNavigate } from "react-router-dom";
+import { connect } from "react-redux";
+import { getForms } from "../../redux/actions/form-action";
+import { useAuth0 } from "@auth0/auth0-react";
 
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import { useNavigate } from "react-router-dom";
 
-const Forms = () => {
-  const [forms, setForms] = useState([]);
+const Forms = ({ getForms, forms }) => {
+  const { user, getAccessTokenSilently } = useAuth0();
+  const { sub } = user;
+
+  // const [forms, setForms] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      const token = await getAccessTokenSilently();
+      await getForms({ token, sub });
+
+      console.log(forms);
+    })();
+  }, []);
 
   const navigate = useNavigate();
 
   const newForm = () => {
-    navigate('/form-builder');
+    navigate("/form-builder");
   };
 
   return (
@@ -34,4 +50,8 @@ const Forms = () => {
   );
 };
 
-export default Forms;
+const mapStateToProps = (state) => ({
+  forms: state.forms,
+});
+
+export default connect(mapStateToProps, { getForms })(Forms);
