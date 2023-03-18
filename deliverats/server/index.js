@@ -4,6 +4,8 @@ import cors from "cors";
 import { sequelize } from "./datasource.js";
 import { formsRouter } from "./routers/forms_router.js";
 import { emailRouter } from "./routers/email_router.js";
+import { sendSms } from "./utils/sms.js";
+
 import * as Sentry from "@sentry/node";
 import * as Tracing from "@sentry/tracing";
 
