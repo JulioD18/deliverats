@@ -51,7 +51,7 @@ const Forms = ({ getForms, forms }) => {
 };
 
 const mapStateToProps = (state) => ({
-  forms: state.forms,
+  forms: state.form.forms,
 });
 
 export default connect(mapStateToProps, { getForms })(Forms);

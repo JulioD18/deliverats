@@ -1,7 +1,10 @@
 import { GET_FORMS, POST_FORMS } from "./actions.js";
+import store from "../store.js";
+
+const dispatch = store.dispatch;
 
 export const getForms = ({ token, sub }) => {
-  return async (dispatch) => {
+  return async () => {
     try {
       const res = await fetch(`http://localhost:3001/api/forms?owner=${sub}`, {
         method: "GET",
@@ -10,11 +13,10 @@ export const getForms = ({ token, sub }) => {
           Authorization: `Bearer ${token}`,
         },
       });
+
+
       const data = await res.json();
-      if (data.statusCode === 200) {
-        dispatch({ type: GET_FORMS, payload: data });
-      }
-      return data;
+      return dispatch({ type: GET_FORMS, payload: data });
     } catch (error) {
       console.log(error);
     }
@@ -22,8 +24,7 @@ export const getForms = ({ token, sub }) => {
 };
 
 export const postForms = ({ user, token, form }) => {
-  console.log(token);
-  return async (dispatch) => {
+  return async () => {
     try {
       const response = await fetch("http://localhost:3001/api/forms", {
         method: "POST",
@@ -34,11 +35,7 @@ export const postForms = ({ user, token, form }) => {
         body: JSON.stringify(form),
       });
       const data = await response.json();
-
-      if (data.statusCode === 200) {
-        dispatch({ type: POST_FORMS, payload: data });
-      }
-      return data;
+      return dispatch({ type: POST_FORMS, payload: data });
     } catch (error) {
       console.log(error);
     }
