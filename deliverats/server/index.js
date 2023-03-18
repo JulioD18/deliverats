@@ -3,7 +3,7 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import { sequelize } from "./datasource.js";
 import { formsRouter } from "./routers/forms_router.js";
-import { sendEmail } from "./utils/send-grid.js";
+import { emailRouter } from "./routers/email_router.js";
 import * as Sentry from "@sentry/node";
 import * as Tracing from "@sentry/tracing";
 
@@ -51,6 +51,7 @@ app.use(function (req, res, next) {
 });
 
 app.use("/api/forms", formsRouter);
+app.use("/api/email", emailRouter);
 
 // The error handler must be before any other error middleware and after all controllers
 app.use(Sentry.Handlers.errorHandler());

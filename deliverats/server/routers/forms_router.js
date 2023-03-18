@@ -31,7 +31,6 @@ formsRouter.post("/", checkJwt, async function (req, res, next) {
   const categories = req.body.categories;
   const items = req.body.items;
   const options = req.body.options;
-
   const owner = req.auth.sub;
 
   // Validate form

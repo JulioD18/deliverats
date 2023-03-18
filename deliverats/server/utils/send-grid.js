@@ -14,5 +14,9 @@ export const sendEmail = async ({ email, subject, content }) => {
     text: content,
   };
 
-  await sgMail.send(msg);
+  const mail = await sgMail.send(msg);
+
+  if (mail.statusCode === 202) {
+    return res.json({ message: "Email confirmation successfully" });
+  }
 };
