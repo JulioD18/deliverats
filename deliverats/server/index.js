@@ -58,7 +58,6 @@ app.use("/api/forms", formsRouter);
 app.use("/api/email", emailRouter);
 app.use("/api/sms", smsRouter);
 
-
 // The error handler must be before any other error middleware and after all controllers
 app.use(Sentry.Handlers.errorHandler());
 

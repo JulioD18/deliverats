@@ -33,5 +33,5 @@ export const Form = sequelize.define("Form", {
   owner: {
     type: DataTypes.STRING,
     allowNull: false,
-  }
+  },
 });

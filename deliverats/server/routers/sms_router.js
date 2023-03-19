@@ -6,7 +6,7 @@ export const smsRouter = Router();
  * Works with webhooks to be informed whem a message is send, delievered and undeliered
  * As such, it can inform the user via the UI the current status of the message
  */
-smsRouter.post("/events", async(req, res) => {
+smsRouter.post("/events", async (req, res) => {
   const messageSid = req.body.MessageSid;
   const messageStatus = req.body.MessageStatus;
 
@@ -18,15 +18,14 @@ smsRouter.post("/events", async(req, res) => {
    *    delivered
    * */
   if (messageStatus === "failed") {
-    console.log("failed message!!")
-  } else if(messageStatus === "undelivered") {
-    console.log("undelivered message!!")
+    console.log("failed message!!");
+  } else if (messageStatus === "undelivered") {
+    console.log("undelivered message!!");
   } else if (messageStatus === "sent") {
-    console.log("sent message!!")
+    console.log("sent message!!");
   } else if (messageStatus === "delivered") {
-    console.log("delivered message!!")
+    console.log("delivered message!!");
   }
 
   return res.json({ messageSid, messageStatus });
-})
-
+});

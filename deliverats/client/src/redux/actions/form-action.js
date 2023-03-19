@@ -14,7 +14,6 @@ export const getForms = ({ token, sub }) => {
         },
       });
 
-
       const data = await res.json();
       return dispatch({ type: GET_FORMS, payload: data });
     } catch (error) {
