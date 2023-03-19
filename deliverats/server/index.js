@@ -4,6 +4,8 @@ import cors from "cors";
 import { sequelize } from "./datasource.js";
 import { formsRouter } from "./routers/forms_router.js";
 import { emailRouter } from "./routers/email_router.js";
+import { smsRouter } from "./routers/sms_router.js";
+
 import { sendSms } from "./utils/sms.js";
 
 import * as Sentry from "@sentry/node";
@@ -54,6 +56,8 @@ app.use(function (req, res, next) {
 
 app.use("/api/forms", formsRouter);
 app.use("/api/email", emailRouter);
+app.use("/api/sms", smsRouter);
+
 
 // The error handler must be before any other error middleware and after all controllers
 app.use(Sentry.Handlers.errorHandler());

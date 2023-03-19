@@ -12,6 +12,7 @@ export const sendSms = async ({ to, body }) => {
   return await client.messages.create({
     body: body,
     from: "+15075545152",
+    statusCallback: process.env.TWILIO_CALLBACK_URL,
     to: to,
   });
 };
