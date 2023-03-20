@@ -11,7 +11,7 @@ import Grid from "@mui/material/Grid";
 import Home from "./components/home.js";
 import NavBar from "./components/navbar.js";
 import FormBuilder from "./components/form-builder/form-builder.js";
-import Forms from "./components/forms/forms.js";
+import MyForms from "./components/my-forms/my-forms.js";
 
 import * as Sentry from "@sentry/react";
 import { BrowserTracing } from "@sentry/tracing";
@@ -36,7 +36,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route
             path="/my-forms"
-            element={<AuthenticationGuard component={Forms} />}
+            element={<AuthenticationGuard component={MyForms} />}
           />
           <Route
             path="/form-builder"

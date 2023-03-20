@@ -26,17 +26,14 @@ const Share = ({ form, postForms }) => {
         const res = await postForms({ user, token, form });
         const returnLink = `http://localhost:3000/forms/${res.payload.id}`;
         setLink(
-          <Grid container spacing={3} style={{ justifyContent: 'center' }}>
+          <Grid container spacing={3} style={{ justifyContent: "center" }}>
             <Grid item>
               <Typography variant="h6" gutterBottom>
                 <Link to={returnLink}>{returnLink}</Link>
               </Typography>
             </Grid>
             <Grid item>
-              <QRCode
-                style={{ width: "100%" }}
-                value={returnLink}
-              />
+              <QRCode style={{ width: "100%" }} value={returnLink} />
             </Grid>
           </Grid>
         );

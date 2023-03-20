@@ -3,16 +3,19 @@ import store from "../store.js";
 
 const dispatch = store.dispatch;
 
-export const getForms = ({ token, sub }) => {
+export const getForms = ({ token, sub, offset, limit }) => {
   return async () => {
     try {
-      const res = await fetch(`http://localhost:3001/api/forms?owner=${sub}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res = await fetch(
+        `http://localhost:3001/api/forms?owner=${sub}&offset=${offset}&limit=${limit}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       const data = await res.json();
       return dispatch({ type: GET_FORMS, payload: data });
