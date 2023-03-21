@@ -74,7 +74,7 @@ formsRouter.get("/", checkJwt, async function (req, res, next) {
   return res.json({ forms, count });
 });
 
-formsRouter.get("/:id", checkJwt, async (req, res) => {
+formsRouter.get("/:id", async (req, res) => {
   // Retrieve parameters
   const formId = req.params.id;
 

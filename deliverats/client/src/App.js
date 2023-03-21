@@ -12,6 +12,7 @@ import Home from "./components/home.js";
 import NavBar from "./components/navbar.js";
 import FormBuilder from "./components/form-builder/form-builder.js";
 import MyForms from "./components/my-forms/my-forms.js";
+import Form from "./components/form/form.js";
 
 import * as Sentry from "@sentry/react";
 import { BrowserTracing } from "@sentry/tracing";
@@ -34,6 +35,7 @@ function App() {
       <Grid container>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/forms/:formId" element={<Form />} />
           <Route
             path="/my-forms"
             element={<AuthenticationGuard component={MyForms} />}

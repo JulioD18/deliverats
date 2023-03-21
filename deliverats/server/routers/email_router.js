@@ -3,7 +3,7 @@ import { Router } from "express";
 export const emailRouter = Router();
 
 /**
- * Works with webhooks to be informed when an email is delievered and failed to be sent
+ * Works with webhooks to be informed when an email is delivered and failed to be sent
  * As such, it can inform the user via the UI the current status of the email
  */
 emailRouter.post("/events", async (req, res) => {

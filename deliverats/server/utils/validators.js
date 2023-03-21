@@ -75,7 +75,7 @@ export function validateForm(form) {
       !option.price ||
       option.price === "" ||
       isNaN(parseFloat(option.price)) ||
-      parseFloat(option.price) <= 0
+      parseFloat(option.price) < 0
     ) {
       return "Option '" + option.name + "' has an invalid price";
     }
