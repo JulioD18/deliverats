@@ -24,7 +24,8 @@ export default function MenuOption({
                   optionSelect(option, item.name, e.target.checked)
                 }
                 checked={
-                  formValues.items[item.name]?.options[option.name] !== undefined
+                  formValues.items[item.name]?.options[option.name] !==
+                  undefined
                 }
               />
             }

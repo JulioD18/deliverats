@@ -24,15 +24,24 @@ const Form = ({ getForm }) => {
   const { formId } = useParams();
   const [form, setForm] = useState();
   const [activeStep, setActiveStep] = useState(0);
+  const [error, setError] = useState();
+  const [attempt, setAttempt] = useState(false);
   const [formValues, setFormValues] = useState({
-    client: {},
+    client: {
+      name: "",
+      lastName: "",
+      phone: "",
+      email: "",
+      address: "",
+      address2: "",
+    },
     items: {},
     total: 0,
   });
 
   const [menu, setMenu] = useState(
     <React.Fragment>
-      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
         <CircularProgress />
       </Box>
     </React.Fragment>
@@ -43,7 +52,14 @@ const Form = ({ getForm }) => {
       case 0:
         return menu;
       case 1:
-        return <ClientDetails formValues={formValues} setFormValues={setFormValues} />;
+        return (
+          <ClientDetails
+            formValues={formValues}
+            setFormValues={setFormValues}
+            setError={setError}
+            attempt={attempt}
+          />
+        );
       default:
         return <OrderSummary formValues={formValues} />;
     }
@@ -67,8 +83,17 @@ const Form = ({ getForm }) => {
   }
 
   const handleNext = () => {
-    setActiveStep(activeStep + 1);
-    if (activeStep === steps.length - 1) placeOrder();
+    if (error !== undefined) {
+      setAttempt(true);
+    } else if (formValues.total <= 0) {
+      setError("Please select at least one item");
+      setAttempt(true);
+    } else {
+      setAttempt(false);
+      setError(undefined);
+      setActiveStep(activeStep + 1);
+      if (activeStep === steps.length - 1) placeOrder();
+    }
   };
 
   useEffect(() => {
@@ -86,6 +111,7 @@ const Form = ({ getForm }) => {
           form={form}
           formValues={formValues}
           setFormValues={setFormValues}
+          setError={setError}
         />
       );
     }
@@ -98,7 +124,7 @@ const Form = ({ getForm }) => {
         sx={{ p: { xs: 2, md: 3 }, backgroundColor: "#f0f0f0" }}
       >
         <Typography component="h1" variant="h4" align="center" my={2}>
-          {form?.name ?? 'Loading Form...'}
+          {form?.name ?? "Loading Form..."}
         </Typography>
         <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
           {steps.map((label) => (
@@ -108,6 +134,11 @@ const Form = ({ getForm }) => {
           ))}
         </Stepper>
         <React.Fragment>
+          {error && attempt && (
+            <Typography sx={{ color: "red", textAlign: "center" }}>
+              {error}
+            </Typography>
+          )}
           {getStepContent(activeStep)}
           {activeStep < steps.length && (
             <Box sx={{ display: "flex", justifyContent: "flex-end" }}>

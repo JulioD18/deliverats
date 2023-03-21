@@ -6,9 +6,5 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
 
 export default function OrderSummary() {
-  return (
-    <React.Fragment>
-      
-    </React.Fragment>
-  );
+  return <React.Fragment></React.Fragment>;
 }

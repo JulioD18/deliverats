@@ -7,6 +7,7 @@ export default function MenuCategory({
   setFormValues,
   items,
   formatter,
+  setError,
 }) {
   useEffect(() => {}, [formValues]);
 
@@ -23,8 +24,27 @@ export default function MenuCategory({
       newFormValues.items[item.name] = newItem;
     }
     newFormValues.items[item.name].quantity += change;
-    if (newFormValues.items[item.name].quantity <= 0) delete newFormValues.items[item.name];
+    if (newFormValues.items[item.name].quantity <= 0)
+      delete newFormValues.items[item.name];
+    newFormValues.total = calculateTotal(newFormValues.items);
+    setError(undefined);
     setFormValues(newFormValues);
+  }
+
+  /**
+   * Returns the total price of the order
+   * @param {Object[]} items
+   * @returns The total price of the order
+   */
+  function calculateTotal(items) {
+    let total = 0;
+    for (let item in items) {
+      total += items[item].price * items[item].quantity;
+      for (let option in items[item].options) {
+        total += items[item].options[option].price * items[item].quantity;
+      }
+    }
+    return total;
   }
 
   /**
@@ -41,6 +61,7 @@ export default function MenuCategory({
     } else {
       delete newFormValues.items[itemName].options[option.name];
     }
+    newFormValues.total = calculateTotal(newFormValues.items);
     setFormValues(newFormValues);
   }
 

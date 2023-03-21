@@ -6,9 +6,11 @@ import Box from "@mui/material/Box";
 import Tooltip from "@mui/material/Tooltip";
 import InfoIcon from "@mui/icons-material/Info";
 
-export default function ClientDetails({
+export default function Details({
   formValues,
-  setFormValues
+  setFormValues,
+  attempt,
+  setError,
 }) {
   /**
    * Handles the change of an input field
@@ -16,9 +18,26 @@ export default function ClientDetails({
    */
   function handleChange(e) {
     const values = { ...formValues };
-    values[e.target.name] = e.target.value;
+    values.client[e.target.name] = e.target.value;
     setFormValues(values);
   }
+
+  useEffect(() => {
+    const validateFields = () => {
+      if (
+        formValues.client.name !== "" &&
+        formValues.client.lastName !== "" &&
+        formValues.client.phone !== "" &&
+        formValues.client.email !== "" &&
+        formValues.client.address !== ""
+      ) {
+        setError(undefined);
+      } else {
+        setError('Please fill all the required fields');
+      }
+    };
+    validateFields(formValues);
+  }, [formValues, setError]);
 
   return (
     <React.Fragment>
@@ -35,30 +54,68 @@ export default function ClientDetails({
             variant="standard"
             onChange={(e) => handleChange(e)}
             value={formValues.client.name ?? ""}
+            error={attempt && formValues.client.name === ""}
+            helperText={
+              attempt && formValues.client.name === "" ? "Required" : ""
+            }
           />
         </Grid>
         <Grid item xs={12} md={6}>
           <TextField
             required
             name="lastName"
-            label="Las Name"
+            label="Last name"
             fullWidth
             variant="standard"
             onChange={(e) => handleChange(e)}
             value={formValues.client.lastName ?? ""}
+            error={attempt && formValues.client.lastName === ""}
+            helperText={
+              attempt && formValues.client.lastName === "" ? "Required" : ""
+            }
+          />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <TextField
+            required
+            name="address"
+            label="Address"
+            fullWidth
+            variant="standard"
+            onChange={(e) => handleChange(e)}
+            value={formValues.client.address ?? ""}
+            error={attempt && formValues.client.address === ""}
+            helperText={
+              attempt && formValues.client.address === "" ? "Required" : ""
+            }
+          />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <TextField
+            name="address2"
+            label="Address Line 2"
+            fullWidth
+            variant="standard"
+            onChange={(e) => handleChange(e)}
+            value={formValues.client.address2 ?? ""}
           />
         </Grid>
         <Grid item xs={12} md={6}>
           <Box sx={{ display: "flex", alignItems: "flex-end" }}>
             <TextField
+              required
               name="email"
               label="Email"
               fullWidth
               variant="standard"
               onChange={(e) => handleChange(e)}
-              value={formValues.email ?? ""}
+              value={formValues.client.email ?? ""}
+              error={attempt && formValues.client.email === ""}
+              helperText={
+                attempt && formValues.client.email === "" ? "Required" : ""
+              }
             />
-            <Tooltip title="This email will receive notifications when clients complete the form.">
+            <Tooltip title="This email will receive delivery notifications.">
               <InfoIcon
                 fontSize="small"
                 sx={{ color: "action.active", ml: 0.5, my: 0.5 }}
@@ -69,15 +126,20 @@ export default function ClientDetails({
         <Grid item xs={12} md={6}>
           <Box sx={{ display: "flex", alignItems: "flex-end" }}>
             <TextField
+              required
               name="phone"
               label="Phone"
               type="number"
               fullWidth
               variant="standard"
               onChange={(e) => handleChange(e)}
-              value={formValues.phone ?? ""}
+              value={formValues.client.phone ?? ""}
+              error={attempt && formValues.client.phone === ""}
+              helperText={
+                attempt && formValues.client.phone === "" ? "Required" : ""
+              }
             />
-            <Tooltip title="This phone will receive SMS notifications when clients complete the form.">
+            <Tooltip title="This phone will receive delivery notifications via SMS.">
               <InfoIcon
                 fontSize="small"
                 sx={{ color: "action.active", ml: 0.5, my: 0.5 }}

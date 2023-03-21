@@ -7,7 +7,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-export default function Menu({ form, formValues, setFormValues }) {
+export default function Menu({ form, formValues, setFormValues, setError }) {
   const menu = buildMenu(form);
 
   /**
@@ -62,10 +62,14 @@ export default function Menu({ form, formValues, setFormValues }) {
               setFormValues={setFormValues}
               items={menu[category]}
               formatter={formatter}
+              setError={setError}
             />
           </AccordionDetails>
         </Accordion>
       ))}
+      <Typography component="p" mt={2}>
+        Total: {formatter.format(formValues.total)}
+      </Typography>
     </React.Fragment>
   );
 }
