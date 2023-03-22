@@ -27,7 +27,7 @@ formsRouter.post("/", checkJwt, async function (req, res, next) {
   const description = req.body.description;
   const email = req.body.email;
   const phone = req.body.phone;
-  const categories = req.body.categories;
+  let categories = req.body.categories;
   const items = req.body.items;
   const options = req.body.options;
   const owner = req.auth.sub;
@@ -35,6 +35,9 @@ formsRouter.post("/", checkJwt, async function (req, res, next) {
   // Validate form
   const formError = validateForm(req.body);
   if (formError) return apiError(res, 400, formError);
+
+  // Remove unnecessary categories
+  categories = [...new Set(items.map((item) => item.category))]
 
   // Create form
   const form = await Form.create({

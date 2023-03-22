@@ -76,7 +76,7 @@ const FormBuilder = () => {
     }
   }
 
-  const handleNext = () => {
+  function handleNext() {
     if (error) {
       setAttempt(true);
     } else {
@@ -84,13 +84,17 @@ const FormBuilder = () => {
       setError(true);
       setActiveStep(activeStep + 1);
     }
-  };
+  }
+
+  function handleBack() {
+    if (activeStep === 0) {
+      navigate("/my-forms");
+    } else {
+      setActiveStep(activeStep - 1);
+    }
+  }
 
   const navigate = useNavigate();
-
-  const cancel = () => {
-    navigate("/my-forms");
-  };
 
   return (
     <Container component="main" sx={{ my: 4 }}>
@@ -116,8 +120,8 @@ const FormBuilder = () => {
               my={5}
               mx="auto"
             >
-              <Button variant="contained" onClick={cancel}>
-                Cancel
+              <Button variant="contained" onClick={handleBack}>
+                {activeStep === 0 ? "Cancel" : "Back"}
               </Button>
               <Button variant="contained" onClick={handleNext}>
                 {activeStep === steps.length - 1 ? "Create form" : "Next"}

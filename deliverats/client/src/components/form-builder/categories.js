@@ -50,10 +50,12 @@ export default function Categories({
             options={exampleCategories}
             freeSolo
             limitTags={3}
+            value={formValues.categories}
             renderTags={(value, getTagProps) =>
               value.map((option, index) => (
                 <Chip
                   variant="outlined"
+                  size="small"
                   label={option}
                   {...getTagProps({ index })}
                 />

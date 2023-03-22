@@ -71,6 +71,17 @@ export default function Options({
     validateFields(formValues);
   }, [formValues, setError]);
 
+  // Solve deleted item issues (in case user went back and deleted an item)
+  for (let option of formValues.options) {
+    if (option.items === undefined || option.items.length === 0) continue;
+    let index = 0;
+    for (let optionItem of option.items) {
+      if (formValues.items.filter((item) => optionItem === item.name).length === 0)
+        option.items.splice(index, 1);
+      index++;
+    }
+  }
+
   return (
     <React.Fragment>
       <Box sx={{ display: "flex", alignItems: "center" }} mb={4}>

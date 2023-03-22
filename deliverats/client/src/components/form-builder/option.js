@@ -60,11 +60,13 @@ export default function Option({
           <Autocomplete
             multiple
             options={items.map((item) => item.name)}
+            value={element.items ?? []}
             limitTags={1}
             renderTags={(value, getTagProps) =>
               value.map((option, index) => (
                 <Chip
                   variant="outlined"
+                  size="small"
                   label={option}
                   {...getTagProps({ index })}
                 />

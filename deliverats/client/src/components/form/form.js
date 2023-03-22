@@ -89,7 +89,7 @@ const Form = ({ getForm }) => {
     console.log(values);
   }
 
-  const handleNext = () => {
+  function handleNext() {
     if (error !== undefined) {
       setAttempt(true);
     } else if (formValues.total <= 0) {
@@ -101,6 +101,12 @@ const Form = ({ getForm }) => {
       setActiveStep(activeStep + 1);
       if (activeStep === steps.length - 1) placeOrder();
     }
+  };
+
+  function handleBack() {
+    setAttempt(false);
+    setError(undefined);
+    setActiveStep(activeStep - 1);
   };
 
   useEffect(() => {
@@ -151,12 +157,15 @@ const Form = ({ getForm }) => {
           )}
           {getStepContent(activeStep)}
           {activeStep < steps.length && (
-            <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-              <Button
-                variant="contained"
-                onClick={handleNext}
-                sx={{ mt: 3, ml: 1 }}
-              >
+            <Box
+              sx={{ display: "flex", justifyContent: activeStep > 0 ? "space-between" : "flex-end" }}
+              my={5}
+              mx="auto"
+            >
+              {activeStep > 0 && <Button variant="contained" onClick={handleBack}>
+                Back
+              </Button>}
+              <Button variant="contained" onClick={handleNext}>
                 {activeStep === steps.length - 1 ? "Place Order" : "Next"}
               </Button>
             </Box>

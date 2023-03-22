@@ -74,6 +74,11 @@ export default function Items({
     validateFields(formValues);
   }, [formValues, setError]);
 
+  // Solve deleted category issues (in case user went back and deleted a category)
+  for (let item of formValues.items) {
+    if (!formValues.categories.includes(item.category)) delete item.category;
+  }
+
   return (
     <React.Fragment>
       <Box sx={{ display: "flex", alignItems: "center" }} mb={4}>
