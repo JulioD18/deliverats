@@ -8,6 +8,7 @@ import Menu from "./menu";
 import ClientDetails from "./client-details";
 import OrderSummary from "./order-summary";
 
+import { useTheme } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
@@ -39,6 +40,8 @@ const Form = ({ getForm }) => {
     total: 0,
   });
 
+  const theme = useTheme();
+
   const [menu, setMenu] = useState(
     <React.Fragment>
       <Box sx={{ display: "flex", justifyContent: "center" }}>
@@ -61,7 +64,7 @@ const Form = ({ getForm }) => {
           />
         );
       default:
-        return <OrderSummary formValues={formValues} />;
+        return <OrderSummary values={formatValues()} />;
     }
   }
 
@@ -71,13 +74,17 @@ const Form = ({ getForm }) => {
     return values;
   }
 
-  function placeOrder() {
-    // Format object
+  function formatValues() {
     const values = JSON.parse(JSON.stringify(formValues));
     values.items = getValues(values.items);
     for (let item of values.items) {
       item.options = getValues(item.options);
     }
+    return values;
+  }
+
+  function placeOrder() {
+    const values = formatValues();
     // Send to server
     console.log(values);
   }
@@ -118,10 +125,10 @@ const Form = ({ getForm }) => {
   }, [formValues, form]);
 
   return (
-    <Container component="main" sx={{ mt: 4, mb: 2 }}>
+    <Container component="main" sx={{ my: 4 }}>
       <Paper
         variant="outlined"
-        sx={{ p: { xs: 2, md: 3 }, backgroundColor: "#f0f0f0" }}
+        sx={{ p: { xs: 2, md: 3 }, backgroundColor: theme.palette.tertiary.main }}
       >
         <Typography component="h1" variant="h4" align="center" my={2}>
           {form?.name ?? "Loading Form..."}

@@ -33,7 +33,7 @@ export default function Details({
       ) {
         setError(undefined);
       } else {
-        setError('Please fill all the required fields');
+        setError("Please fill all the required fields");
       }
     };
     validateFields(formValues);
@@ -41,8 +41,8 @@ export default function Details({
 
   return (
     <React.Fragment>
-      <Typography variant="h6" gutterBottom>
-        Form details
+      <Typography variant="h5" mb={4}>
+        Client details
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>

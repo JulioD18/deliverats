@@ -45,14 +45,26 @@ export default function Menu({ form, formValues, setFormValues, setError }) {
 
   return (
     <React.Fragment>
-      <Typography component="p" mb={4}>
-        {form.description}
-      </Typography>
-      <Typography component="h5" variant="h5" mb={4}>
+      <Typography variant="h5" mb={5}>
         Select your items:
       </Typography>
-      {form.categories.map((category) => (
-        <Accordion color="primary" key={category}>
+      {form.categories.map((category, i) => (
+        <Accordion
+          color="primary"
+          key={category}
+          sx={
+            i === 0
+              ? {
+                  borderRadius: "15px 15px 0 0",
+                  "&:before": {
+                    display: "none",
+                  },
+                }
+              : i === form.categories.length - 1
+              ? { borderRadius: "0 0 15px 15px" }
+              : {}
+          }
+        >
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Typography>{category}</Typography>
           </AccordionSummary>
@@ -67,7 +79,7 @@ export default function Menu({ form, formValues, setFormValues, setError }) {
           </AccordionDetails>
         </Accordion>
       ))}
-      <Typography component="p" mt={2}>
+      <Typography component="p" mt={3}>
         Total: {formatter.format(formValues.total)}
       </Typography>
     </React.Fragment>
