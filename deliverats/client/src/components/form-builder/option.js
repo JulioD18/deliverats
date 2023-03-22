@@ -92,7 +92,7 @@ export default function Option({
           />
         </Grid>
         <Grid item xs={12} md={4}>
-          <FormControl variant="standard" required sx={{ width: "100%" }}>
+          <FormControl variant="standard" required fullWidth>
             <InputLabel
               htmlFor="price"
               style={

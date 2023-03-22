@@ -32,7 +32,7 @@ const Share = ({ form, postForms }) => {
             style={{ alignItems: "center", flexDirection: "column" }}
           >
             <Grid item>
-              <QRCode style={{ width: "100%" }} value={returnLink} />
+              <QRCode fullWidth value={returnLink} />
             </Grid>
             <Grid item>
               <Typography variant="h6" mb={2}>

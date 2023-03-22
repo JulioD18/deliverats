@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
@@ -6,19 +6,33 @@ import Box from "@mui/material/Box";
 import Tooltip from "@mui/material/Tooltip";
 import InfoIcon from "@mui/icons-material/Info";
 
+import MapsAutocomplete from "./maps-autocomplete.js";
+
 export default function Details({
   formValues,
   setFormValues,
   attempt,
   setError,
 }) {
+  const [address, setAddress] = useState(formValues.client.address);
+
+  /**
+   * Handles the change of the address
+   * @param {string} value The value of the address
+   */
+  function setAddressField(value) {
+    setAddress(value);
+    handleChange("address", value);
+  }
+
   /**
    * Handles the change of an input field
-   * @param {*} e The event object
+   * @param {string} name The name of the field
+   * @param {*} value The value of the field
    */
-  function handleChange(e) {
+  function handleChange(name, value) {
     const values = { ...formValues };
-    values.client[e.target.name] = e.target.value;
+    values.client[name] = value;
     setFormValues(values);
   }
 
@@ -29,7 +43,7 @@ export default function Details({
         formValues.client.lastName !== "" &&
         formValues.client.phone !== "" &&
         formValues.client.email !== "" &&
-        formValues.client.address !== ""
+        formValues.client.address !== null
       ) {
         setError(undefined);
       } else {
@@ -52,7 +66,7 @@ export default function Details({
             label="Name"
             fullWidth
             variant="standard"
-            onChange={(e) => handleChange(e)}
+            onChange={(e) => handleChange(e.target.name, e.target.value)}
             value={formValues.client.name ?? ""}
             error={attempt && formValues.client.name === ""}
             helperText={
@@ -67,7 +81,7 @@ export default function Details({
             label="Last name"
             fullWidth
             variant="standard"
-            onChange={(e) => handleChange(e)}
+            onChange={(e) => handleChange(e.target.name, e.target.value)}
             value={formValues.client.lastName ?? ""}
             error={attempt && formValues.client.lastName === ""}
             helperText={
@@ -76,27 +90,19 @@ export default function Details({
           />
         </Grid>
         <Grid item xs={12} md={6}>
-          <TextField
-            required
-            name="address"
-            label="Address"
-            fullWidth
-            variant="standard"
-            onChange={(e) => handleChange(e)}
-            value={formValues.client.address ?? ""}
-            error={attempt && formValues.client.address === ""}
-            helperText={
-              attempt && formValues.client.address === "" ? "Required" : ""
-            }
+          <MapsAutocomplete
+            value={address}
+            setValue={setAddressField}
+            attempt={attempt}
           />
         </Grid>
         <Grid item xs={12} md={6}>
           <TextField
             name="address2"
-            label="Address Line 2"
+            label="Suite #"
             fullWidth
             variant="standard"
-            onChange={(e) => handleChange(e)}
+            onChange={(e) => handleChange(e.target.name, e.target.value)}
             value={formValues.client.address2 ?? ""}
           />
         </Grid>
@@ -108,7 +114,7 @@ export default function Details({
               label="Email"
               fullWidth
               variant="standard"
-              onChange={(e) => handleChange(e)}
+              onChange={(e) => handleChange(e.target.name, e.target.value)}
               value={formValues.client.email ?? ""}
               error={attempt && formValues.client.email === ""}
               helperText={
@@ -132,7 +138,7 @@ export default function Details({
               type="number"
               fullWidth
               variant="standard"
-              onChange={(e) => handleChange(e)}
+              onChange={(e) => handleChange(e.target.name, e.target.value)}
               value={formValues.client.phone ?? ""}
               error={attempt && formValues.client.phone === ""}
               helperText={

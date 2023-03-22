@@ -35,7 +35,7 @@ export default function OrderSummary({ values }) {
                 secondary={formatter.format(item.price * item.quantity)}
               />
             </ListItem>
-            <List dense sx={{ marginLeft: "55px" }}>
+            {item.options.length > 0 && <List dense sx={{ marginLeft: "55px" }}>
               {item.options.map((option) => (
                 <ListItem key={option.name}>
                   <ListItemAvatar>
@@ -49,10 +49,13 @@ export default function OrderSummary({ values }) {
                   />
                 </ListItem>
               ))}
-            </List>
+            </List>}
           </Box>
         ))}
       </List>
+      <Typography component="p" mt={2}>
+        Total: {formatter.format(values.total)}
+      </Typography>
     </React.Fragment>
   );
 }

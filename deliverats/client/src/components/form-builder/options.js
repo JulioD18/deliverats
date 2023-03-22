@@ -76,7 +76,9 @@ export default function Options({
     if (option.items === undefined || option.items.length === 0) continue;
     let index = 0;
     for (let optionItem of option.items) {
-      if (formValues.items.filter((item) => optionItem === item.name).length === 0)
+      if (
+        formValues.items.filter((item) => optionItem === item.name).length === 0
+      )
         option.items.splice(index, 1);
       index++;
     }

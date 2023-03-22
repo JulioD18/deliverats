@@ -17,7 +17,11 @@ export default function MenuOption({
       <Grid container key={option.name}>
         <FormControlLabel
           disabled={formValues.items[item.name] === undefined}
-          sx={formValues.items[item.name] === undefined ? { color: 'action.active' } : {}}
+          sx={
+            formValues.items[item.name] === undefined
+              ? { color: "action.active" }
+              : {}
+          }
           label={
             <Typography sx={{ fontSize: ".9em" }}>
               {option.name + " (+" + formatter.format(option.price) + ")"}

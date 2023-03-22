@@ -37,7 +37,7 @@ formsRouter.post("/", checkJwt, async function (req, res, next) {
   if (formError) return apiError(res, 400, formError);
 
   // Remove unnecessary categories
-  categories = [...new Set(items.map((item) => item.category))]
+  categories = [...new Set(items.map((item) => item.category))];
 
   // Create form
   const form = await Form.create({

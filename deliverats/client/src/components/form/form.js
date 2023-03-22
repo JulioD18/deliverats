@@ -33,7 +33,7 @@ const Form = ({ getForm }) => {
       lastName: "",
       phone: "",
       email: "",
-      address: "",
+      address: null,
       address2: "",
     },
     items: {},
@@ -101,13 +101,13 @@ const Form = ({ getForm }) => {
       setActiveStep(activeStep + 1);
       if (activeStep === steps.length - 1) placeOrder();
     }
-  };
+  }
 
   function handleBack() {
     setAttempt(false);
     setError(undefined);
     setActiveStep(activeStep - 1);
-  };
+  }
 
   useEffect(() => {
     (async () => {
@@ -150,21 +150,26 @@ const Form = ({ getForm }) => {
           ))}
         </Stepper>
         <React.Fragment>
+          {getStepContent(activeStep)}
           {error && attempt && (
-            <Typography sx={{ color: "red", textAlign: "center" }}>
+            <Typography sx={{ color: "red", textAlign: "center" }} mt={2.5}>
               {error}
             </Typography>
           )}
-          {getStepContent(activeStep)}
           {activeStep < steps.length && (
             <Box
-              sx={{ display: "flex", justifyContent: activeStep > 0 ? "space-between" : "flex-end" }}
-              my={5}
+              sx={{
+                display: "flex",
+                justifyContent: activeStep > 0 ? "space-between" : "flex-end",
+              }}
+              mt={5}
               mx="auto"
             >
-              {activeStep > 0 && <Button variant="contained" onClick={handleBack}>
-                Back
-              </Button>}
+              {activeStep > 0 && (
+                <Button variant="contained" onClick={handleBack}>
+                  Back
+                </Button>
+              )}
               <Button variant="contained" onClick={handleNext}>
                 {activeStep === steps.length - 1 ? "Place Order" : "Next"}
               </Button>

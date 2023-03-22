@@ -58,11 +58,7 @@ export default function Item({
           />
         </Grid>
         <Grid item xs={12} md={6}>
-          <FormControl
-            variant="standard"
-            sx={{ minWidth: "100%", maxWidth: "100%" }}
-            required
-          >
+          <FormControl variant="standard" fullWidth required>
             <InputLabel
               style={attempt && !element.category ? { color: "#d32f2f" } : {}}
               id="categoryLabel"
@@ -111,7 +107,7 @@ export default function Item({
           />
         </Grid>
         <Grid item xs={12} md={3}>
-          <FormControl variant="standard" required sx={{ width: "100%" }}>
+          <FormControl variant="standard" required fullWidth>
             <InputLabel
               htmlFor="price"
               style={

@@ -55,7 +55,8 @@ export default function Menu({ form, formValues, setFormValues, setError }) {
           sx={
             i === 0
               ? {
-                  borderRadius: "15px 15px 0 0",
+                  borderRadius:
+                    form.categories.length === 1 ? "15px" : "15px 15px 0 0",
                   "&:before": {
                     display: "none",
                   },
