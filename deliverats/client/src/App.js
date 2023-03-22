@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import { AuthenticationGuard } from "./components/auth/auth-guard.js";
-import { greyTheme } from "./components/theme.js";
+import { theme } from "./components/theme.js";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
@@ -27,7 +27,7 @@ Sentry.init({
 
 function App() {
   return (
-    <ThemeProvider theme={greyTheme}>
+    <ThemeProvider theme={theme}>
       <CssBaseline />
       <Grid container mb={8}>
         <NavBar />

@@ -27,9 +27,9 @@ const NavBar = () => {
             <Typography
               as={Link}
               to="/"
-              variant="h6"
               component="div"
-              sx={{ textDecoration: "none", color: "black" }}
+              sx={{ textDecoration: "none" }}
+              color="secondary"
             >
               DELIVERATS
             </Typography>

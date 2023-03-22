@@ -60,8 +60,6 @@ export default function Options({
           option.name === "" ||
           !option.items ||
           option.items.length === 0 ||
-          !option.description ||
-          option.description === "" ||
           !option.price ||
           option.price === ""
         ) {
@@ -75,14 +73,14 @@ export default function Options({
 
   return (
     <React.Fragment>
-      <Box sx={{ display: "flex", alignItems: "center" }} mb={1.5}>
-        <Typography variant="h6">Add options to your menu items</Typography>
+      <Box sx={{ display: "flex", alignItems: "center" }} mb={4}>
+        <Typography variant="h5">Add options to your menu items</Typography>
         <Tooltip title="Here you will add options to your menu items (eg. Add fries (for $1), Remove ingredients (Tomato, Pickles, etc.), Add extra cheese (for $0.50), etc.)">
           <InfoIcon fontSize="small" sx={{ color: "action.active", ml: 0.5 }} />
         </Tooltip>
       </Box>
       {formValues.options.map((element, index) => (
-        <div key={index}>
+        <Box key={index} sx={{ mb: 5 }}>
           <Option
             items={formValues.items}
             element={element}
@@ -91,7 +89,7 @@ export default function Options({
             removeField={removeField}
             attempt={attempt}
           />
-        </div>
+        </Box>
       ))}
       <Grid container spacing={3}>
         <Grid item xs={12} container justifyContent="center">

@@ -13,8 +13,6 @@ export function validateForm(form) {
   // Check that there's a name and description
   if (!form.name || form.name === "") {
     return "Form has no name";
-  } else if (!form.description || form.description === "") {
-    return "Form has no description";
   }
 
   // Check phone validity if it exists
@@ -67,8 +65,6 @@ export function validateForm(form) {
   for (const option of options) {
     if (!option.name || option.name === "") {
       return "An option doesn't have a name";
-    } else if (!option.description || option.description === "") {
-      return "Option '" + option.name + "' has an invalid description";
     } else if (!option.items || option.items.length === 0) {
       return "Option '" + option.name + "' has no items";
     } else if (

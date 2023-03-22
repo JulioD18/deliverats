@@ -26,14 +26,18 @@ const Share = ({ form, postForms }) => {
         const res = await postForms({ user, token, form });
         const returnLink = `http://localhost:3000/forms/${res.payload.id}`;
         setLink(
-          <Grid container spacing={3} style={{ justifyContent: "center" }}>
-            <Grid item>
-              <Typography variant="h6" gutterBottom>
-                <Link to={returnLink}>{returnLink}</Link>
-              </Typography>
-            </Grid>
+          <Grid
+            container
+            spacing={3}
+            style={{ alignItems: "center", flexDirection: "column" }}
+          >
             <Grid item>
               <QRCode style={{ width: "100%" }} value={returnLink} />
+            </Grid>
+            <Grid item>
+              <Typography variant="h6" mb={2}>
+                <Link to={returnLink}>{returnLink}</Link>
+              </Typography>
             </Grid>
           </Grid>
         );
@@ -41,11 +45,11 @@ const Share = ({ form, postForms }) => {
         console.log(error);
       }
     })();
-  }, [form, postForms]);
+  }, [form, getAccessTokenSilently, postForms, user]);
 
   return (
     <Fragment>
-      <Typography variant="h6" gutterBottom>
+      <Typography variant="h5" mb={4}>
         Share the form
       </Typography>
       {link}

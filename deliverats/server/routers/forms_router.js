@@ -16,7 +16,6 @@ formsRouter.post("/", checkJwt, async function (req, res, next) {
   // Validate parameters
   const missingParams = findMissingParams(req, [
     "name",
-    "description",
     "categories",
     "items",
     "options",

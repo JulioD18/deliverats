@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { getForms } from "../../redux/actions/form-action";
 import { useAuth0 } from "@auth0/auth0-react";
 
+import { useTheme } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
@@ -12,6 +13,11 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import CircularProgress from "@mui/material/CircularProgress";
 import Pagination from "@mui/material/Pagination";
+import Fab from "@mui/material/Fab";
+import Avatar from "@mui/material/Avatar";
+import AddIcon from "@mui/icons-material/Add";
+import LocalPizzaIcon from "@mui/icons-material/LocalPizza";
+import SearchOffIcon from '@mui/icons-material/SearchOff';
 
 const formLimit = 8;
 
@@ -19,6 +25,9 @@ const MyForms = ({ getForms }) => {
   const { user, getAccessTokenSilently } = useAuth0();
   const { sub } = user;
   const [offset, setOffset] = useState(0);
+
+  const theme = useTheme();
+  const navigate = useNavigate();
 
   const [formList, setFormList] = useState(
     <Grid
@@ -41,9 +50,13 @@ const MyForms = ({ getForms }) => {
       const res = await getForms({ token, sub, offset, limit: formLimit });
       const pages = Math.ceil(res.payload.count / formLimit);
 
+      const newForm = () => {
+        navigate("/form-builder");
+      };
+
       setFormList(
         <Grid item container spacing={3} mt={2}>
-          {res.payload.forms.map((form) => (
+          {res.payload.forms.length > 0 && res.payload.forms.map((form) => (
             <Grid item key={form.id} style={{ width: "25%" }}>
               <Paper
                 variant="outlined"
@@ -54,11 +67,15 @@ const MyForms = ({ getForms }) => {
                     display: "flex",
                     flexDirection: "column",
                     justifyContent: "space-between",
+                    alignItems: "center",
                     height: "100%",
                   },
                 }}
               >
-                <Typography component="h1" variant="h6" align="center" mb={2}>
+                <Avatar sx={{ bgcolor: theme.palette.primary.main }}>
+                  <LocalPizzaIcon />
+                </Avatar>
+                <Typography component="h6" align="center" my={1.5}>
                   {form.name}
                 </Typography>
                 <Button variant="contained" href={`/forms/${form.id}`}>
@@ -67,7 +84,7 @@ const MyForms = ({ getForms }) => {
               </Paper>
             </Grid>
           ))}
-          <Grid item container sx={{ justifyContent: "center" }}>
+          {res.payload.count > formLimit && <Grid item container sx={{ justifyContent: "center" }}>
             <Pagination
               count={pages}
               sx={{ marginTop: "20px" }}
@@ -76,33 +93,36 @@ const MyForms = ({ getForms }) => {
               showLastButton
               onChange={paginationChange}
             />
-          </Grid>
+          </Grid>}
+          {res.payload.forms.length === 0 && <Grid item container sx={{ justifyContent: "center" }}>
+              <Grid item container sx={{ justifyContent: "center" }}>
+                <SearchOffIcon sx={{ fontSize: 100 }} />
+              </Grid>
+              <Grid item container sx={{ justifyContent: "center" }} mt={2}>
+                <Typography variant="h6" component="h6">
+                  No forms found
+                </Typography>
+              </Grid>
+            <Grid item container sx={{ justifyContent: "center" }} mt={4}>
+              <Button onClick={newForm} variant="contained">Create Form</Button>
+            </Grid>
+            </Grid>}
+          {res.payload.forms.length > 0 && <Fab
+            size="large"
+            onClick={newForm}
+            color="primary"
+            sx={{ position: "fixed", bottom: "40px", right: "40px" }}
+          >
+            <AddIcon />
+          </Fab>}
         </Grid>
       );
     })();
-  }, [getAccessTokenSilently, getForms, offset, sub]);
-
-  const navigate = useNavigate();
-
-  const newForm = () => {
-    navigate("/form-builder");
-  };
+  }, [getAccessTokenSilently, getForms, navigate, offset, sub, theme.palette.primary.main]);
 
   return (
-    <Container component="main" sx={{ mt: 4, mb: 2 }}>
-      <Paper variant="outlined" sx={{ p: { xs: 2, md: 3 } }}>
-        <Typography component="h1" variant="h4" align="center">
-          My Forms
-        </Typography>
-        <Grid container>
-          <Grid item>
-            <Button variant="contained" onClick={newForm}>
-              Create Form
-            </Button>
-          </Grid>
-          {formList}
-        </Grid>
-      </Paper>
+    <Container component="main" mb={2}>
+      <Grid container>{formList}</Grid>
     </Container>
   );
 };
