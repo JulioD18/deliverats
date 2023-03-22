@@ -16,15 +16,18 @@ export default function MenuOption({
     <React.Fragment>
       <Grid container key={option.name}>
         <FormControlLabel
-          label={<Typography sx={{ fontSize: '.9em' }}>{option.name + " (+" + formatter.format(option.price) + ")"}</Typography>}
+          label={
+            <Typography sx={{ fontSize: ".9em" }}>
+              {option.name + " (+" + formatter.format(option.price) + ")"}
+            </Typography>
+          }
           control={
             <Checkbox
               onChange={(e) =>
                 optionSelect(option, item.name, e.target.checked)
               }
               checked={
-                formValues.items[item.name]?.options[option.name] !==
-                undefined
+                formValues.items[item.name]?.options[option.name] !== undefined
               }
             />
           }

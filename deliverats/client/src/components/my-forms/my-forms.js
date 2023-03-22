@@ -17,7 +17,7 @@ import Fab from "@mui/material/Fab";
 import Avatar from "@mui/material/Avatar";
 import AddIcon from "@mui/icons-material/Add";
 import LocalPizzaIcon from "@mui/icons-material/LocalPizza";
-import SearchOffIcon from '@mui/icons-material/SearchOff';
+import SearchOffIcon from "@mui/icons-material/SearchOff";
 
 const formLimit = 8;
 
@@ -56,45 +56,49 @@ const MyForms = ({ getForms }) => {
 
       setFormList(
         <Grid item container spacing={3} mt={2}>
-          {res.payload.forms.length > 0 && res.payload.forms.map((form) => (
-            <Grid item key={form.id} style={{ width: "25%" }}>
-              <Paper
-                variant="outlined"
-                sx={{
-                  p: {
-                    xs: 2,
-                    md: 3,
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    height: "100%",
-                  },
-                }}
-              >
-                <Avatar sx={{ bgcolor: theme.palette.primary.main }}>
-                  <LocalPizzaIcon />
-                </Avatar>
-                <Typography component="h6" align="center" my={1.5}>
-                  {form.name}
-                </Typography>
-                <Button variant="contained" href={`/forms/${form.id}`}>
-                  View Form
-                </Button>
-              </Paper>
+          {res.payload.forms.length > 0 &&
+            res.payload.forms.map((form) => (
+              <Grid item key={form.id} style={{ width: "25%" }}>
+                <Paper
+                  variant="outlined"
+                  sx={{
+                    p: {
+                      xs: 2,
+                      md: 3,
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      height: "100%",
+                    },
+                  }}
+                >
+                  <Avatar sx={{ bgcolor: theme.palette.primary.main }}>
+                    <LocalPizzaIcon />
+                  </Avatar>
+                  <Typography component="h6" align="center" my={1.5}>
+                    {form.name}
+                  </Typography>
+                  <Button variant="contained" href={`/forms/${form.id}`}>
+                    View Form
+                  </Button>
+                </Paper>
+              </Grid>
+            ))}
+          {res.payload.count > formLimit && (
+            <Grid item container sx={{ justifyContent: "center" }}>
+              <Pagination
+                count={pages}
+                sx={{ marginTop: "20px" }}
+                size="large"
+                showFirstButton
+                showLastButton
+                onChange={paginationChange}
+              />
             </Grid>
-          ))}
-          {res.payload.count > formLimit && <Grid item container sx={{ justifyContent: "center" }}>
-            <Pagination
-              count={pages}
-              sx={{ marginTop: "20px" }}
-              size="large"
-              showFirstButton
-              showLastButton
-              onChange={paginationChange}
-            />
-          </Grid>}
-          {res.payload.forms.length === 0 && <Grid item container sx={{ justifyContent: "center" }}>
+          )}
+          {res.payload.forms.length === 0 && (
+            <Grid item container sx={{ justifyContent: "center" }}>
               <Grid item container sx={{ justifyContent: "center" }}>
                 <SearchOffIcon sx={{ fontSize: 100 }} />
               </Grid>
@@ -103,22 +107,34 @@ const MyForms = ({ getForms }) => {
                   No forms found
                 </Typography>
               </Grid>
-            <Grid item container sx={{ justifyContent: "center" }} mt={4}>
-              <Button onClick={newForm} variant="contained">Create Form</Button>
+              <Grid item container sx={{ justifyContent: "center" }} mt={4}>
+                <Button onClick={newForm} variant="contained">
+                  Create Form
+                </Button>
+              </Grid>
             </Grid>
-            </Grid>}
-          {res.payload.forms.length > 0 && <Fab
-            size="large"
-            onClick={newForm}
-            color="primary"
-            sx={{ position: "fixed", bottom: "40px", right: "40px" }}
-          >
-            <AddIcon />
-          </Fab>}
+          )}
+          {res.payload.forms.length > 0 && (
+            <Fab
+              size="large"
+              onClick={newForm}
+              color="primary"
+              sx={{ position: "fixed", bottom: "40px", right: "40px" }}
+            >
+              <AddIcon />
+            </Fab>
+          )}
         </Grid>
       );
     })();
-  }, [getAccessTokenSilently, getForms, navigate, offset, sub, theme.palette.primary.main]);
+  }, [
+    getAccessTokenSilently,
+    getForms,
+    navigate,
+    offset,
+    sub,
+    theme.palette.primary.main,
+  ]);
 
   return (
     <Container component="main" mb={2}>

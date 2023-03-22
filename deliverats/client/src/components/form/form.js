@@ -128,7 +128,10 @@ const Form = ({ getForm }) => {
     <Container component="main" sx={{ my: 4 }}>
       <Paper
         variant="outlined"
-        sx={{ p: { xs: 2, md: 3 }, backgroundColor: theme.palette.tertiary.main }}
+        sx={{
+          p: { xs: 2, md: 3 },
+          backgroundColor: theme.palette.tertiary.main,
+        }}
       >
         <Typography component="h1" variant="h4" align="center" my={2}>
           {form?.name ?? "Loading Form..."}

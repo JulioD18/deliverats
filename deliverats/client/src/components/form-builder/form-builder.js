@@ -96,7 +96,10 @@ const FormBuilder = () => {
     <Container component="main" sx={{ my: 4 }}>
       <Paper
         variant="outlined"
-        sx={{ p: { xs: 2, md: 3 }, backgroundColor: theme.palette.tertiary.main }}
+        sx={{
+          p: { xs: 2, md: 3 },
+          backgroundColor: theme.palette.tertiary.main,
+        }}
       >
         <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
           {steps.map((label) => (

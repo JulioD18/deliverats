@@ -10,6 +10,6 @@ export const theme = createTheme({
     },
     tertiary: {
       main: "#F7F7F7",
-    }
+    },
   },
 });
