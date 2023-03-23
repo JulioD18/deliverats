@@ -45,11 +45,11 @@ const MyForms = ({ forms, getForms }) => {
   }, [getAccessTokenSilently, getForms, offset, sub]);
 
   return (
-    <Container component="main" mb={2}>
+    <Container component="main">
       {!forms?.forms && (
         <Grid
           container
-          mt={4}
+          mt={2}
           sx={{ display: "flex", justifyContent: "center" }}
         >
           <CircularProgress />

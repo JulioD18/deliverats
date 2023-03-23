@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router";
 
 import { connect } from "react-redux";
@@ -27,9 +27,8 @@ const steps = ["Menu", "Client Details", "Location", "Order Summary"];
 const GOOGLE_MAPS_API_KEY = "AIzaSyCKhtQNMW0qP-CPly_PXjdLEvRnpZ2fo4U";
 const libraries = ["places"];
 
-const Form = ({ getForm, postDelivery }) => {
+const Form = ({ form, getForm, postDelivery }) => {
   const { formId } = useParams();
-  const [form, setForm] = useState();
   const [activeStep, setActiveStep] = useState(0);
   const [error, setError] = useState();
   const [coordinates, setCoordinatesVal] = useState();
@@ -56,6 +55,57 @@ const Form = ({ getForm, postDelivery }) => {
     libraries: libraries,
     googleMapsApiKey: GOOGLE_MAPS_API_KEY,
   });
+
+  function setCoordinates(coordinates, address = undefined) {
+    setCoordinatesVal(coordinates);
+    const newFormValue = { ...formValues };
+    if (address !== undefined) newFormValue.address = address;
+    newFormValue.latitude = coordinates.lat();
+    newFormValue.longitude = coordinates.lng();
+    setFormValues(newFormValue);
+  }
+
+  function getValues(dictionary) {
+    const values = [];
+    for (let key in dictionary) values.push(dictionary[key]);
+    return values;
+  }
+
+  function formatDelivery() {
+    const values = JSON.parse(JSON.stringify(formValues));
+    values.items = getValues(values.items);
+    for (let item of values.items) {
+      item.options = getValues(item.options);
+    }
+    values.owner = form.owner;
+    return values;
+  }
+
+  function handleBack() {
+    setAttempt(false);
+    setError(undefined);
+    setActiveStep(activeStep - 1);
+  }
+
+  function handleNext() {
+    if (error !== undefined) {
+      setAttempt(true);
+    } else if (formValues.total <= 0) {
+      setError("Please select at least one item");
+      setAttempt(true);
+    } else {
+      setAttempt(false);
+      setError(undefined);
+      setActiveStep(activeStep + 1);
+      if (activeStep === steps.length - 1) placeOrder();
+    }
+  }
+
+  async function placeOrder() {
+    const delivery = formatDelivery();
+    const res = await postDelivery({ delivery });
+    navigate(`/track/${res.payload.id}`);
+  }
 
   function getStepContent(step) {
     switch (step) {
@@ -90,64 +140,7 @@ const Form = ({ getForm, postDelivery }) => {
     }
   }
 
-  function setCoordinates(coordinates, address = undefined) {
-    setCoordinatesVal(coordinates);
-    const newFormValue = { ...formValues };
-    if (address !== undefined) newFormValue.address = address;
-    newFormValue.latitude = coordinates.lat();
-    newFormValue.longitude = coordinates.lng();
-    setFormValues(newFormValue);
-  }
-
-  function getValues(dictionary) {
-    const values = [];
-    for (let key in dictionary) values.push(dictionary[key]);
-    return values;
-  }
-
-  function formatDelivery() {
-    const values = JSON.parse(JSON.stringify(formValues));
-    values.items = getValues(values.items);
-    for (let item of values.items) {
-      item.options = getValues(item.options);
-    }
-    values.owner = form.owner;
-    return values;
-  }
-
-  async function placeOrder() {
-    const delivery = formatDelivery();
-    const res = await postDelivery({ delivery });
-    navigate(`/track/${res.payload.id}`);
-  }
-
-  function handleNext() {
-    if (error !== undefined) {
-      setAttempt(true);
-    } else if (formValues.total <= 0) {
-      setError("Please select at least one item");
-      setAttempt(true);
-    } else {
-      setAttempt(false);
-      setError(undefined);
-      setActiveStep(activeStep + 1);
-      if (activeStep === steps.length - 1) placeOrder();
-    }
-  }
-
-  function handleBack() {
-    setAttempt(false);
-    setError(undefined);
-    setActiveStep(activeStep - 1);
-  }
-
-  useEffect(() => {
-    (async () => {
-      const res = await getForm(formId);
-      const form = res.payload;
-      setForm(form);
-    })();
-  }, [formId, getForm]);
+  getForm(formId);
 
   return (
     <Container component="main" sx={{ my: 4 }}>
@@ -208,7 +201,7 @@ const Form = ({ getForm, postDelivery }) => {
 };
 
 const mapStateToProps = (state) => ({
-  forms: state.form.forms,
+  form: state.form.form,
 });
 
 export default connect(mapStateToProps, { getForm, postDelivery })(Form);
