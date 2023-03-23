@@ -1,13 +1,24 @@
 import express from "express";
 import bodyParser from "body-parser";
+import cors from "cors";
+import http from "http";
+import { Server } from "socket.io";
 import { sequelize } from "./datasource.js";
 import { formsRouter } from "./routers/forms_router.js";
+import { deliveriesRouter } from "./routers/deliveries_router.js";
+import { emailRouter } from "./routers/email_router.js";
+import { smsRouter } from "./routers/sms_router.js";
+
 import * as Sentry from "@sentry/node";
 import * as Tracing from "@sentry/tracing";
 
 export const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(cors());
+
+const server = http.createServer(app);
+export const io = new Server(server);
 
 Sentry.init({
   dsn: "https://a771fa69fcb74977b17d20e40ec7c43e@o4504838835404800.ingest.sentry.io/4504838968246272",
@@ -30,10 +41,6 @@ app.use(Sentry.Handlers.requestHandler());
 // TracingHandler creates a trace for every incoming request
 app.use(Sentry.Handlers.tracingHandler());
 
-app.get("/debug-sentry", function mainHandler(req, res) {
-  throw new Error("My first Sentry error!");
-});
-
 try {
   await sequelize.authenticate();
   await sequelize.sync({ alter: { drop: false } });
@@ -48,11 +55,14 @@ app.use(function (req, res, next) {
 });
 
 app.use("/api/forms", formsRouter);
+app.use("/api/deliveries", deliveriesRouter);
+app.use("/api/email", emailRouter);
+app.use("/api/sms", smsRouter);
 
 // The error handler must be before any other error middleware and after all controllers
 app.use(Sentry.Handlers.errorHandler());
 
-const PORT = 3000;
+const PORT = 3001;
 
 app.listen(PORT, (err) => {
   if (err) console.log(err);

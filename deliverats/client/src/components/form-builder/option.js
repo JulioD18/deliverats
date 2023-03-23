@@ -5,7 +5,6 @@ import Autocomplete from "@mui/material/Autocomplete";
 import Chip from "@mui/material/Chip";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
 import Input from "@mui/material/Input";
 import InputAdornment from "@mui/material/InputAdornment";
 import FormHelperText from "@mui/material/FormHelperText";
@@ -24,131 +23,106 @@ export default function Option({
 }) {
   return (
     <React.Fragment>
-      <Paper
-        variant="outlined"
-        sx={{ my: { xs: 2, md: 3 }, p: { xs: 2, md: 3 } }}
-      >
-        <Grid item xs={12}>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <Typography gutterBottom>Option {index + 1}</Typography>
-            <IconButton variant="outlined" onClick={() => removeField(index)}>
-              <DeleteIcon fontSize="small" />
-            </IconButton>
-          </Box>
+      <Grid item xs={12}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+          mb={1.5}
+        >
+          <Typography variant="h6">Option {index + 1}</Typography>
+          <IconButton variant="outlined" onClick={() => removeField(index)}>
+            <DeleteIcon fontSize="small" />
+          </IconButton>
+        </Box>
+      </Grid>
+      <Grid item xs={12} container spacing={3}>
+        <Grid item xs={12} md={4}>
+          <TextField
+            required
+            name="name"
+            label="Name"
+            fullWidth
+            variant="standard"
+            onChange={(e) => handleChange(index, e.target.name, e.target.value)}
+            value={element.name ?? ""}
+            error={attempt && (element.name === "" || !element.name)}
+            helperText={
+              attempt && (element.name === "" || !element.name)
+                ? "Required"
+                : ""
+            }
+          />
         </Grid>
-        <Grid item xs={12} container spacing={3}>
-          <Grid item xs={12} md={6}>
-            <TextField
-              required
-              name="name"
-              label="Name"
-              fullWidth
-              variant="standard"
-              onChange={(e) =>
-                handleChange(index, e.target.name, e.target.value)
-              }
-              value={element.name ?? ""}
-              error={attempt && (element.name === "" || !element.name)}
-              helperText={
-                attempt && (element.name === "" || !element.name)
-                  ? "Required"
-                  : ""
-              }
-            />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Autocomplete
-              multiple
-              options={items.map((item) => item.name)}
-              limitTags={1}
-              renderTags={(value, getTagProps) =>
-                value.map((option, index) => (
-                  <Chip
-                    variant="outlined"
-                    label={option}
-                    {...getTagProps({ index })}
-                  />
-                ))
-              }
-              onChange={(e, val) => handleChange(index, "items", val)}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  variant="standard"
-                  label="Apply to"
-                  required
-                  error={
-                    attempt && (!element.items || element.items.length === 0)
-                  }
-                  helperText={
-                    attempt && (!element.items || element.items.length === 0)
-                      ? "Required"
-                      : ""
-                  }
+        <Grid item xs={12} md={4}>
+          <Autocomplete
+            multiple
+            options={items.map((item) => item.name)}
+            value={element.items ?? []}
+            limitTags={1}
+            renderTags={(value, getTagProps) =>
+              value.map((option, index) => (
+                <Chip
+                  variant="outlined"
+                  size="small"
+                  label={option}
+                  {...getTagProps({ index })}
                 />
-              )}
-            />
-          </Grid>
-          <Grid item xs={12} md={9}>
-            <TextField
-              required
-              name="description"
-              label="Description"
-              fullWidth
-              variant="standard"
-              value={element.description ?? ""}
-              onChange={(e) =>
-                handleChange(index, e.target.name, e.target.value)
-              }
-              error={
-                attempt && (element.description === "" || !element.description)
-              }
-              helperText={
-                attempt && (element.description === "" || !element.description)
-                  ? "Required"
-                  : ""
-              }
-            />
-          </Grid>
-          <Grid item xs={12} md={3}>
-            <FormControl variant="standard" required>
-              <InputLabel
-                htmlFor="price"
-                style={
-                  attempt && (!element.price || element.price === "")
-                    ? { color: "#d32f2f" }
-                    : {}
+              ))
+            }
+            onChange={(e, val) => handleChange(index, "items", val)}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                variant="standard"
+                label="Apply to"
+                required
+                error={
+                  attempt && (!element.items || element.items.length === 0)
                 }
-              >
-                Price
-              </InputLabel>
-              <Input
-                id="price"
-                name="price"
-                type="number"
-                value={element.price ?? ""}
-                onChange={(e) =>
-                  handleChange(index, e.target.name, e.target.value)
-                }
-                startAdornment={
-                  <InputAdornment position="start">$</InputAdornment>
+                helperText={
+                  attempt && (!element.items || element.items.length === 0)
+                    ? "Required"
+                    : ""
                 }
               />
-              {attempt && (!element.price || element.preice === "") && (
-                <FormHelperText style={{ color: "#d32f2f" }}>
-                  Required
-                </FormHelperText>
-              )}
-            </FormControl>
-          </Grid>
+            )}
+          />
         </Grid>
-      </Paper>
+        <Grid item xs={12} md={4}>
+          <FormControl variant="standard" required fullWidth>
+            <InputLabel
+              htmlFor="price"
+              style={
+                attempt && (!element.price || element.price === "")
+                  ? { color: "#d32f2f" }
+                  : {}
+              }
+            >
+              Price
+            </InputLabel>
+            <Input
+              id="price"
+              name="price"
+              type="number"
+              value={element.price ?? ""}
+              onChange={(e) =>
+                handleChange(index, e.target.name, e.target.value)
+              }
+              startAdornment={
+                <InputAdornment position="start">$</InputAdornment>
+              }
+            />
+            {attempt && (!element.price || element.preice === "") && (
+              <FormHelperText style={{ color: "#d32f2f" }}>
+                Required
+              </FormHelperText>
+            )}
+          </FormControl>
+        </Grid>
+      </Grid>
     </React.Fragment>
   );
 }

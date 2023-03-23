@@ -8,6 +8,7 @@ import {
 } from "../utils/api-errors.js";
 import { validateForm } from "../utils/validators.js";
 import { checkJwt } from "../middleware/token-validation.js";
+import { sendEmail } from "../utils/send-grid.js";
 
 export const formsRouter = Router();
 
@@ -15,7 +16,6 @@ formsRouter.post("/", checkJwt, async function (req, res, next) {
   // Validate parameters
   const missingParams = findMissingParams(req, [
     "name",
-    "description",
     "categories",
     "items",
     "options",
@@ -27,15 +27,17 @@ formsRouter.post("/", checkJwt, async function (req, res, next) {
   const description = req.body.description;
   const email = req.body.email;
   const phone = req.body.phone;
-  const categories = req.body.categories;
+  let categories = req.body.categories;
   const items = req.body.items;
   const options = req.body.options;
-
   const owner = req.auth.sub;
 
   // Validate form
   const formError = validateForm(req.body);
   if (formError) return apiError(res, 400, formError);
+
+  // Remove unnecessary categories
+  categories = [...new Set(items.map((item) => item.category))];
 
   // Create form
   const form = await Form.create({
@@ -74,7 +76,7 @@ formsRouter.get("/", checkJwt, async function (req, res, next) {
   return res.json({ forms, count });
 });
 
-formsRouter.get("/:id", checkJwt, async (req, res) => {
+formsRouter.get("/:id", async (req, res) => {
   // Retrieve parameters
   const formId = req.params.id;
 
@@ -91,13 +93,13 @@ formsRouter.delete("/:id", checkJwt, async function (req, res, next) {
 
   // Check that form exists
   const form = await Form.findByPk(formId);
-  //const form = await Form.findByPk(formId, { include: ["User"] });
   if (!form) return notFoundError(res, "form", formId);
 
   // Check that user owns form
-  // if (form.UserId !== userId) {
-  //   return apiError(res, 403, "The user does not own this form");
-  // }
+  const owner = req.auth.sub;
+  if (form.owner !== owner) {
+    return apiError(res, 403, "The user does not own this form");
+  }
 
   // Delete form
   await form.destroy();

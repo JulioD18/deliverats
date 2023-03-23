@@ -22,14 +22,14 @@ const NavBar = () => {
               to="/"
               sx={{ mr: "10px", alignItems: "bottom", borderRadius: "80%" }}
               alt="logo"
-              src="https://i.imgur.com/91B3bsp.png"
+              src="https://i.imgur.com/FImmAog.png"
             />
             <Typography
               as={Link}
               to="/"
-              variant="h6"
               component="div"
-              sx={{ textDecoration: "none", color: "black" }}
+              sx={{ textDecoration: "none" }}
+              color="secondary"
             >
               DELIVERATS
             </Typography>

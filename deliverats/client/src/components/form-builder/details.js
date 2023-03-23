@@ -24,7 +24,7 @@ export default function Details({
 
   useEffect(() => {
     const validateFields = () => {
-      if (formValues.name !== "" && formValues.description !== "") {
+      if (formValues.name !== "") {
         setError(false);
       } else {
         setError(true);
@@ -35,15 +35,16 @@ export default function Details({
 
   return (
     <React.Fragment>
-      <Typography variant="h6" gutterBottom>
+      <Typography variant="h5" mb={4}>
         Form details
       </Typography>
       <Grid container spacing={3}>
-        <Grid item xs={12}>
+        <Grid item xs={12} md={4}>
           <TextField
             required
             name="name"
             label="Name"
+            placeholder="eg. John's Pizza & Pastas - Main Menu"
             fullWidth
             variant="standard"
             onChange={(e) => handleChange(e)}
@@ -52,22 +53,7 @@ export default function Details({
             helperText={attempt && formValues.name === "" ? "Required" : ""}
           />
         </Grid>
-        <Grid item xs={12}>
-          <TextField
-            required
-            name="description"
-            label="Description"
-            fullWidth
-            variant="standard"
-            onChange={(e) => handleChange(e)}
-            value={formValues.description ?? ""}
-            error={attempt && formValues.description === ""}
-            helperText={
-              attempt && formValues.description === "" ? "Required" : ""
-            }
-          />
-        </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={4}>
           <Box sx={{ display: "flex", alignItems: "flex-end" }}>
             <TextField
               name="email"
@@ -85,7 +71,7 @@ export default function Details({
             </Tooltip>
           </Box>
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={4}>
           <Box sx={{ display: "flex", alignItems: "flex-end" }}>
             <TextField
               name="phone"

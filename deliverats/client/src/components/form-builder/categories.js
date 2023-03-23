@@ -37,8 +37,8 @@ export default function Categories({
 
   return (
     <React.Fragment>
-      <Box sx={{ display: "flex", alignItems: "center" }} mb={1.5}>
-        <Typography variant="h6">Item categories</Typography>
+      <Box sx={{ display: "flex", alignItems: "center" }} mb={4}>
+        <Typography variant="h5">Item categories</Typography>
         <Tooltip title="Here you will set the categories that your menu items belong to (eg. Appetizers, Burgers, Drinks, etc.)">
           <InfoIcon fontSize="small" sx={{ color: "action.active", ml: 0.5 }} />
         </Tooltip>
@@ -50,10 +50,12 @@ export default function Categories({
             options={exampleCategories}
             freeSolo
             limitTags={3}
+            value={formValues.categories}
             renderTags={(value, getTagProps) =>
               value.map((option, index) => (
                 <Chip
                   variant="outlined"
+                  size="small"
                   label={option}
                   {...getTagProps({ index })}
                 />

@@ -14,8 +14,8 @@ const LogOutButton = () => {
   };
 
   return (
-    <Button color="error" onClick={handleLogout}>
-      <Typography variant="h6">Log Out</Typography>
+    <Button color="secondary" onClick={handleLogout}>
+      <Typography>Log Out</Typography>
     </Button>
   );
 };

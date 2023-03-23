@@ -1,7 +1,8 @@
-import { GET_FORMS, POST_FORMS } from "../actions/actions.js";
+import { GET_FORMS, GET_FORM, POST_FORM } from "../actions/actions.js";
 
 const initialState = {
   forms: [],
+  form: undefined,
 };
 
 export default function formReducer(state = initialState, action) {
@@ -10,12 +11,17 @@ export default function formReducer(state = initialState, action) {
     case GET_FORMS:
       return {
         ...state,
-        forms: payload.forms,
+        forms: payload,
       };
-    case POST_FORMS:
+    case GET_FORM:
       return {
         ...state,
-        forms: payload.forms,
+        form: payload,
+      };
+    case POST_FORM:
+      return {
+        ...state,
+        forms: payload,
       };
     default:
       return state;

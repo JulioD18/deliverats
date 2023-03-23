@@ -74,16 +74,21 @@ export default function Items({
     validateFields(formValues);
   }, [formValues, setError]);
 
+  // Solve deleted category issues (in case user went back and deleted a category)
+  for (let item of formValues.items) {
+    if (!formValues.categories.includes(item.category)) delete item.category;
+  }
+
   return (
     <React.Fragment>
-      <Box sx={{ display: "flex", alignItems: "center" }} mb={1.5}>
-        <Typography variant="h6">Add your menu items</Typography>
+      <Box sx={{ display: "flex", alignItems: "center" }} mb={4}>
+        <Typography variant="h5">Add your menu items</Typography>
         <Tooltip title="Here you will add the menu items (eg. Butter Chicken, Cheese Burger, Chocolate Cake, etc.)">
           <InfoIcon fontSize="small" sx={{ color: "action.active", ml: 0.5 }} />
         </Tooltip>
       </Box>
       {formValues.items.map((element, index) => (
-        <div key={index}>
+        <Box key={index} sx={{ mb: 5 }}>
           <Item
             categories={formValues.categories}
             element={element}
@@ -93,7 +98,7 @@ export default function Items({
             attempt={attempt}
             key={index}
           />
-        </div>
+        </Box>
       ))}
       <Grid container spacing={3}>
         <Grid item xs={12} container justifyContent="center">

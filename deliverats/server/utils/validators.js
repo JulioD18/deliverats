@@ -13,8 +13,6 @@ export function validateForm(form) {
   // Check that there's a name and description
   if (!form.name || form.name === "") {
     return "Form has no name";
-  } else if (!form.description || form.description === "") {
-    return "Form has no description";
   }
 
   // Check phone validity if it exists
@@ -67,15 +65,13 @@ export function validateForm(form) {
   for (const option of options) {
     if (!option.name || option.name === "") {
       return "An option doesn't have a name";
-    } else if (!option.description || option.description === "") {
-      return "Option '" + option.name + "' has an invalid description";
     } else if (!option.items || option.items.length === 0) {
       return "Option '" + option.name + "' has no items";
     } else if (
       !option.price ||
       option.price === "" ||
       isNaN(parseFloat(option.price)) ||
-      parseFloat(option.price) <= 0
+      parseFloat(option.price) < 0
     ) {
       return "Option '" + option.name + "' has an invalid price";
     }
@@ -85,6 +81,51 @@ export function validateForm(form) {
         return "Option '" + option.name + "' has an invalid item";
       }
     }
+  }
+
+  return null;
+}
+
+/**
+ * Checks that the delivery is valid
+ * @param {string[]} categories The categories of the delivery
+ * @param {object[]} items The items of the delivery
+ * @param {object[]} options The options of the delivery
+ * @returns An error message if the delivery is invalid, null otherwise
+ */
+export function validateDelivery(delivery) {
+  const items = delivery.items;
+
+  // Check that there's a name and description
+  if (!delivery.name || delivery.name === "") {
+    return "Delivery has no name";
+  } else if (!delivery.lastName || delivery.lastName === "") {
+    return "Delivery has no last name";
+  } else if (!delivery.email || delivery.email === "") {
+    return "Delivery has no email";
+  } else if (!delivery.phone || delivery.phone === "") {
+    return "Delivery has no phone";
+  } else if (!delivery.address || delivery.address === "") {
+    return "Delivery has no address";
+  } else if (!delivery.latitude || delivery.latitude === "") {
+    return "Delivery has no latitude";
+  } else if (!delivery.longitude || delivery.longitude === "") {
+    return "Delivery has no longitude";
+  }
+
+  // Check phone validity
+  if (isNaN(parseInt(delivery.phone)) || parseInt(delivery.phone) <= 0) {
+    return "Delivery has an invalid phone";
+  }
+
+  // Check that items is an array
+  if (!Array.isArray(items)) {
+    return "Items must be an array";
+  }
+
+  // Check that items is not empty
+  if (items.length === 0) {
+    return "Items cannot be empty";
   }
 
   return null;
