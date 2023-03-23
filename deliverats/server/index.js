@@ -5,6 +5,7 @@ import http from "http";
 import { Server } from "socket.io";
 import { sequelize } from "./datasource.js";
 import { formsRouter } from "./routers/forms_router.js";
+import { deliveriesRouter } from "./routers/deliveries_router.js";
 import { emailRouter } from "./routers/email_router.js";
 import { smsRouter } from "./routers/sms_router.js";
 
@@ -54,6 +55,7 @@ app.use(function (req, res, next) {
 });
 
 app.use("/api/forms", formsRouter);
+app.use("/api/deliveries", deliveriesRouter);
 app.use("/api/email", emailRouter);
 app.use("/api/sms", smsRouter);
 
