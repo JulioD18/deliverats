@@ -3,7 +3,9 @@ import { useParams } from "react-router";
 
 import { connect } from "react-redux";
 import { getForm } from "../../redux/actions/form-action";
+import { postDelivery } from "../../redux/actions/delivery-action";
 import { useJsApiLoader } from "@react-google-maps/api";
+import { useNavigate } from "react-router-dom";
 
 import Menu from "./menu";
 import ClientDetails from "./client-details";
@@ -25,7 +27,7 @@ const steps = ["Menu", "Client Details", "Location", "Order Summary"];
 const GOOGLE_MAPS_API_KEY = "AIzaSyCKhtQNMW0qP-CPly_PXjdLEvRnpZ2fo4U";
 const libraries = ["places"];
 
-const Form = ({ getForm }) => {
+const Form = ({ getForm, postDelivery }) => {
   const { formId } = useParams();
   const [form, setForm] = useState();
   const [activeStep, setActiveStep] = useState(0);
@@ -33,20 +35,21 @@ const Form = ({ getForm }) => {
   const [coordinates, setCoordinatesVal] = useState();
   const [attempt, setAttempt] = useState(false);
   const [formValues, setFormValues] = useState({
-    client: {
-      name: "",
-      lastName: "",
-      phone: "",
-      email: "",
-      address: null,
-      address2: "",
-      coordinates: null,
-    },
+    name: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    address: null,
+    suite: "",
+    latitude: null,
+    longitude: null,
     items: {},
     total: 0,
+    owner: null,
   });
 
   const theme = useTheme();
+  const navigate = useNavigate();
 
   useJsApiLoader({
     id: "google-map-script",
@@ -77,16 +80,23 @@ const Form = ({ getForm }) => {
           />
         );
       case 2:
-        return <LocationPicker coordinates={coordinates} setCoordinates={setCoordinates} />;
+        return (
+          <LocationPicker
+            coordinates={coordinates}
+            setCoordinates={setCoordinates}
+          />
+        );
       default:
-        return <OrderSummary values={formatValues()} />;
+        return <OrderSummary values={formatDelivery()} />;
     }
   }
 
-  function setCoordinates(coordinates) {
+  function setCoordinates(coordinates, address = undefined) {
     setCoordinatesVal(coordinates);
-    const newFormValue = {...formValues}
-    newFormValue.client.coordinates = coordinates
+    const newFormValue = { ...formValues };
+    if (address !== undefined) newFormValue.address = address;
+    newFormValue.latitude = coordinates.lat();
+    newFormValue.longitude = coordinates.lng();
     setFormValues(newFormValue);
   }
 
@@ -96,19 +106,20 @@ const Form = ({ getForm }) => {
     return values;
   }
 
-  function formatValues() {
+  function formatDelivery() {
     const values = JSON.parse(JSON.stringify(formValues));
     values.items = getValues(values.items);
     for (let item of values.items) {
       item.options = getValues(item.options);
     }
+    values.owner = form.owner;
     return values;
   }
 
-  function placeOrder() {
-    const values = formatValues();
-    // Send to server
-    console.log(values);
+  async function placeOrder() {
+    const delivery = formatDelivery();
+    const res = await postDelivery({ delivery });
+    navigate(`/track/${res.payload.id}`);
   }
 
   function handleNext() {
@@ -207,4 +218,4 @@ const mapStateToProps = (state) => ({
   forms: state.form.forms,
 });
 
-export default connect(mapStateToProps, { getForm })(Form);
+export default connect(mapStateToProps, { getForm, postDelivery })(Form);

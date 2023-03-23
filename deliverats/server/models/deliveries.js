@@ -42,4 +42,8 @@ export const Delivery = sequelize.define("Delivery", {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  owner: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
 });

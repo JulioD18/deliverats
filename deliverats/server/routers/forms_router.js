@@ -93,13 +93,13 @@ formsRouter.delete("/:id", checkJwt, async function (req, res, next) {
 
   // Check that form exists
   const form = await Form.findByPk(formId);
-  //const form = await Form.findByPk(formId, { include: ["User"] });
   if (!form) return notFoundError(res, "form", formId);
 
   // Check that user owns form
-  // if (form.UserId !== userId) {
-  //   return apiError(res, 403, "The user does not own this form");
-  // }
+  const owner = req.auth.sub;
+  if (form.owner !== owner) {
+    return apiError(res, 403, "The user does not own this form");
+  }
 
   // Delete form
   await form.destroy();

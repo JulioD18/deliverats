@@ -19,8 +19,12 @@ export default function MenuCategory({
   function changeQuantity(item, change) {
     const newFormValues = { ...formValues };
     if (newFormValues.items[item.name] === undefined) {
-      const newItem = { ...item, quantity: 0 };
-      newItem.options = {};
+      const newItem = {
+        name: item.name,
+        price: item.price,
+        quantity: 0,
+        options: {},
+      };
       newFormValues.items[item.name] = newItem;
     }
     newFormValues.items[item.name].quantity += change;
@@ -57,7 +61,10 @@ export default function MenuCategory({
     const newFormValues = { ...formValues };
     if (newFormValues.items[itemName] === undefined) return;
     if (selected) {
-      newFormValues.items[itemName].options[option.name] = option;
+      newFormValues.items[itemName].options[option.name] = {
+        name: option.name,
+        price: option.price,
+      };
     } else {
       delete newFormValues.items[itemName].options[option.name];
     }

@@ -16,12 +16,7 @@ import { debounce } from "@mui/material/utils";
 
 const mapsService = { autocomplete: null, geocoder: null };
 
-export default function MapsAutocomplete({
-  value,
-  setValue,
-  setCoordinates,
-  attempt,
-}) {
+export default function MapsAutocomplete({ value, setValue, attempt }) {
   const [inputValue, setInputValue] = React.useState("");
   const [options, setOptions] = React.useState([]);
 
@@ -83,17 +78,20 @@ export default function MapsAutocomplete({
 
   function onChange(event, newValue) {
     setOptions(newValue ? [newValue, ...options] : options);
-    setValue(newValue?.description ?? newValue);
     if (!newValue?.place_id) {
       fetchCoordinates({ address: newValue }, (results) => {
+        let coordinates;
         if (results && results.length > 0)
-          setCoordinates(results[0].geometry.location);
-        else
-          setCoordinates({ lat: 43.662639, lng: -79.391687 });
+          coordinates = results[0].geometry.location;
+        else coordinates = { lat: () => 43.662639, lng: () => -79.391687 };
+        setValue({ address: newValue?.description ?? newValue, coordinates });
       });
     } else {
       fetchCoordinates({ placeId: newValue.place_id }, (results) => {
-        setCoordinates(results[0].geometry.location);
+        setValue({
+          address: newValue?.description ?? newValue,
+          coordinates: results[0].geometry.location,
+        });
       });
     }
   }
@@ -131,7 +129,7 @@ export default function MapsAutocomplete({
           option?.structured_formatting?.main_text_matched_substrings ?? [];
 
         const parts = parse(
-          option.structured_formatting.main_text,
+          option?.structured_formatting?.main_text,
           matches.map((match) => [match.offset, match.offset + match.length])
         );
 

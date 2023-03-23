@@ -39,6 +39,7 @@ deliveriesRouter.post("/", async function (req, res, next) {
   const longitude = req.body.longitude;
   const items = req.body.items;
   const total = req.body.total;
+  const owner = req.body.owner;
 
   // Validate delivery
   const deliveryError = validateDelivery(req.body);
@@ -47,12 +48,15 @@ deliveriesRouter.post("/", async function (req, res, next) {
   // Create delivery
   const delivery = await Delivery.create({
     name,
-    description,
-    email: email !== "" ? email : null,
-    phone: phone !== "" ? phone : null,
+    lastName,
+    email,
+    phone,
+    address,
+    suite,
+    latitude,
+    longitude,
     items,
-    options,
-    categories,
+    total,
     owner,
   });
 
@@ -98,13 +102,13 @@ deliveriesRouter.delete("/:id", checkJwt, async function (req, res, next) {
 
   // Check that delivery exists
   const delivery = await Delivery.findByPk(deliveryId);
-  //const delivery = await Delivery.findByPk(deliveryId, { include: ["User"] });
   if (!delivery) return notFoundError(res, "delivery", deliveryId);
 
   // Check that user owns delivery
-  // if (delivery.UserId !== userId) {
-  //   return apiError(res, 403, "The user does not own this delivery");
-  // }
+  const owner = req.auth.sub;
+  if (delivery.owner !== owner) {
+    return apiError(res, 403, "The user does not own this delivery");
+  }
 
   // Delete delivery
   await delivery.destroy();

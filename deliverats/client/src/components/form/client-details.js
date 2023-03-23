@@ -15,15 +15,15 @@ export default function Details({
   attempt,
   setError,
 }) {
-  const [address, setAddress] = useState(formValues.client.address);
+  const [address, setAddress] = useState(formValues.address);
 
   /**
    * Handles the change of the address
    * @param {string} value The value of the address
    */
   function setAddressField(value) {
-    setAddress(value);
-    handleChange("address", value);
+    setAddress(value.address);
+    setCoordinates(value.coordinates, value.address);
   }
 
   /**
@@ -33,18 +33,18 @@ export default function Details({
    */
   function handleChange(name, value) {
     const values = { ...formValues };
-    values.client[name] = value;
+    values[name] = value;
     setFormValues(values);
   }
 
   useEffect(() => {
     const validateFields = () => {
       if (
-        formValues.client.name !== "" &&
-        formValues.client.lastName !== "" &&
-        formValues.client.phone !== "" &&
-        formValues.client.email !== "" &&
-        formValues.client.address !== null
+        formValues.name !== "" &&
+        formValues.lastName !== "" &&
+        formValues.phone !== "" &&
+        formValues.email !== "" &&
+        formValues.address !== null
       ) {
         setError(undefined);
       } else {
@@ -68,11 +68,9 @@ export default function Details({
             fullWidth
             variant="standard"
             onChange={(e) => handleChange(e.target.name, e.target.value)}
-            value={formValues.client.name ?? ""}
-            error={attempt && formValues.client.name === ""}
-            helperText={
-              attempt && formValues.client.name === "" ? "Required" : ""
-            }
+            value={formValues.name ?? ""}
+            error={attempt && formValues.name === ""}
+            helperText={attempt && formValues.name === "" ? "Required" : ""}
           />
         </Grid>
         <Grid item xs={12} md={6}>
@@ -83,29 +81,26 @@ export default function Details({
             fullWidth
             variant="standard"
             onChange={(e) => handleChange(e.target.name, e.target.value)}
-            value={formValues.client.lastName ?? ""}
-            error={attempt && formValues.client.lastName === ""}
-            helperText={
-              attempt && formValues.client.lastName === "" ? "Required" : ""
-            }
+            value={formValues.lastName ?? ""}
+            error={attempt && formValues.lastName === ""}
+            helperText={attempt && formValues.lastName === "" ? "Required" : ""}
           />
         </Grid>
         <Grid item xs={12} md={6}>
           <MapsAutocomplete
             value={address}
             setValue={setAddressField}
-            setCoordinates={setCoordinates}
             attempt={attempt}
           />
         </Grid>
         <Grid item xs={12} md={6}>
           <TextField
-            name="address2"
+            name="suite"
             label="Suite #"
             fullWidth
             variant="standard"
             onChange={(e) => handleChange(e.target.name, e.target.value)}
-            value={formValues.client.address2 ?? ""}
+            value={formValues.suite ?? ""}
           />
         </Grid>
         <Grid item xs={12} md={6}>
@@ -117,11 +112,9 @@ export default function Details({
               fullWidth
               variant="standard"
               onChange={(e) => handleChange(e.target.name, e.target.value)}
-              value={formValues.client.email ?? ""}
-              error={attempt && formValues.client.email === ""}
-              helperText={
-                attempt && formValues.client.email === "" ? "Required" : ""
-              }
+              value={formValues.email ?? ""}
+              error={attempt && formValues.email === ""}
+              helperText={attempt && formValues.email === "" ? "Required" : ""}
             />
             <Tooltip title="This email will receive delivery notifications.">
               <InfoIcon
@@ -141,11 +134,9 @@ export default function Details({
               fullWidth
               variant="standard"
               onChange={(e) => handleChange(e.target.name, e.target.value)}
-              value={formValues.client.phone ?? ""}
-              error={attempt && formValues.client.phone === ""}
-              helperText={
-                attempt && formValues.client.phone === "" ? "Required" : ""
-              }
+              value={formValues.phone ?? ""}
+              error={attempt && formValues.phone === ""}
+              helperText={attempt && formValues.phone === "" ? "Required" : ""}
             />
             <Tooltip title="This phone will receive delivery notifications via SMS.">
               <InfoIcon
