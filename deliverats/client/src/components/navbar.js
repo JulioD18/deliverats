@@ -22,7 +22,7 @@ const NavBar = () => {
               to="/"
               sx={{ mr: "10px", alignItems: "bottom", borderRadius: "80%" }}
               alt="logo"
-              src="https://i.imgur.com/91B3bsp.png"
+              src="https://i.imgur.com/FImmAog.png"
             />
             <Typography
               as={Link}
