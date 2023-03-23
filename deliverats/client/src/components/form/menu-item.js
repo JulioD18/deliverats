@@ -63,7 +63,13 @@ export default function MenuItem({
             >
               -
             </Button>
-            <Button disabled sx={{ color: "black !important" }}>
+            <Button
+              disabled
+              sx={{
+                color: "black !important",
+                borderColor: "rgba(42, 43, 44, 0.5) !important",
+              }}
+            >
               {formValues.items[item.name]?.quantity ?? 0}
             </Button>
             <Button

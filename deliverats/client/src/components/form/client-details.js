@@ -11,6 +11,7 @@ import MapsAutocomplete from "./maps-autocomplete.js";
 export default function Details({
   formValues,
   setFormValues,
+  setCoordinates,
   attempt,
   setError,
 }) {
@@ -93,6 +94,7 @@ export default function Details({
           <MapsAutocomplete
             value={address}
             setValue={setAddressField}
+            setCoordinates={setCoordinates}
             attempt={attempt}
           />
         </Grid>

@@ -10,59 +10,48 @@ import { debounce } from "@mui/material/utils";
 
 /**
  * IMPORTANT!
- * The code on this file was copied from
+ * Some of the code on this file was copied from
  * https://mui.com/material-ui/react-autocomplete/#google-maps-place
  */
 
-const GOOGLE_MAPS_API_KEY = "AIzaSyCKhtQNMW0qP-CPly_PXjdLEvRnpZ2fo4U";
+const mapsService = { autocomplete: null, geocoder: null };
 
-function loadScript(src, position, id) {
-  if (!position) {
-    return;
-  }
-
-  const script = document.createElement("script");
-  script.setAttribute("async", "");
-  script.setAttribute("id", id);
-  script.src = src;
-  position.appendChild(script);
-}
-
-const autocompleteService = { current: null };
-
-export default function MapsAutocomplete({ value, setValue, attempt }) {
+export default function MapsAutocomplete({
+  value,
+  setValue,
+  setCoordinates,
+  attempt,
+}) {
   const [inputValue, setInputValue] = React.useState("");
   const [options, setOptions] = React.useState([]);
-  const loaded = React.useRef(false);
-
-  if (typeof window !== "undefined" && !loaded.current) {
-    if (!document.querySelector("#google-maps")) {
-      loadScript(
-        `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places`,
-        document.querySelector("head"),
-        "google-maps"
-      );
-    }
-
-    loaded.current = true;
-  }
 
   const fetch = React.useMemo(
     () =>
       debounce((request, callback) => {
-        autocompleteService.current.getPlacePredictions(request, callback);
-      }, 400),
+        mapsService.autocomplete.getPlacePredictions(request, callback);
+      }, 150),
+    []
+  );
+
+  const fetchCoordinates = React.useMemo(
+    () =>
+      debounce((request, callback) => {
+        mapsService.geocoder.geocode(request, callback);
+      }, 150),
     []
   );
 
   React.useEffect(() => {
     let active = true;
 
-    if (!autocompleteService.current && window.google) {
-      autocompleteService.current =
+    if (!mapsService.autocomplete && window.google) {
+      mapsService.autocomplete =
         new window.google.maps.places.AutocompleteService();
     }
-    if (!autocompleteService.current) {
+    if (!mapsService.geocoder && window.google) {
+      mapsService.geocoder = new window.google.maps.Geocoder();
+    }
+    if (!mapsService.autocomplete || !mapsService.geocoder) {
       return undefined;
     }
 
@@ -92,6 +81,23 @@ export default function MapsAutocomplete({ value, setValue, attempt }) {
     };
   }, [value, inputValue, fetch]);
 
+  function onChange(event, newValue) {
+    setOptions(newValue ? [newValue, ...options] : options);
+    setValue(newValue?.description ?? newValue);
+    if (!newValue?.place_id) {
+      fetchCoordinates({ address: newValue }, (results) => {
+        if (results && results.length > 0)
+          setCoordinates(results[0].geometry.location);
+        else
+          setCoordinates({ lat: 43.662639, lng: -79.391687 });
+      });
+    } else {
+      fetchCoordinates({ placeId: newValue.place_id }, (results) => {
+        setCoordinates(results[0].geometry.location);
+      });
+    }
+  }
+
   return (
     <Autocomplete
       getOptionLabel={(option) =>
@@ -105,10 +111,7 @@ export default function MapsAutocomplete({ value, setValue, attempt }) {
       filterSelectedOptions
       value={value}
       noOptionsText="No locations"
-      onChange={(event, newValue) => {
-        setOptions(newValue ? [newValue, ...options] : options);
-        setValue(newValue);
-      }}
+      onChange={onChange}
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue);
       }}
@@ -125,7 +128,7 @@ export default function MapsAutocomplete({ value, setValue, attempt }) {
       )}
       renderOption={(props, option) => {
         const matches =
-          option.structured_formatting.main_text_matched_substrings || [];
+          option?.structured_formatting?.main_text_matched_substrings ?? [];
 
         const parts = parse(
           option.structured_formatting.main_text,

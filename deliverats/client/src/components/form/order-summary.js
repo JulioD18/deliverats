@@ -35,21 +35,23 @@ export default function OrderSummary({ values }) {
                 secondary={formatter.format(item.price * item.quantity)}
               />
             </ListItem>
-            {item.options.length > 0 && <List dense sx={{ marginLeft: "55px" }}>
-              {item.options.map((option) => (
-                <ListItem key={option.name}>
-                  <ListItemAvatar>
-                    <Avatar>
-                      <AddIcon />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={option.name + " (x" + item.quantity + ")"}
-                    secondary={formatter.format(option.price * item.quantity)}
-                  />
-                </ListItem>
-              ))}
-            </List>}
+            {item.options.length > 0 && (
+              <List dense sx={{ marginLeft: "55px" }}>
+                {item.options.map((option) => (
+                  <ListItem key={option.name}>
+                    <ListItemAvatar>
+                      <Avatar>
+                        <AddIcon />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={option.name + " (x" + item.quantity + ")"}
+                      secondary={formatter.format(option.price * item.quantity)}
+                    />
+                  </ListItem>
+                ))}
+              </List>
+            )}
           </Box>
         ))}
       </List>

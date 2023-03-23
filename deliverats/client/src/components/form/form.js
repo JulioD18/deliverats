@@ -3,9 +3,11 @@ import { useParams } from "react-router";
 
 import { connect } from "react-redux";
 import { getForm } from "../../redux/actions/form-action";
+import { useJsApiLoader } from "@react-google-maps/api";
 
 import Menu from "./menu";
 import ClientDetails from "./client-details";
+import LocationPicker from "./location-picker";
 import OrderSummary from "./order-summary";
 
 import { useTheme } from "@mui/material/styles";
@@ -19,13 +21,16 @@ import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import { Box } from "@mui/system";
 
-const steps = ["Menu", "Client Details", "Order Summary"];
+const steps = ["Menu", "Client Details", "Location", "Order Summary"];
+const GOOGLE_MAPS_API_KEY = "AIzaSyCKhtQNMW0qP-CPly_PXjdLEvRnpZ2fo4U";
+const libraries = ["places"];
 
 const Form = ({ getForm }) => {
   const { formId } = useParams();
   const [form, setForm] = useState();
   const [activeStep, setActiveStep] = useState(0);
   const [error, setError] = useState();
+  const [coordinates, setCoordinatesVal] = useState();
   const [attempt, setAttempt] = useState(false);
   const [formValues, setFormValues] = useState({
     client: {
@@ -35,12 +40,19 @@ const Form = ({ getForm }) => {
       email: "",
       address: null,
       address2: "",
+      coordinates: null,
     },
     items: {},
     total: 0,
   });
 
   const theme = useTheme();
+
+  useJsApiLoader({
+    id: "google-map-script",
+    libraries: libraries,
+    googleMapsApiKey: GOOGLE_MAPS_API_KEY,
+  });
 
   const [menu, setMenu] = useState(
     <React.Fragment>
@@ -59,13 +71,23 @@ const Form = ({ getForm }) => {
           <ClientDetails
             formValues={formValues}
             setFormValues={setFormValues}
+            setCoordinates={setCoordinates}
             setError={setError}
             attempt={attempt}
           />
         );
+      case 2:
+        return <LocationPicker coordinates={coordinates} setCoordinates={setCoordinates} />;
       default:
         return <OrderSummary values={formatValues()} />;
     }
+  }
+
+  function setCoordinates(coordinates) {
+    setCoordinatesVal(coordinates);
+    const newFormValue = {...formValues}
+    newFormValue.client.coordinates = coordinates
+    setFormValues(newFormValue);
   }
 
   function getValues(dictionary) {
