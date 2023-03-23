@@ -19,6 +19,8 @@ import AddIcon from "@mui/icons-material/Add";
 import LocalPizzaIcon from "@mui/icons-material/LocalPizza";
 import SearchOffIcon from "@mui/icons-material/SearchOff";
 
+import { Link } from "react-router-dom";
+
 const formLimit = 8;
 
 const MyForms = ({ forms, getForms }) => {
@@ -49,10 +51,10 @@ const MyForms = ({ forms, getForms }) => {
       {!forms?.forms && (
         <Grid
           container
-          mt={2}
+          mt={4}
           sx={{ display: "flex", justifyContent: "center" }}
         >
-          <CircularProgress />
+          <CircularProgress size="4vh" />
         </Grid>
       )}
       {forms?.forms && (
@@ -80,7 +82,7 @@ const MyForms = ({ forms, getForms }) => {
                   <Typography component="h6" align="center" my={1.5}>
                     {form.name}
                   </Typography>
-                  <Button variant="contained" href={`/forms/${form.id}`}>
+                  <Button as={Link} variant="contained" to={`/forms/${form.id}`} sx={{ textDecoration: 'none' }}>
                     View Form
                   </Button>
                 </Paper>

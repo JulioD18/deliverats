@@ -1,6 +1,5 @@
 import React from "react";
 import CircularProgress from "@mui/material/CircularProgress";
-import { Box } from "@mui/system";
 
 import { withAuthenticationRequired } from "@auth0/auth0-react";
 
@@ -9,7 +8,6 @@ export const AuthenticationGuard = ({ component }) => {
   const Component = withAuthenticationRequired(component, {
     onRedirecting: () => (
       <React.Fragment>
-        <Box marginTop="40%"></Box>
         <CircularProgress
           size="4rem"
           sx={{
@@ -18,7 +16,7 @@ export const AuthenticationGuard = ({ component }) => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            minHeight: "100vh",
+            marginTop: "35vh",
           }}
         />
       </React.Fragment>
