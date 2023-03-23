@@ -1,5 +1,9 @@
 import React, { useState } from "react";
 
+import { postForm } from "../../redux/actions/form-action";
+import { useAuth0 } from "@auth0/auth0-react";
+import { connect } from "react-redux";
+
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
@@ -18,10 +22,11 @@ import { useNavigate } from "react-router-dom";
 
 const steps = ["Details", "Categories", "Items", "Options"];
 
-const FormBuilder = () => {
+const FormBuilder = ({ postForm }) => {
   const [activeStep, setActiveStep] = useState(0);
   const [error, setError] = useState(true);
   const [attempt, setAttempt] = useState(false);
+  const [formLink, setFormLink] = useState();
   const [formValues, setFormValues] = useState({
     name: "",
     email: undefined,
@@ -72,8 +77,16 @@ const FormBuilder = () => {
           />
         );
       default:
-        return <Share form={formValues} />;
+        return <Share formLink={formLink} />;
     }
+  }
+
+  const { user, getAccessTokenSilently } = useAuth0();
+
+  async function createForm() {
+    const token = await getAccessTokenSilently();
+    const res = await postForm({ user, token, form: formValues });
+    setFormLink(`http://localhost:3000/forms/${res.payload.id}`);
   }
 
   function handleNext() {
@@ -83,6 +96,7 @@ const FormBuilder = () => {
       setAttempt(false);
       setError(true);
       setActiveStep(activeStep + 1);
+      if (activeStep === steps.length - 1) createForm();
     }
   }
 
@@ -134,4 +148,4 @@ const FormBuilder = () => {
   );
 };
 
-export default FormBuilder;
+export default connect(undefined, { postForm })(FormBuilder);

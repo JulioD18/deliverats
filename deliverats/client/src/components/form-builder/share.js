@@ -1,18 +1,13 @@
 import React from "react";
 import { useEffect, useState, Fragment } from "react";
 import { Link } from "react-router-dom";
-import { connect } from "react-redux";
-import { postForms } from "../../redux/actions/form-action";
-import { useAuth0 } from "@auth0/auth0-react";
 import QRCode from "react-qr-code";
 
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
 
-const Share = ({ form, postForms }) => {
-  const { user, getAccessTokenSilently } = useAuth0();
-
+export default function Share({ formLink }) {
   const [link, setLink] = useState(
     <Fragment>
       <CircularProgress />
@@ -20,32 +15,24 @@ const Share = ({ form, postForms }) => {
   );
 
   useEffect(() => {
-    (async () => {
-      try {
-        const token = await getAccessTokenSilently();
-        const res = await postForms({ user, token, form });
-        const returnLink = `http://localhost:3000/forms/${res.payload.id}`;
-        setLink(
-          <Grid
-            container
-            spacing={3}
-            style={{ alignItems: "center", flexDirection: "column" }}
-          >
-            <Grid item>
-              <QRCode value={returnLink} />
-            </Grid>
-            <Grid item>
-              <Typography variant="h6" mb={2}>
-                <Link to={returnLink}>{returnLink}</Link>
-              </Typography>
-            </Grid>
-          </Grid>
-        );
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, [form, getAccessTokenSilently, postForms, user]);
+    if (!formLink) return;
+    setLink(
+      <Grid
+        container
+        spacing={3}
+        style={{ alignItems: "center", flexDirection: "column" }}
+      >
+        <Grid item>
+          <QRCode value={formLink} />
+        </Grid>
+        <Grid item>
+          <Typography variant="h6" mb={2}>
+            <Link to={formLink}>{formLink}</Link>
+          </Typography>
+        </Grid>
+      </Grid>
+    );
+  }, [formLink]);
 
   return (
     <Fragment>
@@ -55,6 +42,4 @@ const Share = ({ form, postForms }) => {
       {link}
     </Fragment>
   );
-};
-
-export default connect(undefined, { postForms })(Share);
+}
