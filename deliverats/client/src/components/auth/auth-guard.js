@@ -12,11 +12,14 @@ export const AuthenticationGuard = ({ component }) => {
         <Box marginTop="40%"></Box>
         <CircularProgress
           size="4rem"
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          minHeight="100vh"
-          sx={{ mx: "auto", my: "auto" }}
+          sx={{
+            mx: "auto", 
+            my: "auto", 
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            minHeight: "100vh"
+          }}
         />
       </React.Fragment>
     ),

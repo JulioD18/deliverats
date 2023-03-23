@@ -4,12 +4,6 @@ import { GoogleMap, Marker } from "@react-google-maps/api";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 
-/**
- * IMPORTANT!
- * Some of the code on this file was copied from
- * https://www.npmjs.com/package/@react-google-maps/api
- */
-
 const containerStyle = {
   width: "100%",
   height: "400px",

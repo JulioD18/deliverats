@@ -21,7 +21,7 @@ import SearchOffIcon from "@mui/icons-material/SearchOff";
 
 const formLimit = 8;
 
-const MyForms = ({ getForms }) => {
+const MyForms = ({ forms, getForms }) => {
   const { user, getAccessTokenSilently } = useAuth0();
   const { sub } = user;
   const [offset, setOffset] = useState(0);
@@ -29,35 +29,36 @@ const MyForms = ({ getForms }) => {
   const theme = useTheme();
   const navigate = useNavigate();
 
-  const [formList, setFormList] = useState(
-    <Grid
-      item
-      container
-      mt={2}
-      sx={{ display: "flex", justifyContent: "center" }}
-    >
-      <CircularProgress />
-    </Grid>
-  );
-
   const paginationChange = (event, value) => {
     setOffset((value - 1) * formLimit);
+  };
+
+  const newForm = () => {
+    navigate("/form-builder");
   };
 
   useEffect(() => {
     (async () => {
       const token = await getAccessTokenSilently();
-      const res = await getForms({ token, sub, offset, limit: formLimit });
-      const pages = Math.ceil(res.payload.count / formLimit);
+      await getForms({ token, sub, offset, limit: formLimit });
+    })();
+  }, [getAccessTokenSilently, getForms, offset, sub]);
 
-      const newForm = () => {
-        navigate("/form-builder");
-      };
-
-      setFormList(
-        <Grid item container spacing={3} mt={2}>
-          {res.payload.forms.length > 0 &&
-            res.payload.forms.map((form) => (
+  return (
+    <Container component="main" mb={2}>
+      {!forms?.forms && (
+        <Grid
+          container
+          mt={4}
+          sx={{ display: "flex", justifyContent: "center" }}
+        >
+          <CircularProgress />
+        </Grid>
+      )}
+      {forms?.forms && (
+        <Grid container spacing={3} mt={2}>
+          {forms.forms.length > 0 &&
+            forms.forms.map((form) => (
               <Grid item key={form.id} style={{ width: "25%" }}>
                 <Paper
                   variant="outlined"
@@ -85,10 +86,10 @@ const MyForms = ({ getForms }) => {
                 </Paper>
               </Grid>
             ))}
-          {res.payload.count > formLimit && (
+          {forms.count > formLimit && (
             <Grid item container sx={{ justifyContent: "center" }}>
               <Pagination
-                count={pages}
+                count={Math.ceil(forms.count / formLimit)}
                 sx={{ marginTop: "20px" }}
                 size="large"
                 showFirstButton
@@ -97,7 +98,7 @@ const MyForms = ({ getForms }) => {
               />
             </Grid>
           )}
-          {res.payload.forms.length === 0 && (
+          {forms.forms.length === 0 && (
             <Grid item container sx={{ justifyContent: "center" }}>
               <Grid item container sx={{ justifyContent: "center" }}>
                 <SearchOffIcon sx={{ fontSize: 100 }} />
@@ -114,7 +115,7 @@ const MyForms = ({ getForms }) => {
               </Grid>
             </Grid>
           )}
-          {res.payload.forms.length > 0 && (
+          {forms.forms.length > 0 && (
             <Fab
               size="large"
               onClick={newForm}
@@ -125,20 +126,7 @@ const MyForms = ({ getForms }) => {
             </Fab>
           )}
         </Grid>
-      );
-    })();
-  }, [
-    getAccessTokenSilently,
-    getForms,
-    navigate,
-    offset,
-    sub,
-    theme.palette.primary.main,
-  ]);
-
-  return (
-    <Container component="main" mb={2}>
-      <Grid container>{formList}</Grid>
+      )}
     </Container>
   );
 };
