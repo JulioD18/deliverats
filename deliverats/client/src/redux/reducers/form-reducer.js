@@ -1,4 +1,4 @@
-import { GET_FORMS, POST_FORMS } from "../actions/actions.js";
+import { GET_FORMS, POST_FORM } from "../actions/actions.js";
 
 const initialState = {
   forms: [],
@@ -12,7 +12,7 @@ export default function formReducer(state = initialState, action) {
         ...state,
         forms: payload,
       };
-    case POST_FORMS:
+    case POST_FORM:
       return {
         ...state,
         forms: payload,

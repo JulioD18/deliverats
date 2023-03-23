@@ -1,4 +1,4 @@
-import { GET_FORMS, GET_FORM, POST_FORMS } from "./actions.js";
+import { GET_FORMS, GET_FORM, POST_FORM } from "./actions.js";
 import store from "../store.js";
 
 const dispatch = store.dispatch;
@@ -40,7 +40,7 @@ export const getForm = (id) => {
   };
 };
 
-export const postForms = ({ user, token, form }) => {
+export const postForm = ({ user, token, form }) => {
   return async () => {
     try {
       const response = await fetch("http://localhost:3001/api/forms", {
@@ -52,7 +52,7 @@ export const postForms = ({ user, token, form }) => {
         body: JSON.stringify(form),
       });
       const data = await response.json();
-      return dispatch({ type: POST_FORMS, payload: data });
+      return dispatch({ type: POST_FORM, payload: data });
     } catch (error) {
       console.log(error);
     }
