@@ -20,7 +20,6 @@ deliveriesRouter.post("/", async function (req, res, next) {
     "email",
     "phone",
     "address",
-    "suite",
     "latitude",
     "longitude",
     "items",

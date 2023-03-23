@@ -57,18 +57,17 @@ const Form = ({ getForm, postDelivery }) => {
     googleMapsApiKey: GOOGLE_MAPS_API_KEY,
   });
 
-  const [menu, setMenu] = useState(
-    <React.Fragment>
-      <Box sx={{ display: "flex", justifyContent: "center" }}>
-        <CircularProgress />
-      </Box>
-    </React.Fragment>
-  );
-
   function getStepContent(step) {
     switch (step) {
       case 0:
-        return menu;
+        return (
+          <Menu
+            form={form}
+            formValues={formValues}
+            setFormValues={setFormValues}
+            setError={setError}
+          />
+        );
       case 1:
         return (
           <ClientDetails
@@ -150,19 +149,6 @@ const Form = ({ getForm, postDelivery }) => {
     })();
   }, [formId, getForm]);
 
-  useEffect(() => {
-    if (form) {
-      setMenu(
-        <Menu
-          form={form}
-          formValues={formValues}
-          setFormValues={setFormValues}
-          setError={setError}
-        />
-      );
-    }
-  }, [formValues, form]);
-
   return (
     <Container component="main" sx={{ my: 4 }}>
       <Paper
@@ -182,33 +168,40 @@ const Form = ({ getForm, postDelivery }) => {
             </Step>
           ))}
         </Stepper>
-        <React.Fragment>
-          {getStepContent(activeStep)}
-          {error && attempt && (
-            <Typography sx={{ color: "red", textAlign: "center" }} mt={2.5}>
-              {error}
-            </Typography>
-          )}
-          {activeStep < steps.length && (
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: activeStep > 0 ? "space-between" : "flex-end",
-              }}
-              mt={5}
-              mx="auto"
-            >
-              {activeStep > 0 && (
-                <Button variant="contained" onClick={handleBack}>
-                  Back
+        {form && (
+          <React.Fragment>
+            {getStepContent(activeStep)}
+            {error && attempt && (
+              <Typography sx={{ color: "red", textAlign: "center" }} mt={2.5}>
+                {error}
+              </Typography>
+            )}
+            {activeStep < steps.length && (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: activeStep > 0 ? "space-between" : "flex-end",
+                }}
+                mt={5}
+                mx="auto"
+              >
+                {activeStep > 0 && (
+                  <Button variant="contained" onClick={handleBack}>
+                    Back
+                  </Button>
+                )}
+                <Button variant="contained" onClick={handleNext}>
+                  {activeStep === steps.length - 1 ? "Place Order" : "Next"}
                 </Button>
-              )}
-              <Button variant="contained" onClick={handleNext}>
-                {activeStep === steps.length - 1 ? "Place Order" : "Next"}
-              </Button>
-            </Box>
-          )}
-        </React.Fragment>
+              </Box>
+            )}
+          </React.Fragment>
+        )}
+        {!form && (
+          <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <CircularProgress />
+          </Box>
+        )}
       </Paper>
     </Container>
   );
