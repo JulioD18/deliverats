@@ -50,4 +50,12 @@ export const Delivery = sequelize.define("Delivery", {
     type: DataTypes.STRING,
     defaultValue: "received",
   },
+  emailDelivered: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+  },
+  smsDelivered: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+  }
 });
