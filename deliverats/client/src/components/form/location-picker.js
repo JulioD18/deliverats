@@ -21,7 +21,7 @@ function LocationPicker({ coordinates, setCoordinates }) {
   function centerChanged() {
     if (!map) return;
     const newCenter = map.getCenter();
-    setCoordinates(newCenter)
+    setCoordinates(newCenter);
   }
 
   return (

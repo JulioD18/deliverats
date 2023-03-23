@@ -45,10 +45,7 @@ function App() {
             path="/form-builder"
             element={<AuthenticationGuard component={FormBuilder} />}
           />
-          <Route 
-            path="form/:formId"
-            element={<FormStatus/>}
-          />
+          <Route path="form/:formId" element={<FormStatus />} />
         </Routes>
       </Grid>
     </ThemeProvider>

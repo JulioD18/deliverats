@@ -190,14 +190,23 @@ const FormStatus = () => {
       sx={{ width: "80%", mx: "auto", mt: "10%", px: 5, py: 8 }}
       spacing={20}
     >
-      <Stepper alternativeLabel activeStep={activeStep} connector={<QontoConnector />}>
+      <Stepper
+        alternativeLabel
+        activeStep={activeStep}
+        connector={<QontoConnector />}
+      >
         {steps.map((label) => (
           <Step key={label}>
             <StepLabel StepIconComponent={QontoStepIcon}>{label}</StepLabel>
           </Step>
         ))}
       </Stepper>
-      <Stepper alternativeLabel activeStep={activeStep} connector={<ColorlibConnector />} sx={{mt:2}}>
+      <Stepper
+        alternativeLabel
+        activeStep={activeStep}
+        connector={<ColorlibConnector />}
+        sx={{ mt: 2 }}
+      >
         {steps.map((label) => (
           <Step key={label}>
             <StepLabel
