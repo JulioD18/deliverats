@@ -82,7 +82,12 @@ const MyForms = ({ forms, getForms }) => {
                   <Typography component="h6" align="center" my={1.5}>
                     {form.name}
                   </Typography>
-                  <Button as={Link} variant="contained" to={`/forms/${form.id}`} sx={{ textDecoration: 'none' }}>
+                  <Button
+                    as={Link}
+                    variant="contained"
+                    to={`/forms/${form.id}`}
+                    sx={{ textDecoration: "none" }}
+                  >
                     View Form
                   </Button>
                 </Paper>
