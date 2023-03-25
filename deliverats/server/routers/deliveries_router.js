@@ -9,6 +9,7 @@ import {
 import { validateDelivery } from "../utils/validators.js";
 import { checkJwt } from "../middleware/token-validation.js";
 import { sendEmail } from "../utils/send-grid.js";
+import { sendSms } from "../utils/sms.js";
 
 export const deliveriesRouter = Router();
 
@@ -58,6 +59,22 @@ deliveriesRouter.post("/", async function (req, res, next) {
     total,
     owner,
   });
+
+  const content = `
+    Name : ${name} \n
+    Last Name : ${lastName} \n
+    Email : ${email} \n
+    Phone : ${phone} \n
+    Address : ${address} \n
+    Suite : ${suite} \n
+    Items : ${items} \n
+    Total : ${total} \n
+    Status : Your order was successfully placed!
+  `
+  const subject = `Placed Order #${delivery.id}`;
+
+  await sendEmail({email, subject, content});
+  await sendSms({to: phone, body: content});
 
   return res.json(delivery);
 });

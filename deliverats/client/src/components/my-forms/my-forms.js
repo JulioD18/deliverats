@@ -44,7 +44,7 @@ const MyForms = ({ forms, getForms }) => {
       const token = await getAccessTokenSilently();
       await getForms({ token, sub, offset, limit: formLimit });
     })();
-  }, [getAccessTokenSilently, getForms, offset, sub]);
+  }, [!forms]);
 
   return (
     <Container component="main">

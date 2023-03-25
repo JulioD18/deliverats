@@ -6,8 +6,8 @@ import { Server } from "socket.io";
 import { sequelize } from "./datasource.js";
 import { formsRouter } from "./routers/forms_router.js";
 import { deliveriesRouter } from "./routers/deliveries_router.js";
-import { emailRouter } from "./routers/email_router.js";
-import { smsRouter } from "./routers/sms_router.js";
+import { emailRouter, setEmailSocket } from "./routers/email_router.js";
+import { smsRouter, setSmsSocket } from "./routers/sms_router.js";
 
 import * as Sentry from "@sentry/node";
 import * as Tracing from "@sentry/tracing";
@@ -18,7 +18,13 @@ app.use(bodyParser.json());
 app.use(cors());
 
 const server = http.createServer(app);
-export const io = new Server(server);
+const io = new Server(server, { cors: "*" }).listen(3002);
+
+io.on("connection", (socket) => {
+  console.log("a user connected");
+  socket.on("email", () => {setEmailSocket(socket)});
+  socket.on("sms", () => {setSmsSocket(socket)});
+});
 
 Sentry.init({
   dsn: "https://a771fa69fcb74977b17d20e40ec7c43e@o4504838835404800.ingest.sentry.io/4504838968246272",

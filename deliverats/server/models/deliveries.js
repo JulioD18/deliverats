@@ -52,10 +52,10 @@ export const Delivery = sequelize.define("Delivery", {
   },
   emailDelivered: {
     type: DataTypes.BOOLEAN,
-    allowNull: false,
+    defaultValue: false,
   },
   smsDelivered: {
     type: DataTypes.BOOLEAN,
-    allowNull: false,
+    defaultValue: false,
   }
 });
