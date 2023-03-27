@@ -5,7 +5,10 @@ import http from "http";
 import { Server } from "socket.io";
 import { sequelize } from "./datasource.js";
 import { formsRouter } from "./routers/forms_router.js";
-import { deliveriesRouter } from "./routers/deliveries_router.js";
+import {
+  deliveriesRouter,
+  setDeliverySocket,
+} from "./routers/deliveries_router.js";
 import { emailRouter, setEmailSocket } from "./routers/email_router.js";
 import { smsRouter, setSmsSocket } from "./routers/sms_router.js";
 
@@ -22,11 +25,15 @@ const io = new Server(server, { cors: "*" }).listen(3002);
 
 io.on("connection", (socket) => {
   console.log("a user connected");
-  socket.on("email", () => {
-    setEmailSocket(socket);
-  });
-  socket.on("sms", () => {
-    setSmsSocket(socket);
+
+  setEmailSocket(socket);
+  setSmsSocket(socket);
+  setDeliverySocket(socket);
+
+  socket.on("disconnect", () => {
+    socket.removeAllListeners();
+    socket.disconnect();
+    console.log("user disconnected");
   });
 });
 

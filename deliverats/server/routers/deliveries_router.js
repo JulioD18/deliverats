@@ -12,6 +12,7 @@ import { sendEmail } from "../utils/send-grid.js";
 import { sendSms } from "../utils/sms.js";
 
 export const deliveriesRouter = Router();
+let socket;
 
 deliveriesRouter.post("/", async function (req, res, next) {
   // Validate parameters
@@ -131,3 +132,26 @@ deliveriesRouter.delete("/:id", checkJwt, async function (req, res, next) {
 
   return res.json(delivery);
 });
+
+deliveriesRouter.patch("/events/:id", async function (req, res, next) {
+  // Retrieve parameters
+  const deliveryId = req.params.id;
+  const status = req.body.status;
+
+  // Check that delivery exists
+  const delivery = await Delivery.findByPk(deliveryId);
+  if (!delivery) return notFoundError(res, "delivery", deliveryId);
+
+  // Update delivery
+  delivery.status = status;
+  await delivery.save();
+
+  // Send socket event
+  socket.emit("delivery status", { deliveryId, status });
+
+  return res.json(delivery);
+});
+
+export const setDeliverySocket = (sock) => {
+  socket = sock;
+};

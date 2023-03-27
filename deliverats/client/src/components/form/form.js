@@ -144,7 +144,7 @@ const Form = ({ form, getForm, postDelivery }) => {
     (async () => {
       await getForm(formId);
     })();
-  }, [!form]);
+  });
 
   return (
     <Container component="main" sx={{ my: 4 }}>

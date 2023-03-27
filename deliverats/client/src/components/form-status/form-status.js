@@ -30,16 +30,31 @@ const FormStatus = ({ delivery, getDelivery }) => {
 
   const trackId = useLocation().pathname.split("/")[2];
 
+  const deliveryStatus = (status) => {
+    switch (status) {
+      case "accepted":
+        setActiveStep(1);
+        break;
+      case "ready":
+        setActiveStep(2);
+        break;
+      case "delivered":
+        setActiveStep(3);
+        break;
+      default:
+        break;
+    }
+  };
+
   useEffect(() => {
+    const socket = io("http://localhost:3002");
+
     (async () => {
       await getDelivery(trackId);
       if (delivery) {
         setEmailSent(delivery.emailDelivered);
         setSmsSent(delivery.smsDelivered);
-
-        const socket = io("http://localhost:3002");
-        socket.emit("email");
-        socket.emit("sms");
+        deliveryStatus(delivery.status);
 
         socket.on("send trackId", () => {
           socket.emit("receive trackId", trackId);
@@ -56,6 +71,12 @@ const FormStatus = ({ delivery, getDelivery }) => {
             setEmailSent(true);
           });
         }
+
+        socket.on("delivery status", ({ deliveryId, status }) => {
+          if (deliveryId === trackId) {
+            deliveryStatus(status);
+          }
+        });
       }
     })();
   }, [!delivery]);
