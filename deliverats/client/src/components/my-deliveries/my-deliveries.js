@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
-import { getForms } from "../../redux/actions/form-action";
+import { getDeliveries } from "../../redux/actions/delivery-action";
 import { useAuth0 } from "@auth0/auth0-react";
 
 import { useTheme } from "@mui/material/styles";
@@ -21,9 +21,9 @@ import SearchOffIcon from "@mui/icons-material/SearchOff";
 
 import { Link } from "react-router-dom";
 
-const formLimit = 8;
+const deliveryLimit = 8;
 
-const MyForms = ({ forms, getForms }) => {
+const MyDeliveries = ({ deliveries, getDeliveries }) => {
   const { user, getAccessTokenSilently } = useAuth0();
   const { sub } = user;
   const [offset, setOffset] = useState(0);
@@ -32,23 +32,23 @@ const MyForms = ({ forms, getForms }) => {
   const navigate = useNavigate();
 
   const paginationChange = (event, value) => {
-    setOffset((value - 1) * formLimit);
+    setOffset((value - 1) * deliveryLimit);
   };
 
-  const newForm = () => {
-    navigate("/form-builder");
+  const newDelivery = () => {
+    navigate("/delivery-builder");
   };
 
   useEffect(() => {
     (async () => {
       const token = await getAccessTokenSilently();
-      await getForms({ token, sub, offset, limit: formLimit });
+      await getDeliveries({ token, sub, offset, limit: deliveryLimit });
     })();
-  }, [!forms, offset]);
+  }, [!deliveries, offset]);
 
   return (
     <Container component="main">
-      {!forms?.forms && (
+      {!deliveries?.deliveries && (
         <Grid
           container
           mt={4}
@@ -57,11 +57,11 @@ const MyForms = ({ forms, getForms }) => {
           <CircularProgress size="4vh" />
         </Grid>
       )}
-      {forms?.forms && (
+      {deliveries?.deliveries && (
         <Grid container spacing={3} mt={2}>
-          {forms.forms.length > 0 &&
-            forms.forms.map((form) => (
-              <Grid item key={form.id} style={{ width: "25%" }}>
+          {deliveries.deliveries.length > 0 &&
+            deliveries.deliveries.map((delivery) => (
+              <Grid item key={delivery.id} style={{ width: "25%" }}>
                 <Paper
                   variant="outlined"
                   sx={{
@@ -80,23 +80,23 @@ const MyForms = ({ forms, getForms }) => {
                     <LocalPizzaIcon />
                   </Avatar>
                   <Typography component="h6" align="center" my={1.5}>
-                    {form.name}
+                    {delivery.name}
                   </Typography>
                   <Button
                     as={Link}
                     variant="contained"
-                    to={`/forms/${form.id}`}
+                    to={`/deliveries/${delivery.id}`}
                     sx={{ textDecoration: "none" }}
                   >
-                    View Form
+                    View Delivery
                   </Button>
                 </Paper>
               </Grid>
             ))}
-          {forms.count > formLimit && (
+          {deliveries.count > deliveryLimit && (
             <Grid item container sx={{ justifyContent: "center" }}>
               <Pagination
-                count={Math.ceil(forms.count / formLimit)}
+                count={Math.ceil(deliveries.count / deliveryLimit)}
                 sx={{ marginTop: "20px" }}
                 size="large"
                 showFirstButton
@@ -105,27 +105,27 @@ const MyForms = ({ forms, getForms }) => {
               />
             </Grid>
           )}
-          {forms.forms.length === 0 && (
+          {deliveries.deliveries.length === 0 && (
             <Grid item container sx={{ justifyContent: "center" }}>
               <Grid item container sx={{ justifyContent: "center" }}>
                 <SearchOffIcon sx={{ fontSize: 100 }} />
               </Grid>
               <Grid item container sx={{ justifyContent: "center" }} mt={2}>
                 <Typography variant="h6" component="h6">
-                  No forms found
+                  No deliveries found
                 </Typography>
               </Grid>
               <Grid item container sx={{ justifyContent: "center" }} mt={4}>
-                <Button onClick={newForm} variant="contained">
-                  Create Form
+                <Button onClick={newDelivery} variant="contained">
+                  Create Delivery
                 </Button>
               </Grid>
             </Grid>
           )}
-          {forms.forms.length > 0 && (
+          {deliveries.deliveries.length > 0 && (
             <Fab
               size="large"
-              onClick={newForm}
+              onClick={newDelivery}
               color="primary"
               sx={{ position: "fixed", bottom: "40px", right: "40px" }}
             >
@@ -139,7 +139,7 @@ const MyForms = ({ forms, getForms }) => {
 };
 
 const mapStateToProps = (state) => ({
-  forms: state.form.forms,
+  deliveries: state.delivery.deliveries,
 });
 
-export default connect(mapStateToProps, { getForms })(MyForms);
+export default connect(mapStateToProps, { getDeliveries })(MyDeliveries);
