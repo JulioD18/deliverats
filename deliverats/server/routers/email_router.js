@@ -16,7 +16,7 @@ emailRouter.post("/events", async (req, res) => {
   (async () => {
     if (eventReceived === "delivered") {
       socket.emit("send trackId");
-      socket.on("receive trackId", async(trackId) => {
+      socket.on("receive trackId", async (trackId) => {
         await Delivery.update(
           {
             emailDelivered: true,
@@ -35,4 +35,4 @@ emailRouter.post("/events", async (req, res) => {
 
 export const setEmailSocket = (sock) => {
   socket = sock;
-}
+};

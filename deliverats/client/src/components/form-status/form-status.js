@@ -33,33 +33,31 @@ const FormStatus = ({ delivery, getDelivery }) => {
   useEffect(() => {
     (async () => {
       await getDelivery(trackId);
-      if(delivery) {
+      if (delivery) {
         setEmailSent(delivery.emailDelivered);
         setSmsSent(delivery.smsDelivered);
 
         const socket = io("http://localhost:3002");
         socket.emit("email");
-        socket.emit("sms")
+        socket.emit("sms");
 
         socket.on("send trackId", () => {
           socket.emit("receive trackId", trackId);
-        })
-    
+        });
+
         if (!emailSent) {
           socket.on("sms delivered", () => {
             setSmsSent(true);
           });
         }
-    
+
         if (!smsSent) {
           socket.on("email delivered", () => {
             setEmailSent(true);
           });
         }
       }
-
     })();
-
   }, [!delivery]);
 
   return (

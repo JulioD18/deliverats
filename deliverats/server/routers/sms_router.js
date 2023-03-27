@@ -33,4 +33,4 @@ smsRouter.post("/events", async (req, res) => {
 
 export const setSmsSocket = (sock) => {
   socket = sock;
-}
+};

@@ -70,11 +70,11 @@ deliveriesRouter.post("/", async function (req, res, next) {
     Items : ${items} \n
     Total : ${total} \n
     Status : Your order was successfully placed!
-  `
+  `;
   const subject = `Placed Order #${delivery.id}`;
 
-  await sendEmail({email, subject, content});
-  await sendSms({to: phone, body: content});
+  await sendEmail({ email, subject, content });
+  await sendSms({ to: phone, body: content });
 
   return res.json(delivery);
 });

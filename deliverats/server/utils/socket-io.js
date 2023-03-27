@@ -1,12 +1,13 @@
-import { Server } from 'socket.io';
+import { Server } from "socket.io";
 
 const io = new Server(undefined, {
   cors: {
-    origin: "*"
-}});
+    origin: "*",
+  },
+});
 
-io.on('connection', (socket) => {
-  console.log('a user connected');
+io.on("connection", (socket) => {
+  console.log("a user connected");
 });
 
 export default io;

@@ -1,8 +1,12 @@
-import { GET_DELIVERIES, GET_DELIVERY, POST_DELIVERY } from "../actions/actions.js";
+import {
+  GET_DELIVERIES,
+  GET_DELIVERY,
+  POST_DELIVERY,
+} from "../actions/actions.js";
 
 const initialState = {
   deliveries: [],
-  delivery: undefined
+  delivery: undefined,
 };
 
 export default function deliveryReducer(state = initialState, action) {
@@ -17,7 +21,7 @@ export default function deliveryReducer(state = initialState, action) {
       return {
         ...state,
         delivery: payload,
-      }
+      };
     case POST_DELIVERY:
       return {
         ...state,

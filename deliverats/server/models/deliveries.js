@@ -57,5 +57,5 @@ export const Delivery = sequelize.define("Delivery", {
   smsDelivered: {
     type: DataTypes.BOOLEAN,
     defaultValue: false,
-  }
+  },
 });

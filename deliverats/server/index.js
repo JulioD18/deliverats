@@ -22,8 +22,12 @@ const io = new Server(server, { cors: "*" }).listen(3002);
 
 io.on("connection", (socket) => {
   console.log("a user connected");
-  socket.on("email", () => {setEmailSocket(socket)});
-  socket.on("sms", () => {setSmsSocket(socket)});
+  socket.on("email", () => {
+    setEmailSocket(socket);
+  });
+  socket.on("sms", () => {
+    setSmsSocket(socket);
+  });
 });
 
 Sentry.init({

@@ -141,11 +141,10 @@ const Form = ({ form, getForm, postDelivery }) => {
   }
 
   useEffect(() => {
-    (async() => {
+    (async () => {
       await getForm(formId);
-    }) ();
-  }, [!form])
-
+    })();
+  }, [!form]);
 
   return (
     <Container component="main" sx={{ my: 4 }}>
