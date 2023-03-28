@@ -33,6 +33,7 @@ const Form = ({ form, getForm, postDelivery }) => {
   const [error, setError] = useState();
   const [coordinates, setCoordinatesVal] = useState();
   const [attempt, setAttempt] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [formValues, setFormValues] = useState({
     name: "",
     lastName: "",
@@ -141,10 +142,9 @@ const Form = ({ form, getForm, postDelivery }) => {
   }
 
   useEffect(() => {
-    (async () => {
-      await getForm(formId);
-    })();
-  });
+    if (!form || form.id !== parseInt(formId)) getForm(formId);
+    else setLoading(false);
+  }, [form, formId, getForm]);
 
   return (
     <Container component="main" sx={{ my: 4 }}>
@@ -165,7 +165,7 @@ const Form = ({ form, getForm, postDelivery }) => {
             </Step>
           ))}
         </Stepper>
-        {form && (
+        {!loading && (
           <React.Fragment>
             {getStepContent(activeStep)}
             {error && attempt && (
@@ -194,7 +194,7 @@ const Form = ({ form, getForm, postDelivery }) => {
             )}
           </React.Fragment>
         )}
-        {!form && (
+        {loading && (
           <Box sx={{ display: "flex", justifyContent: "center" }}>
             <CircularProgress size="4rem" sx={{ margin: "10vh 0" }} />
           </Box>
