@@ -23,7 +23,7 @@ import { Link } from "react-router-dom";
 
 const formLimit = 8;
 
-const MyForms = ({ forms, getForms }) => {
+const Forms = ({ forms, getForms }) => {
   const { user, getAccessTokenSilently } = useAuth0();
   const { sub } = user;
   const [offset, setOffset] = useState(0);
@@ -142,4 +142,4 @@ const mapStateToProps = (state) => ({
   forms: state.form.forms,
 });
 
-export default connect(mapStateToProps, { getForms })(MyForms);
+export default connect(mapStateToProps, { getForms })(Forms);

@@ -11,8 +11,8 @@ import Grid from "@mui/material/Grid";
 import Home from "./components/home.js";
 import NavBar from "./components/navbar.js";
 import FormBuilder from "./components/form-builder/form-builder.js";
-import MyDeliveries from "./components/my-deliveries/my-deliveries.js";
-import MyForms from "./components/my-forms/my-forms.js";
+import Deliveries from "./components/deliveries/deliveries.js";
+import Forms from "./components/forms/forms.js";
 import Form from "./components/form/form.js";
 import FormStatus from "./components/form-status/form-status.js";
 
@@ -37,14 +37,15 @@ function App() {
       <Grid container>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/deliveries/:deliveryId" element={<Form />} />
+          <Route
+            path="/deliveries"
+            element={<AuthenticationGuard component={Deliveries} />}
+          />
           <Route path="/forms/:formId" element={<Form />} />
           <Route
-            path="/my-deliveries"
-            element={<AuthenticationGuard component={MyDeliveries} />}
-          />
-          <Route
-            path="/my-forms"
-            element={<AuthenticationGuard component={MyForms} />}
+            path="/forms"
+            element={<AuthenticationGuard component={Forms} />}
           />
           <Route
             path="/form-builder"

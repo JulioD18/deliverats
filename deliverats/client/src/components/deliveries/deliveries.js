@@ -23,7 +23,7 @@ import { Link } from "react-router-dom";
 
 const deliveryLimit = 8;
 
-const MyDeliveries = ({ deliveries, getDeliveries }) => {
+const Deliveries = ({ deliveries, getDeliveries }) => {
   const { user, getAccessTokenSilently } = useAuth0();
   const { sub } = user;
   const [offset, setOffset] = useState(0);
@@ -142,4 +142,4 @@ const mapStateToProps = (state) => ({
   deliveries: state.delivery.deliveries,
 });
 
-export default connect(mapStateToProps, { getDeliveries })(MyDeliveries);
+export default connect(mapStateToProps, { getDeliveries })(Deliveries);

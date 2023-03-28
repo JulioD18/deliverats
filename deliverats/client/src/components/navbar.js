@@ -37,8 +37,8 @@ const NavBar = () => {
 
           {isAuthenticated && (
             <Box>
-              <NavButton url="my-deliveries" name="Deliveries" />
-              <NavButton url="my-forms" name="Forms" />
+              <NavButton url="deliveries" name="Deliveries" />
+              <NavButton url="forms" name="Forms" />
             </Box>
           )}
 

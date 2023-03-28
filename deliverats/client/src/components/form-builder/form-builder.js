@@ -102,7 +102,7 @@ const FormBuilder = ({ postForm }) => {
 
   function handleBack() {
     if (activeStep === 0) {
-      navigate("/my-forms");
+      navigate("/forms");
     } else {
       setActiveStep(activeStep - 1);
     }
