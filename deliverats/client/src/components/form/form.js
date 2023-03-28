@@ -88,7 +88,7 @@ const Form = ({ form, getForm, postDelivery }) => {
   }
 
   async function placeOrder() {
-    const delivery = formatDelivery();
+    const delivery = formatDelivery({ form, formValues });
     const res = await postDelivery({ delivery });
     navigate(`/track/${res.payload.id}`);
   }

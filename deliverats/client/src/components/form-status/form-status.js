@@ -40,6 +40,9 @@ const FormStatus = ({ delivery, getDelivery }) => {
 
   const deliveryStatus = (status) => {
     switch (status) {
+      case "received":
+        setActiveStep(0);
+        break;
       case "accepted":
         setActiveStep(1);
         break;
@@ -82,7 +85,6 @@ const FormStatus = ({ delivery, getDelivery }) => {
         }
 
         socket.on("delivery status", ({ deliveryId, status }) => {
-          console.log("HEREEE", deliveryId, trackId, status);
           if (deliveryId === Number(trackId)) {
             deliveryStatus(status);
           }

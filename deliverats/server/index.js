@@ -5,12 +5,9 @@ import http from "http";
 import { Server } from "socket.io";
 import { sequelize } from "./datasource.js";
 import { formsRouter } from "./routers/forms_router.js";
-import {
-  deliveriesRouter,
-  setDeliverySocket,
-} from "./routers/deliveries_router.js";
-import { emailRouter, setEmailSocket } from "./routers/email_router.js";
-import { smsRouter, setSmsSocket } from "./routers/sms_router.js";
+import { deliveriesRouter } from "./routers/deliveries_router.js";
+import { emailRouter } from "./routers/email_router.js";
+import { smsRouter } from "./routers/sms_router.js";
 
 import * as Sentry from "@sentry/node";
 import * as Tracing from "@sentry/tracing";
@@ -21,14 +18,10 @@ app.use(bodyParser.json());
 app.use(cors());
 
 const server = http.createServer(app);
-const io = new Server(server, { cors: "*" }).listen(3002);
+export const io = new Server(server, { cors: "*" }).listen(3002);
 
-io.on("connection", (socket) => {
+io.on("connect", (socket) => {
   console.log("a user connected");
-
-  setEmailSocket(socket);
-  setSmsSocket(socket);
-  setDeliverySocket(socket);
 
   socket.on("disconnect", () => {
     socket.removeAllListeners();

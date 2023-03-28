@@ -46,6 +46,7 @@ export const getDelivery = (id) => {
 };
 
 export const postDelivery = ({ delivery }) => {
+  console.log("In postDelivery");
   return async () => {
     try {
       const response = await fetch("http://localhost:3001/api/deliveries", {

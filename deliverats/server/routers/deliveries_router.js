@@ -10,6 +10,7 @@ import { validateDelivery } from "../utils/validators.js";
 import { checkJwt } from "../middleware/token-validation.js";
 import { sendEmail } from "../utils/send-grid.js";
 import { sendSms } from "../utils/sms.js";
+import { io } from "../index.js";
 
 export const deliveriesRouter = Router();
 let socket;
@@ -130,7 +131,7 @@ deliveriesRouter.patch("/:id", checkJwt, async function (req, res, next) {
   // Patch delivery
   delivery = await delivery.update(req.body);
 
-  socket.emit("delivery status", {
+  io.emit("delivery status", {
     deliveryId: delivery.id,
     status: delivery.status,
   });

@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { Delivery } from "../models/deliveries.js";
+import { io } from "../index.js";
 
 export const smsRouter = Router();
 
@@ -13,21 +14,24 @@ smsRouter.post("/events", async (req, res) => {
   const messageSid = req.body.MessageSid;
   const messageStatus = req.body.MessageStatus;
 
-  if (messageStatus === "delivered") {
-    socket.emit("send trackId");
-    socket.on("receive trackId", async (trackId) => {
-      await Delivery.update(
-        {
-          smsDelivered: true,
-        },
-        {
-          where: { id: trackId },
-        }
-      );
-    });
-    socket.emit("sms delivered", true);
-  }
+  io.emit("send trackId");
+  io.on("connection", (socket) => {
+    if (messageStatus === "delivered") {
+      socket.on("receive trackId", async (trackId) => {
+        await Delivery.update(
+          {
+            smsDelivered: true,
+          },
+          {
+            where: { id: trackId },
+          }
+        );
+      });
+      socket.emit("sms delivered", true);
+    }
+  });
 
+  console.log("SMS event received: ", messageStatus);
   return res.json({ messageSid, messageStatus });
 });
 
