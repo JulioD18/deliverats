@@ -9,14 +9,18 @@ import SmsIcon from "@mui/icons-material/Sms";
 import CircularProgress from "@mui/material/CircularProgress";
 import Stack from "@mui/material/Stack";
 import CheckIcon from "@mui/icons-material/Check";
-import { useTheme } from "@mui/material/styles";
 import Container from "@mui/material/Container";
+import Divider from "@mui/material/Divider";
 
+import OrderSummary from "../form/order-summary";
+
+import { useTheme } from "@mui/material/styles";
 import { ColorlibConnector, ColorlibStepIcon } from "./form-status-connectors";
 import { useLocation } from "react-router-dom";
 import io from "socket.io-client";
 import { connect } from "react-redux";
 import { getDelivery } from "../../redux/actions/delivery-action";
+import { formatDelivery } from "../form-utils/format-utils";
 
 const FormStatus = ({ delivery, getDelivery }) => {
   const steps = [
@@ -26,9 +30,9 @@ const FormStatus = ({ delivery, getDelivery }) => {
     "Order Delivered",
   ];
   const [activeStep, setActiveStep] = useState(0);
-
   const [emailSent, setEmailSent] = useState(false);
   const [smsSent, setSmsSent] = useState(false);
+  const [summary, setSummary] = useState();
 
   const trackId = useLocation().pathname.split("/")[2];
 
@@ -59,6 +63,7 @@ const FormStatus = ({ delivery, getDelivery }) => {
         setEmailSent(delivery.emailDelivered);
         setSmsSent(delivery.smsDelivered);
         deliveryStatus(delivery.status);
+        setSummary(formatDelivery({ formValues: delivery }));
 
         socket.on("send trackId", () => {
           socket.emit("receive trackId", trackId);
@@ -77,7 +82,8 @@ const FormStatus = ({ delivery, getDelivery }) => {
         }
 
         socket.on("delivery status", ({ deliveryId, status }) => {
-          if (deliveryId === trackId) {
+          console.log("HEREEE", deliveryId, trackId, status);
+          if (deliveryId === Number(trackId)) {
             deliveryStatus(status);
           }
         });
@@ -95,11 +101,16 @@ const FormStatus = ({ delivery, getDelivery }) => {
         }}
         spacing={20}
       >
+        <Divider mt={4} sx={{ fontSize: "1.5rem" }}>
+          {" "}
+          TRACK ORDER{" "}
+        </Divider>
         <Stepper
           alternativeLabel
           activeStep={activeStep}
           connector={<ColorlibConnector />}
           sx={{ mt: 2 }}
+          mb={4}
         >
           {steps.map((label) => (
             <Step key={label}>
@@ -112,6 +123,10 @@ const FormStatus = ({ delivery, getDelivery }) => {
             </Step>
           ))}
         </Stepper>
+
+        <Box mt={4} mb={0} mx={10} heigth="80%">
+          {summary && <OrderSummary values={summary} />}
+        </Box>
 
         <Box
           display="flex"

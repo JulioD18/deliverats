@@ -118,7 +118,7 @@ deliveriesRouter.patch("/:id", checkJwt, async function (req, res, next) {
   const deliveryId = req.params.id;
 
   // Check that delivery exists
-  const delivery = await Delivery.findByPk(deliveryId);
+  let delivery = await Delivery.findByPk(deliveryId);
   if (!delivery) return notFoundError(res, "delivery", deliveryId);
 
   // Check that user owns delivery
@@ -128,7 +128,12 @@ deliveriesRouter.patch("/:id", checkJwt, async function (req, res, next) {
   }
 
   // Patch delivery
-  await delivery.update(req.body);
+  delivery = await delivery.update(req.body);
+
+  socket.emit("delivery status", {
+    deliveryId: delivery.id,
+    status: delivery.status,
+  });
 
   return res.json(delivery);
 });
@@ -149,25 +154,6 @@ deliveriesRouter.delete("/:id", checkJwt, async function (req, res, next) {
 
   // Delete delivery
   await delivery.destroy();
-
-  return res.json(delivery);
-});
-
-deliveriesRouter.patch("/events/:id", async function (req, res, next) {
-  // Retrieve parameters
-  const deliveryId = req.params.id;
-  const status = req.body.status;
-
-  // Check that delivery exists
-  const delivery = await Delivery.findByPk(deliveryId);
-  if (!delivery) return notFoundError(res, "delivery", deliveryId);
-
-  // Update delivery
-  delivery.status = status;
-  await delivery.save();
-
-  // Send socket event
-  socket.emit("delivery status", { deliveryId, status });
 
   return res.json(delivery);
 });

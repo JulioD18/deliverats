@@ -14,10 +14,10 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Box } from "@mui/system";
-import Button from '@mui/material/Button';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
+import Button from "@mui/material/Button";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
 const Delivery = ({ delivery, getDelivery, patchDelivery }) => {
   const { deliveryId } = useParams();
@@ -28,7 +28,7 @@ const Delivery = ({ delivery, getDelivery, patchDelivery }) => {
 
   const changeStatus = (val) => {
     setStatus(val);
-  }
+  };
 
   const { getAccessTokenSilently } = useAuth0();
 
@@ -36,7 +36,7 @@ const Delivery = ({ delivery, getDelivery, patchDelivery }) => {
     const token = await getAccessTokenSilently();
     patchDelivery(token, delivery.id, { status: status });
     setLoading(true);
-  }
+  };
 
   useEffect(() => {
     if (!delivery || delivery.id !== parseInt(deliveryId)) {
@@ -61,7 +61,10 @@ const Delivery = ({ delivery, getDelivery, patchDelivery }) => {
             <Typography variant="h6" gutterBottom>
               Order Status
             </Typography>
-            <FormControl variant="standard" sx={{ m: '10px 0 20px 0', minWidth: 120 }}>
+            <FormControl
+              variant="standard"
+              sx={{ m: "10px 0 20px 0", minWidth: 120 }}
+            >
               <Select
                 labelId="statusLabel"
                 value={status}
@@ -75,7 +78,11 @@ const Delivery = ({ delivery, getDelivery, patchDelivery }) => {
               </Select>
             </FormControl>
             {delivery.status !== status && (
-              <Button variant="contained" onClick={updateStatus} sx={{ m: '8px 0 20px 20px' }}>
+              <Button
+                variant="contained"
+                onClick={updateStatus}
+                sx={{ m: "8px 0 20px 20px" }}
+              >
                 Update
               </Button>
             )}
@@ -97,4 +104,6 @@ const mapStateToProps = (state) => ({
   delivery: state.delivery.delivery,
 });
 
-export default connect(mapStateToProps, { getDelivery, patchDelivery })(Delivery);
+export default connect(mapStateToProps, { getDelivery, patchDelivery })(
+  Delivery
+);

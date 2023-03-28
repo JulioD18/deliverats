@@ -16,7 +16,7 @@ import Pagination from "@mui/material/Pagination";
 import Fab from "@mui/material/Fab";
 import Avatar from "@mui/material/Avatar";
 import AddIcon from "@mui/icons-material/Add";
-import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining';
+import DeliveryDiningIcon from "@mui/icons-material/DeliveryDining";
 import SearchOffIcon from "@mui/icons-material/SearchOff";
 
 import { Link } from "react-router-dom";

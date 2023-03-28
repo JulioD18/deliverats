@@ -2,7 +2,7 @@ import {
   GET_DELIVERIES,
   GET_DELIVERY,
   POST_DELIVERY,
-  PATCH_DELIVERY
+  PATCH_DELIVERY,
 } from "../actions/actions.js";
 
 const initialState = {

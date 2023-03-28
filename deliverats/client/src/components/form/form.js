@@ -6,6 +6,7 @@ import { getForm } from "../../redux/actions/form-action";
 import { postDelivery } from "../../redux/actions/delivery-action";
 import { useJsApiLoader } from "@react-google-maps/api";
 import { useNavigate } from "react-router-dom";
+import { formatDelivery } from "../form-utils/format-utils.js";
 
 import Menu from "./menu";
 import ClientDetails from "./client-details";
@@ -66,22 +67,6 @@ const Form = ({ form, getForm, postDelivery }) => {
     setFormValues(newFormValue);
   }
 
-  function getValues(dictionary) {
-    const values = [];
-    for (let key in dictionary) values.push(dictionary[key]);
-    return values;
-  }
-
-  function formatDelivery() {
-    const values = JSON.parse(JSON.stringify(formValues));
-    values.items = getValues(values.items);
-    for (let item of values.items) {
-      item.options = getValues(item.options);
-    }
-    values.owner = form.owner;
-    return values;
-  }
-
   function handleBack() {
     setAttempt(false);
     setError(undefined);
@@ -137,7 +122,7 @@ const Form = ({ form, getForm, postDelivery }) => {
           />
         );
       default:
-        return <OrderSummary values={formatDelivery()} />;
+        return <OrderSummary values={formatDelivery({ form, formValues })} />;
     }
   }
 
