@@ -113,6 +113,26 @@ deliveriesRouter.get("/:id", async (req, res) => {
   res.json(delivery);
 });
 
+deliveriesRouter.patch("/:id", checkJwt, async function (req, res, next) {
+  // Retrieve data
+  const deliveryId = req.params.id;
+
+  // Check that delivery exists
+  const delivery = await Delivery.findByPk(deliveryId);
+  if (!delivery) return notFoundError(res, "delivery", deliveryId);
+
+  // Check that user owns delivery
+  const owner = req.auth.sub;
+  if (delivery.owner !== owner) {
+    return apiError(res, 403, "The user does not own this delivery");
+  }
+
+  // Patch delivery
+  await delivery.update(req.body);
+
+  return res.json(delivery);
+});
+
 deliveriesRouter.delete("/:id", checkJwt, async function (req, res, next) {
   // Retrieve data
   const deliveryId = req.params.id;

@@ -2,6 +2,7 @@ import {
   GET_DELIVERIES,
   GET_DELIVERY,
   POST_DELIVERY,
+  PATCH_DELIVERY
 } from "../actions/actions.js";
 
 const initialState = {
@@ -26,6 +27,11 @@ export default function deliveryReducer(state = initialState, action) {
       return {
         ...state,
         deliveries: payload,
+      };
+    case PATCH_DELIVERY:
+      return {
+        ...state,
+        delivery: payload,
       };
     default:
       return state;

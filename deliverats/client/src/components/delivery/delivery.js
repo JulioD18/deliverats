@@ -1,36 +1,50 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
+import { useAuth0 } from "@auth0/auth0-react";
+import OrderSummary from "../form/order-summary";
+import Client from "./client";
 
 import { connect } from "react-redux";
 import { getDelivery } from "../../redux/actions/delivery-action";
-import { useJsApiLoader } from "@react-google-maps/api";
+import { patchDelivery } from "../../redux/actions/delivery-action";
 
 import { useTheme } from "@mui/material/styles";
-import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Box } from "@mui/system";
+import Button from '@mui/material/Button';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
-const GOOGLE_MAPS_API_KEY = "AIzaSyCKhtQNMW0qP-CPly_PXjdLEvRnpZ2fo4U";
-const libraries = ["places"];
-
-const Delivery = ({ delivery, getDelivery }) => {
+const Delivery = ({ delivery, getDelivery, patchDelivery }) => {
   const { deliveryId } = useParams();
   const [loading, setLoading] = useState(true);
+  const [status, setStatus] = useState("");
 
   const theme = useTheme();
 
-  useJsApiLoader({
-    id: "google-map-script",
-    libraries: libraries,
-    googleMapsApiKey: GOOGLE_MAPS_API_KEY,
-  });
+  const changeStatus = (val) => {
+    setStatus(val);
+  }
+
+  const { getAccessTokenSilently } = useAuth0();
+
+  const updateStatus = async () => {
+    const token = await getAccessTokenSilently();
+    patchDelivery(token, delivery.id, { status: status });
+    setLoading(true);
+  }
 
   useEffect(() => {
-    if (!delivery || delivery.id !== parseInt(deliveryId)) getDelivery(deliveryId);
-    else setLoading(false);
+    if (!delivery || delivery.id !== parseInt(deliveryId)) {
+      getDelivery(deliveryId);
+    } else {
+      setLoading(false);
+      setStatus(delivery.status);
+    }
   }, [delivery, deliveryId, getDelivery]);
 
   return (
@@ -42,11 +56,31 @@ const Delivery = ({ delivery, getDelivery }) => {
           backgroundColor: theme.palette.tertiary.main,
         }}
       >
-        <Typography component="h1" variant="h4" align="center" my={2}>
-          {delivery?.name ?? "Loading Delivery..."}
-        </Typography>
         {!loading && (
           <React.Fragment>
+            <Typography variant="h6" gutterBottom>
+              Order Status
+            </Typography>
+            <FormControl variant="standard" sx={{ m: '10px 0 20px 0', minWidth: 120 }}>
+              <Select
+                labelId="statusLabel"
+                value={status}
+                onChange={(e) => changeStatus(e.target.value)}
+                label="Status"
+              >
+                <MenuItem value="received">Received</MenuItem>
+                <MenuItem value="accepted">Accepted</MenuItem>
+                <MenuItem value="ready">Ready</MenuItem>
+                <MenuItem value="delivered">Delivered</MenuItem>
+              </Select>
+            </FormControl>
+            {delivery.status !== status && (
+              <Button variant="contained" onClick={updateStatus} sx={{ m: '8px 0 20px 20px' }}>
+                Update
+              </Button>
+            )}
+            <Client delivery={delivery} />
+            <OrderSummary values={delivery} />
           </React.Fragment>
         )}
         {loading && (
@@ -63,4 +97,4 @@ const mapStateToProps = (state) => ({
   delivery: state.delivery.delivery,
 });
 
-export default connect(mapStateToProps, { getDelivery })(Delivery);
+export default connect(mapStateToProps, { getDelivery, patchDelivery })(Delivery);

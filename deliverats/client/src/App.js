@@ -12,6 +12,7 @@ import Home from "./components/home.js";
 import NavBar from "./components/navbar.js";
 import FormBuilder from "./components/form-builder/form-builder.js";
 import Deliveries from "./components/deliveries/deliveries.js";
+import Delivery from "./components/delivery/delivery.js";
 import Forms from "./components/forms/forms.js";
 import Form from "./components/form/form.js";
 import FormStatus from "./components/form-status/form-status.js";
@@ -37,7 +38,10 @@ function App() {
       <Grid container>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/deliveries/:deliveryId" element={<Form />} />
+          <Route
+            path="/deliveries/:deliveryId"
+            element={<AuthenticationGuard component={Delivery} />}
+          />
           <Route
             path="/deliveries"
             element={<AuthenticationGuard component={Deliveries} />}

@@ -9,6 +9,8 @@ import SmsIcon from "@mui/icons-material/Sms";
 import CircularProgress from "@mui/material/CircularProgress";
 import Stack from "@mui/material/Stack";
 import CheckIcon from "@mui/icons-material/Check";
+import { useTheme } from "@mui/material/styles";
+import Container from "@mui/material/Container";
 
 import { ColorlibConnector, ColorlibStepIcon } from "./form-status-connectors";
 import { useLocation } from "react-router-dom";
@@ -29,6 +31,8 @@ const FormStatus = ({ delivery, getDelivery }) => {
   const [smsSent, setSmsSent] = useState(false);
 
   const trackId = useLocation().pathname.split("/")[2];
+
+  const theme = useTheme();
 
   const deliveryStatus = (status) => {
     switch (status) {
@@ -82,48 +86,53 @@ const FormStatus = ({ delivery, getDelivery }) => {
   }, [!delivery]);
 
   return (
-    <Paper
-      variant="outlined"
-      sx={{ width: "80%", mx: "auto", mt: "5%", px: 5, py: 8 }}
-      spacing={20}
-    >
-      <Stepper
-        alternativeLabel
-        activeStep={activeStep}
-        connector={<ColorlibConnector />}
-        sx={{ mt: 2 }}
+    <Container component="main" sx={{ my: 4 }}>
+      <Paper
+        variant="outlined"
+        sx={{
+          p: { xs: 2, md: 3 },
+          backgroundColor: theme.palette.tertiary.main,
+        }}
+        spacing={20}
       >
-        {steps.map((label) => (
-          <Step key={label}>
-            <StepLabel
-              StepIconComponent={ColorlibStepIcon}
-              mx={{ size: "10em" }}
-            >
-              {label}
-            </StepLabel>
-          </Step>
-        ))}
-      </Stepper>
+        <Stepper
+          alternativeLabel
+          activeStep={activeStep}
+          connector={<ColorlibConnector />}
+          sx={{ mt: 2 }}
+        >
+          {steps.map((label) => (
+            <Step key={label}>
+              <StepLabel
+                StepIconComponent={ColorlibStepIcon}
+                mx={{ size: "10em" }}
+              >
+                {label}
+              </StepLabel>
+            </Step>
+          ))}
+        </Stepper>
 
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        mt={4}
-        mb={0}
-        mx="auto"
-        width="20%"
-        heigth="80%"
-      >
-        <Stack display="flex" justifyContent="center" alignItems="center">
-          <EmailIcon sx={{ width: "80%", height: "40%" }}> </EmailIcon>
-          {emailSent ? <CheckIcon /> : <CircularProgress size="1rem" />}
-        </Stack>
-        <Stack display="flex" justifyContent="center" alignItems="center">
-          <SmsIcon sx={{ width: "80%", height: "40%" }} />
-          {smsSent ? <CheckIcon /> : <CircularProgress size="1rem" />}
-        </Stack>
-      </Box>
-    </Paper>
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          mt={4}
+          mb={0}
+          mx="auto"
+          width="20%"
+          heigth="80%"
+        >
+          <Stack display="flex" justifyContent="center" alignItems="center">
+            <EmailIcon sx={{ width: "80%", height: "40%" }}> </EmailIcon>
+            {emailSent ? <CheckIcon /> : <CircularProgress size="1rem" />}
+          </Stack>
+          <Stack display="flex" justifyContent="center" alignItems="center">
+            <SmsIcon sx={{ width: "80%", height: "40%" }} />
+            {smsSent ? <CheckIcon /> : <CircularProgress size="1rem" />}
+          </Stack>
+        </Box>
+      </Paper>
+    </Container>
   );
 };
 
