@@ -16,7 +16,7 @@ import Pagination from "@mui/material/Pagination";
 import Fab from "@mui/material/Fab";
 import Avatar from "@mui/material/Avatar";
 import AddIcon from "@mui/icons-material/Add";
-import LocalPizzaIcon from "@mui/icons-material/LocalPizza";
+import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining';
 import SearchOffIcon from "@mui/icons-material/SearchOff";
 
 import { Link } from "react-router-dom";
@@ -54,7 +54,7 @@ const MyDeliveries = ({ deliveries, getDeliveries }) => {
           mt={4}
           sx={{ display: "flex", justifyContent: "center" }}
         >
-          <CircularProgress size="4vh" />
+          <CircularProgress size="4rem" sx={{ marginTop: "35vh" }} />
         </Grid>
       )}
       {deliveries?.deliveries && (
@@ -77,7 +77,7 @@ const MyDeliveries = ({ deliveries, getDeliveries }) => {
                   }}
                 >
                   <Avatar sx={{ bgcolor: theme.palette.primary.main }}>
-                    <LocalPizzaIcon />
+                    <DeliveryDiningIcon />
                   </Avatar>
                   <Typography component="h6" align="center" my={1.5}>
                     {delivery.name}

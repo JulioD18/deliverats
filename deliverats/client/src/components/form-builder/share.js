@@ -10,7 +10,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 export default function Share({ formLink }) {
   const [link, setLink] = useState(
     <Fragment>
-      <CircularProgress />
+      <CircularProgress size="4rem" />
     </Fragment>
   );
 

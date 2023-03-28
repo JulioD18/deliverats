@@ -196,7 +196,7 @@ const Form = ({ form, getForm, postDelivery }) => {
         )}
         {!form && (
           <Box sx={{ display: "flex", justifyContent: "center" }}>
-            <CircularProgress />
+            <CircularProgress size="4rem" sx={{ margin: "10vh 0" }} />
           </Box>
         )}
       </Paper>

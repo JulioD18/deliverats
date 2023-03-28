@@ -54,7 +54,7 @@ const MyForms = ({ forms, getForms }) => {
           mt={4}
           sx={{ display: "flex", justifyContent: "center" }}
         >
-          <CircularProgress size="4vh" />
+          <CircularProgress size="4rem" sx={{ marginTop: "35vh" }} />
         </Grid>
       )}
       {forms?.forms && (
