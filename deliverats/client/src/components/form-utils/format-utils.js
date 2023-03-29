@@ -1,5 +1,4 @@
 export function formatDelivery({ form = undefined, formValues }) {
-  console.log(formValues);
   const values = JSON.parse(JSON.stringify(formValues));
   values.items = getValues(values.items);
   for (let item of values.items) {

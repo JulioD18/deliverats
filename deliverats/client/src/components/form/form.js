@@ -35,6 +35,7 @@ const Form = ({ form, getForm, postDelivery }) => {
   const [coordinates, setCoordinatesVal] = useState();
   const [attempt, setAttempt] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [fetched, setFetched] = useState(false);
   const [formValues, setFormValues] = useState({
     name: "",
     lastName: "",
@@ -127,8 +128,12 @@ const Form = ({ form, getForm, postDelivery }) => {
   }
 
   useEffect(() => {
-    if (!form || form.id !== parseInt(formId)) getForm(formId);
-    else setLoading(false);
+    if (!fetched) {
+      getForm(formId);
+      setFetched(true);
+    } else {
+      setLoading(false);
+    }
   }, [form, formId, getForm]);
 
   return (

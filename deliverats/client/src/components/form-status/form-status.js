@@ -28,7 +28,8 @@ import { formatDelivery } from "../form-utils/format-utils";
 
 import * as pdfjs from "pdfjs-dist/webpack";
 
-const socket = io(":3002");
+const socketUrl = process.env.REACT_APP_SOCKET_URL;
+const socket = io(socketUrl);
 
 const FormStatus = ({ delivery, getDelivery, getPDF }) => {
   pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
@@ -48,6 +49,7 @@ const FormStatus = ({ delivery, getDelivery, getPDF }) => {
   const [summary, setSummary] = useState();
   const [pdfData, setPdfData] = useState(null);
   const [pdfView, setPdfView] = useState(false);
+  const [fetched, setFetched] = useState(false);
 
   const trackId = useLocation().pathname.split("/")[2];
 
@@ -109,8 +111,10 @@ const FormStatus = ({ delivery, getDelivery, getPDF }) => {
 
   useEffect(() => {
     (async () => {
-      if (!delivery || delivery.id !== Number(trackId))
+      if (!fetched) {
         await getDelivery(trackId);
+        setFetched(true);
+      }
 
       setEmailSent(delivery.emailDelivered);
       setSmsSent(delivery.smsDelivered);

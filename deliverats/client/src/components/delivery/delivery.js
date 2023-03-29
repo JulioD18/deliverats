@@ -22,6 +22,7 @@ import Select from "@mui/material/Select";
 const Delivery = ({ delivery, getDelivery, patchDelivery }) => {
   const { deliveryId } = useParams();
   const [loading, setLoading] = useState(true);
+  const [fetched, setFetched] = useState(false);
   const [status, setStatus] = useState("");
 
   const theme = useTheme();
@@ -39,8 +40,9 @@ const Delivery = ({ delivery, getDelivery, patchDelivery }) => {
   };
 
   useEffect(() => {
-    if (!delivery || delivery.id !== parseInt(deliveryId)) {
+    if (!fetched) {
       getDelivery(deliveryId);
+      setFetched(true);
     } else {
       setLoading(false);
       setStatus(delivery.status);
