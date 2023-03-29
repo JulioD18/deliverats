@@ -27,7 +27,8 @@ smsRouter.post("/events", async (req, res) => {
           }
         );
       });
-      socket.emit("sms delivered", true);
+
+      io.emit("sms delivered", true);
     }
   });
 

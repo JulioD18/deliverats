@@ -29,7 +29,6 @@ import { formatDelivery } from "../form-utils/format-utils";
 import * as pdfjs from "pdfjs-dist/webpack";
 
 const socketUrl = process.env.REACT_APP_SOCKET_URL;
-const socket = io(socketUrl);
 
 const FormStatus = ({ delivery, getDelivery, getPDF }) => {
   pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
@@ -92,7 +91,7 @@ const FormStatus = ({ delivery, getDelivery, getPDF }) => {
     canvas.width = viewport.width;
     canvas.height = viewport.height;
     await page.render({ canvasContext: context, viewport }).promise;
-  }, [pdfData, canvasRef]);
+  }, [pdfData]);
 
   const downloadPdf = () => {
     const url = URL.createObjectURL(
@@ -110,38 +109,40 @@ const FormStatus = ({ delivery, getDelivery, getPDF }) => {
   };
 
   useEffect(() => {
+    const socket = io(socketUrl);
+
+    socket.on("send trackId", () => {
+      socket.emit("receive trackId", trackId);
+    });
+
+    socket.on("sms delivered", () => {
+      setSmsSent(true);
+    });
+
+    socket.on("email delivered", () => {
+      setEmailSent(true);
+    });
+
+    socket.on("delivery status", ({ deliveryId, status }) => {
+      if (deliveryId === Number(trackId)) {
+        deliveryStatus(status);
+      }
+    });
+  }, [trackId]);
+
+  useEffect(() => {
     (async () => {
       if (!fetched) {
         await getDelivery(trackId);
         setFetched(true);
       }
 
-      setEmailSent(delivery.emailDelivered);
-      setSmsSent(delivery.smsDelivered);
-      deliveryStatus(delivery.status);
-      setSummary(formatDelivery({ formValues: delivery }));
-
-      socket.on("send trackId", () => {
-        socket.emit("receive trackId", trackId);
-      });
-
-      if (!emailSent) {
-        socket.on("sms delivered", () => {
-          setSmsSent(true);
-        });
+      if (delivery && delivery.id === Number(trackId)) {
+        if (!emailSent) setEmailSent(delivery.emailDelivered);
+        if (!smsSent) setSmsSent(delivery.smsDelivered);
+        deliveryStatus(delivery.status);
+        setSummary(formatDelivery({ formValues: delivery }));
       }
-
-      if (!smsSent) {
-        socket.on("email delivered", () => {
-          setEmailSent(true);
-        });
-      }
-
-      socket.on("delivery status", ({ deliveryId, status }) => {
-        if (deliveryId === Number(trackId)) {
-          deliveryStatus(status);
-        }
-      });
     })();
   }, [getDelivery, trackId, delivery, emailSent, smsSent]);
 

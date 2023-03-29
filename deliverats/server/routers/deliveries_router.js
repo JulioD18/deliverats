@@ -77,8 +77,9 @@ deliveriesRouter.post("/", async function (req, res, next) {
 
   const subject = `Placed Order #${delivery.id}`;
 
-  // await sendEmail({ email, subject, content });
-  // await sendSms({ to: phone, body: content });
+  // Sending information to user mail and phone
+  await sendEmail({ email, subject, content });
+  await sendSms({ to: phone, body: content });
   generatePDF({ order: delivery.id, name, lastName, email, items, total });
 
   return res.json(delivery);
