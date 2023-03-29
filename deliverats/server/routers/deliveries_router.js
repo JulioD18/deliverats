@@ -11,9 +11,10 @@ import { checkJwt } from "../middleware/token-validation.js";
 import { sendEmail } from "../utils/send-grid.js";
 import { sendSms } from "../utils/sms.js";
 import { io } from "../index.js";
+import { generatePDF } from "../utils/pdf.js";
+import fs from "fs";
 
 export const deliveriesRouter = Router();
-let socket;
 
 deliveriesRouter.post("/", async function (req, res, next) {
   // Validate parameters
@@ -63,20 +64,22 @@ deliveriesRouter.post("/", async function (req, res, next) {
   });
 
   const content = `
-    Name : ${name} \n
-    Last Name : ${lastName} \n
-    Email : ${email} \n
-    Phone : ${phone} \n
-    Address : ${address} \n
-    Suite : ${suite} \n
-    Items : ${items} \n
-    Total : ${total} \n
-    Status : Your order was successfully placed!
-  `;
+  Name : ${name} \n
+  Last Name : ${lastName} \n
+  Email : ${email} \n
+  Phone : ${phone} \n
+  Address : ${address} \n
+  Suite : ${suite} \n
+  Items : ${items.map((item) => JSON.stringify(item, null, 4)).join("\n")} \n
+  Total : ${total} \n
+  Status : Your order was successfully placed!
+`;
+
   const subject = `Placed Order #${delivery.id}`;
 
-  await sendEmail({ email, subject, content });
-  await sendSms({ to: phone, body: content });
+  // await sendEmail({ email, subject, content });
+  // await sendSms({ to: phone, body: content });
+  generatePDF({ order: delivery.id, name, lastName, email, items, total });
 
   return res.json(delivery);
 });
@@ -139,26 +142,25 @@ deliveriesRouter.patch("/:id", checkJwt, async function (req, res, next) {
   return res.json(delivery);
 });
 
-deliveriesRouter.delete("/:id", checkJwt, async function (req, res, next) {
+deliveriesRouter.get("/receipts/:id", async function (req, res, next) {
   // Retrieve data
   const deliveryId = req.params.id;
 
   // Check that delivery exists
-  const delivery = await Delivery.findByPk(deliveryId);
+  let delivery = await Delivery.findByPk(deliveryId);
   if (!delivery) return notFoundError(res, "delivery", deliveryId);
 
-  // Check that user owns delivery
-  const owner = req.auth.sub;
-  if (delivery.owner !== owner) {
-    return apiError(res, 403, "The user does not own this delivery");
-  }
-
-  // Delete delivery
-  await delivery.destroy();
-
-  return res.json(delivery);
+  // Get pdf of delivery
+  const filePath = `receipts/receipt#${delivery.id}.pdf`;
+  fs.readFile(filePath, (err, data) => {
+    if (err) {
+      return apiError(res, 500, "Error getting file");
+    }
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename="receipt#${delivery.id}.pdf"`
+    );
+    res.send(data);
+  });
 });
-
-export const setDeliverySocket = (sock) => {
-  socket = sock;
-};

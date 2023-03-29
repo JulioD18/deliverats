@@ -38,7 +38,8 @@ export const getDelivery = (id) => {
       });
 
       const data = await res.json();
-      return dispatch({ type: GET_DELIVERY, payload: data });
+      dispatch({ type: GET_DELIVERY, payload: data });
+      return data;
     } catch (error) {
       console.log(error);
     }
@@ -46,7 +47,6 @@ export const getDelivery = (id) => {
 };
 
 export const postDelivery = ({ delivery }) => {
-  console.log("In postDelivery");
   return async () => {
     try {
       const response = await fetch("http://localhost:3001/api/deliveries", {
@@ -78,6 +78,24 @@ export const patchDelivery = (token, id, delivery) => {
       );
       const data = await response.json();
       return dispatch({ type: PATCH_DELIVERY, payload: data });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const getPDF = (id) => {
+  return async () => {
+    try {
+      const res = await fetch(
+        `http://localhost:3001/api/deliveries/receipts/${id}/`,
+        {
+          method: "GET",
+        }
+      );
+
+      const data = await res.arrayBuffer();
+      return data;
     } catch (error) {
       console.log(error);
     }
