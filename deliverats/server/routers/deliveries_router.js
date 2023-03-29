@@ -9,8 +9,11 @@ import {
 import { validateDelivery } from "../utils/validators.js";
 import { checkJwt } from "../middleware/token-validation.js";
 import { sendEmail } from "../utils/send-grid.js";
+import { sendSms } from "../utils/sms.js";
+import { io } from "../index.js";
 
 export const deliveriesRouter = Router();
+let socket;
 
 deliveriesRouter.post("/", async function (req, res, next) {
   // Validate parameters
@@ -59,6 +62,22 @@ deliveriesRouter.post("/", async function (req, res, next) {
     owner,
   });
 
+  const content = `
+    Name : ${name} \n
+    Last Name : ${lastName} \n
+    Email : ${email} \n
+    Phone : ${phone} \n
+    Address : ${address} \n
+    Suite : ${suite} \n
+    Items : ${items} \n
+    Total : ${total} \n
+    Status : Your order was successfully placed!
+  `;
+  const subject = `Placed Order #${delivery.id}`;
+
+  await sendEmail({ email, subject, content });
+  await sendSms({ to: phone, body: content });
+
   return res.json(delivery);
 });
 
@@ -95,6 +114,31 @@ deliveriesRouter.get("/:id", async (req, res) => {
   res.json(delivery);
 });
 
+deliveriesRouter.patch("/:id", checkJwt, async function (req, res, next) {
+  // Retrieve data
+  const deliveryId = req.params.id;
+
+  // Check that delivery exists
+  let delivery = await Delivery.findByPk(deliveryId);
+  if (!delivery) return notFoundError(res, "delivery", deliveryId);
+
+  // Check that user owns delivery
+  const owner = req.auth.sub;
+  if (delivery.owner !== owner) {
+    return apiError(res, 403, "The user does not own this delivery");
+  }
+
+  // Patch delivery
+  delivery = await delivery.update(req.body);
+
+  io.emit("delivery status", {
+    deliveryId: delivery.id,
+    status: delivery.status,
+  });
+
+  return res.json(delivery);
+});
+
 deliveriesRouter.delete("/:id", checkJwt, async function (req, res, next) {
   // Retrieve data
   const deliveryId = req.params.id;
@@ -114,3 +158,7 @@ deliveriesRouter.delete("/:id", checkJwt, async function (req, res, next) {
 
   return res.json(delivery);
 });
+
+export const setDeliverySocket = (sock) => {
+  socket = sock;
+};

@@ -1,6 +1,10 @@
+import { Delivery } from "../models/deliveries.js";
 import { Router } from "express";
+import { io } from "../index.js";
 
 export const emailRouter = Router();
+
+// let socket;
 
 /**
  * Works with webhooks to be informed when an email is delivered and failed to be sent
@@ -10,19 +14,28 @@ emailRouter.post("/events", async (req, res) => {
   const body = req.body;
   const eventReceived = body[0].event;
 
-  /**
-   * TODO: Once all the logic related to form submission is implemented, we will
-   *    have a notification sent to the user in the UI indicating that an email have been
-   *    delivered
-   * */
-  if (eventReceived === "dropped") {
-    console.log("failed email!!");
-  } else if (eventReceived === "bounced") {
-    console.log("bounced email!!");
-  } else if (eventReceived === "delivered") {
-    console.log("delivered email!!");
-  }
+  io.emit("send trackId");
 
-  console.log("Event Received: ", eventReceived);
+  io.on("connection", (socket) => {
+    if (eventReceived === "delivered") {
+      socket.on("receive trackId", async (trackId) => {
+        await Delivery.update(
+          {
+            emailDelivered: true,
+          },
+          {
+            where: { id: trackId },
+          }
+        );
+      });
+      socket.emit("email delivered", true);
+    }
+  });
+
+  console.log("Email event received: ", eventReceived);
   return res.json({ eventReceived, message: "Email was delivered!" });
 });
+
+// export const setEmailSocket = (sock) => {
+//   socket = sock;
+// };

@@ -1,6 +1,10 @@
 import { Router } from "express";
+import { Delivery } from "../models/deliveries.js";
+import { io } from "../index.js";
 
 export const smsRouter = Router();
+
+let socket;
 
 /**
  * Works with webhooks to be informed whem a message is send, delievered and undeliered
@@ -10,22 +14,27 @@ smsRouter.post("/events", async (req, res) => {
   const messageSid = req.body.MessageSid;
   const messageStatus = req.body.MessageStatus;
 
-  console.log(`SID: ${messageSid}, Status: ${messageStatus}`);
+  io.emit("send trackId");
+  io.on("connection", (socket) => {
+    if (messageStatus === "delivered") {
+      socket.on("receive trackId", async (trackId) => {
+        await Delivery.update(
+          {
+            smsDelivered: true,
+          },
+          {
+            where: { id: trackId },
+          }
+        );
+      });
+      socket.emit("sms delivered", true);
+    }
+  });
 
-  /**
-   * TODO: Once all the logic related to form submission is implemented, we will
-   *    have a notification sent to the user in the UI indicating that a text have been
-   *    delivered
-   * */
-  if (messageStatus === "failed") {
-    console.log("failed message!!");
-  } else if (messageStatus === "undelivered") {
-    console.log("undelivered message!!");
-  } else if (messageStatus === "sent") {
-    console.log("sent message!!");
-  } else if (messageStatus === "delivered") {
-    console.log("delivered message!!");
-  }
-
+  console.log("SMS event received: ", messageStatus);
   return res.json({ messageSid, messageStatus });
 });
+
+export const setSmsSocket = (sock) => {
+  socket = sock;
+};
