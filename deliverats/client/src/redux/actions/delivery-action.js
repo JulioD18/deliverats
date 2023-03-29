@@ -66,17 +66,14 @@ export const postDelivery = ({ delivery }) => {
 export const patchDelivery = (token, id, delivery) => {
   return async () => {
     try {
-      const response = await fetch(
-        `${apiUrl}/deliveries/${id}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(delivery),
-        }
-      );
+      const response = await fetch(`${apiUrl}/deliveries/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(delivery),
+      });
       const data = await response.json();
       return dispatch({ type: PATCH_DELIVERY, payload: data });
     } catch (error) {
@@ -88,12 +85,9 @@ export const patchDelivery = (token, id, delivery) => {
 export const getPDF = (id) => {
   return async () => {
     try {
-      const res = await fetch(
-        `${apiUrl}/deliveries/receipts/${id}/`,
-        {
-          method: "GET",
-        }
-      );
+      const res = await fetch(`${apiUrl}/deliveries/receipts/${id}/`, {
+        method: "GET",
+      });
 
       const data = await res.arrayBuffer();
       return data;
