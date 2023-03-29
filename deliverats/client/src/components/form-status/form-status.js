@@ -28,7 +28,7 @@ import { formatDelivery } from "../form-utils/format-utils";
 
 import * as pdfjs from "pdfjs-dist/webpack";
 
-const socket = io("http://localhost:3002");
+const socket = io(":3002");
 
 const FormStatus = ({ delivery, getDelivery, getPDF }) => {
   pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;

@@ -7,12 +7,13 @@ import {
 import store from "../store.js";
 
 const dispatch = store.dispatch;
+const apiUrl = process.env.REACT_APP_API_URL;
 
 export const getDeliveries = ({ token, sub, offset, limit }) => {
   return async () => {
     try {
       const res = await fetch(
-        `http://localhost:3001/api/deliveries?owner=${sub}&offset=${offset}&limit=${limit}`,
+        `${apiUrl}/deliveries?owner=${sub}&offset=${offset}&limit=${limit}`,
         {
           method: "GET",
           headers: {
@@ -33,7 +34,7 @@ export const getDeliveries = ({ token, sub, offset, limit }) => {
 export const getDelivery = (id) => {
   return async () => {
     try {
-      const res = await fetch(`http://localhost:3001/api/deliveries/${id}`, {
+      const res = await fetch(`${apiUrl}/deliveries/${id}`, {
         method: "GET",
       });
 
@@ -49,7 +50,7 @@ export const getDelivery = (id) => {
 export const postDelivery = ({ delivery }) => {
   return async () => {
     try {
-      const response = await fetch("http://localhost:3001/api/deliveries", {
+      const response = await fetch(`${apiUrl}/deliveries`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(delivery),
@@ -66,7 +67,7 @@ export const patchDelivery = (token, id, delivery) => {
   return async () => {
     try {
       const response = await fetch(
-        `http://localhost:3001/api/deliveries/${id}`,
+        `${apiUrl}/deliveries/${id}`,
         {
           method: "PATCH",
           headers: {

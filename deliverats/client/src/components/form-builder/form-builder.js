@@ -86,7 +86,7 @@ const FormBuilder = ({ postForm }) => {
   async function createForm() {
     const token = await getAccessTokenSilently();
     const res = await postForm({ user, token, form: formValues });
-    setFormLink(`http://localhost:3000/forms/${res.payload.id}`);
+    setFormLink(`${window.location.origin}/forms/${res.payload.id}`);
   }
 
   function handleNext() {

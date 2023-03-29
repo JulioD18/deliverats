@@ -25,8 +25,8 @@ import StepLabel from "@mui/material/StepLabel";
 import { Box } from "@mui/system";
 
 const steps = ["Menu", "Client Details", "Location", "Order Summary"];
-const GOOGLE_MAPS_API_KEY = "AIzaSyCKhtQNMW0qP-CPly_PXjdLEvRnpZ2fo4U";
 const libraries = ["places"];
+const googleMapsApiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
 const Form = ({ form, getForm, postDelivery }) => {
   const { formId } = useParams();
@@ -55,7 +55,7 @@ const Form = ({ form, getForm, postDelivery }) => {
   useJsApiLoader({
     id: "google-map-script",
     libraries: libraries,
-    googleMapsApiKey: GOOGLE_MAPS_API_KEY,
+    googleMapsApiKey,
   });
 
   function setCoordinates(coordinates, address = undefined) {

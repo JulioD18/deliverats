@@ -2,12 +2,13 @@ import { GET_FORMS, GET_FORM, POST_FORM } from "./actions.js";
 import store from "../store.js";
 
 const dispatch = store.dispatch;
+const apiUrl = process.env.REACT_APP_API_URL;
 
 export const getForms = ({ token, sub, offset, limit }) => {
   return async () => {
     try {
       const res = await fetch(
-        `http://localhost:3001/api/forms?owner=${sub}&offset=${offset}&limit=${limit}`,
+        `${apiUrl}/forms?owner=${sub}&offset=${offset}&limit=${limit}`,
         {
           method: "GET",
           headers: {
@@ -28,7 +29,7 @@ export const getForms = ({ token, sub, offset, limit }) => {
 export const getForm = (id) => {
   return async () => {
     try {
-      const res = await fetch(`http://localhost:3001/api/forms/${id}`, {
+      const res = await fetch(`${apiUrl}/forms/${id}`, {
         method: "GET",
       });
 
@@ -43,7 +44,7 @@ export const getForm = (id) => {
 export const postForm = ({ user, token, form }) => {
   return async () => {
     try {
-      const response = await fetch("http://localhost:3001/api/forms", {
+      const response = await fetch(`${apiUrl}/forms`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

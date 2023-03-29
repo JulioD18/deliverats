@@ -17,8 +17,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
 
+const IO_PORT = 3002;
 const server = http.createServer(app);
-export const io = new Server(server, { cors: "*" }).listen(3002);
+export const io = new Server(server, { cors: "*" }).listen(IO_PORT);
 
 io.on("connect", (socket) => {
   console.log("a user connected");
@@ -64,10 +65,10 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.use("/api/forms", formsRouter);
-app.use("/api/deliveries", deliveriesRouter);
-app.use("/api/email", emailRouter);
-app.use("/api/sms", smsRouter);
+app.use("/forms", formsRouter);
+app.use("/deliveries", deliveriesRouter);
+app.use("/email", emailRouter);
+app.use("/sms", smsRouter);
 
 // The error handler must be before any other error middleware and after all controllers
 app.use(Sentry.Handlers.errorHandler());
