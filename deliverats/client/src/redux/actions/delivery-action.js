@@ -89,7 +89,7 @@ export const getPDF = (id) => {
   return async () => {
     try {
       const res = await fetch(
-        `http://localhost:3001/api/deliveries/receipts/${id}/`,
+        `${apiUrl}/deliveries/receipts/${id}/`,
         {
           method: "GET",
         }
