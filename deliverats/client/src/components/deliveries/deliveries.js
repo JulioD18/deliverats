@@ -36,7 +36,7 @@ const Deliveries = ({ deliveries, getDeliveries }) => {
   };
 
   const newDelivery = () => {
-    navigate("/delivery-builder");
+    navigate("/forms");
   };
 
   useEffect(() => {
