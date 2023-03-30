@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
 import { getForms } from "../../redux/actions/form-action";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -18,8 +18,6 @@ import Avatar from "@mui/material/Avatar";
 import AddIcon from "@mui/icons-material/Add";
 import LocalPizzaIcon from "@mui/icons-material/LocalPizza";
 import SearchOffIcon from "@mui/icons-material/SearchOff";
-
-import { Link } from "react-router-dom";
 
 const formLimit = 8;
 
@@ -83,7 +81,7 @@ const Forms = ({ forms, getForms }) => {
                     {form.name}
                   </Typography>
                   <Button
-                    as={Link}
+                    component={Link}
                     variant="contained"
                     to={`/forms/${form.id}`}
                     sx={{ textDecoration: "none" }}

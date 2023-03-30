@@ -30,7 +30,7 @@ Workflow:
 - Google API - Geocoding API, Maps JavaScript API, - Places API - 1
 - SendGrid (Email) - 2
 - Sentry - 1
-- Celery - 1
+- PDF.js - 2
 - Socket - 1
 
 ## Complexity Point Bonus:

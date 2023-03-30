@@ -7,12 +7,13 @@ import {
 import store from "../store.js";
 
 const dispatch = store.dispatch;
+const apiUrl = process.env.REACT_APP_API_URL;
 
 export const getDeliveries = ({ token, sub, offset, limit }) => {
   return async () => {
     try {
       const res = await fetch(
-        `http://localhost:3001/api/deliveries?owner=${sub}&offset=${offset}&limit=${limit}`,
+        `${apiUrl}/deliveries?owner=${sub}&offset=${offset}&limit=${limit}`,
         {
           method: "GET",
           headers: {
@@ -33,12 +34,13 @@ export const getDeliveries = ({ token, sub, offset, limit }) => {
 export const getDelivery = (id) => {
   return async () => {
     try {
-      const res = await fetch(`http://localhost:3001/api/deliveries/${id}`, {
+      const res = await fetch(`${apiUrl}/deliveries/${id}`, {
         method: "GET",
       });
 
       const data = await res.json();
-      return dispatch({ type: GET_DELIVERY, payload: data });
+      dispatch({ type: GET_DELIVERY, payload: data });
+      return data;
     } catch (error) {
       console.log(error);
     }
@@ -46,10 +48,9 @@ export const getDelivery = (id) => {
 };
 
 export const postDelivery = ({ delivery }) => {
-  console.log("In postDelivery");
   return async () => {
     try {
-      const response = await fetch("http://localhost:3001/api/deliveries", {
+      const response = await fetch(`${apiUrl}/deliveries`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(delivery),
@@ -65,19 +66,31 @@ export const postDelivery = ({ delivery }) => {
 export const patchDelivery = (token, id, delivery) => {
   return async () => {
     try {
-      const response = await fetch(
-        `http://localhost:3001/api/deliveries/${id}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(delivery),
-        }
-      );
+      const response = await fetch(`${apiUrl}/deliveries/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(delivery),
+      });
       const data = await response.json();
       return dispatch({ type: PATCH_DELIVERY, payload: data });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const getPDF = (id) => {
+  return async () => {
+    try {
+      const res = await fetch(`${apiUrl}/deliveries/receipts/${id}/`, {
+        method: "GET",
+      });
+
+      const data = await res.arrayBuffer();
+      return data;
     } catch (error) {
       console.log(error);
     }

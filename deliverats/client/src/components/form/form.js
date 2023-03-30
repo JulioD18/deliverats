@@ -25,8 +25,8 @@ import StepLabel from "@mui/material/StepLabel";
 import { Box } from "@mui/system";
 
 const steps = ["Menu", "Client Details", "Location", "Order Summary"];
-const GOOGLE_MAPS_API_KEY = "AIzaSyCKhtQNMW0qP-CPly_PXjdLEvRnpZ2fo4U";
 const libraries = ["places"];
+const googleMapsApiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
 const Form = ({ form, getForm, postDelivery }) => {
   const { formId } = useParams();
@@ -35,6 +35,7 @@ const Form = ({ form, getForm, postDelivery }) => {
   const [coordinates, setCoordinatesVal] = useState();
   const [attempt, setAttempt] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [fetched, setFetched] = useState(false);
   const [formValues, setFormValues] = useState({
     name: "",
     lastName: "",
@@ -55,7 +56,7 @@ const Form = ({ form, getForm, postDelivery }) => {
   useJsApiLoader({
     id: "google-map-script",
     libraries: libraries,
-    googleMapsApiKey: GOOGLE_MAPS_API_KEY,
+    googleMapsApiKey,
   });
 
   function setCoordinates(coordinates, address = undefined) {
@@ -127,8 +128,12 @@ const Form = ({ form, getForm, postDelivery }) => {
   }
 
   useEffect(() => {
-    if (!form || form.id !== parseInt(formId)) getForm(formId);
-    else setLoading(false);
+    if (!fetched) {
+      getForm(formId);
+      setFetched(true);
+    } else {
+      setLoading(false);
+    }
   }, [form, formId, getForm]);
 
   return (

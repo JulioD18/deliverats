@@ -1,8 +1,6 @@
 /**
  * Checks that the form is valid
- * @param {string[]} categories The categories of the form
- * @param {object[]} items The items of the form
- * @param {object[]} options The options of the form
+ * @param {object} form The form to validate
  * @returns An error message if the form is invalid, null otherwise
  */
 export function validateForm(form) {
@@ -88,9 +86,7 @@ export function validateForm(form) {
 
 /**
  * Checks that the delivery is valid
- * @param {string[]} categories The categories of the delivery
- * @param {object[]} items The items of the delivery
- * @param {object[]} options The options of the delivery
+ * @param {object} delivery The delivery to validate
  * @returns An error message if the delivery is invalid, null otherwise
  */
 export function validateDelivery(delivery) {
