@@ -20,8 +20,10 @@ import FormStatus from "./components/form-status/form-status.js";
 import * as Sentry from "@sentry/react";
 import { BrowserTracing } from "@sentry/tracing";
 
+const sentryDsn = process.env.REACT_APP_SENTRY_DSN;
+
 Sentry.init({
-  dsn: "https://947ce92a43184e528087e72aee89945a@o4504838835404800.ingest.sentry.io/4504838840516608",
+  dsn: sentryDsn,
   integrations: [new BrowserTracing()],
   tracesSampleRate: 1.0,
 });
