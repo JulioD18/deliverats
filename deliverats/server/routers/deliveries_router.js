@@ -155,7 +155,7 @@ deliveriesRouter.get("/receipts/:id", async function (req, res, next) {
   const filePath = `receipts/receipt#${delivery.id}.pdf`;
   fs.readFile(filePath, (err, data) => {
     if (err) {
-      return apiError(res, 500, "Error getting file");
+      return notFoundError(res, "receipt", delivery.id);
     }
     res.setHeader("Content-Type", "application/pdf");
     res.setHeader(
