@@ -31,8 +31,10 @@ io.on("connect", (socket) => {
   });
 });
 
+const sentryDsn = process.env.REACT_APP_SENTRY_DSN;
+
 Sentry.init({
-  dsn: "https://a771fa69fcb74977b17d20e40ec7c43e@o4504838835404800.ingest.sentry.io/4504838968246272",
+  dsn: sentryDsn,
   integrations: [
     // enable HTTP calls tracing
     new Sentry.Integrations.Http({ tracing: true }),
