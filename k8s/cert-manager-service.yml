@@ -11,6 +11,6 @@ spec:
       name: lets-encrypt-priviate-key
     # Add a single challenge solver, HTTP01 using nginx
     solvers:
-    - http01:
-      ingress:
-        class: public
+      - http01:
+        ingress:
+          class: public
