@@ -15,6 +15,9 @@ import Container from "@mui/material/Container";
 import Divider from "@mui/material/Divider";
 import Button from "@mui/material/Button";
 import GetAppIcon from "@mui/icons-material/GetApp";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
+import Typography from "@mui/material/Typography";
 
 import OrderSummary from "../form/order-summary";
 
@@ -49,6 +52,8 @@ const FormStatus = ({ delivery, getDelivery, getPDF }) => {
   const [pdfData, setPdfData] = useState(null);
   const [pdfView, setPdfView] = useState(false);
   const [fetched, setFetched] = useState(false);
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const trackId = useLocation().pathname.split("/")[2];
 
@@ -83,15 +88,17 @@ const FormStatus = ({ delivery, getDelivery, getPDF }) => {
 
     const canvas = canvasRef.current;
     const pdfDataCopy = pdfData.slice(); // Make a copy of the pdfData state
+    if (!pdfDataCopy.buffer) return;
     const pdf = await pdfjs.getDocument(pdfDataCopy).promise;
-    const page = await pdf.getPage(1);
+    setTotalPages(pdf.numPages);
+    const page = await pdf.getPage(currentPage);
     const scale = 3;
     const viewport = page.getViewport({ scale });
     const context = canvas.getContext("2d");
     canvas.width = viewport.width;
     canvas.height = viewport.height;
     await page.render({ canvasContext: context, viewport }).promise;
-  }, [pdfData]);
+  }, [pdfData, currentPage]);
 
   const downloadPdf = () => {
     const url = URL.createObjectURL(
@@ -228,6 +235,50 @@ const FormStatus = ({ delivery, getDelivery, getPDF }) => {
 
         {pdfView && (
           <Box display="grid" justifyContent="center">
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              mb={2}
+            >
+              <Button
+                variant="contained"
+                startIcon={<NavigateBeforeIcon />}
+                onClick={() => setCurrentPage(currentPage - 1)}
+                disabled={currentPage === 1}
+                sx={{ flexGrow: 1, flexBasis: "35%" }}
+              >
+                Previous
+              </Button>
+              <Box sx={{ flexGrow: 1 }}>
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  mx={2}
+                  sx={{
+                    border: "solid grey #F7F7F7",
+                    borderRadius: "15px",
+                    p: "8px",
+                    minWidth: "80px",
+                    backgroundColor: "white",
+                  }}
+                >
+                  <Typography variant="body1">
+                    {currentPage} / {totalPages}
+                  </Typography>
+                </Box>
+              </Box>
+              <Button
+                variant="contained"
+                endIcon={<NavigateNextIcon />}
+                onClick={() => setCurrentPage(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                sx={{ flexGrow: 1, flexBasis: "35%" }}
+              >
+                Next
+              </Button>
+            </Box>
             <canvas ref={canvasRef} style={{ height: "100vh" }} />
             <Button
               variant="contained"
