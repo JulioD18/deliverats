@@ -1,13 +1,15 @@
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
-import http from "http";
+import http from "https";
 import { Server } from "socket.io";
 import { sequelize } from "./datasource.js";
 import { formsRouter } from "./routers/forms_router.js";
 import { deliveriesRouter } from "./routers/deliveries_router.js";
 import { emailRouter } from "./routers/email_router.js";
 import { smsRouter } from "./routers/sms_router.js";
+import { updateEmailDeliveryStatus } from "./controllers/email_controller.js";
+import { updateSmsDeliveryStatus } from "./controllers/sms_controller.js";
 
 import * as Sentry from "@sentry/node";
 import * as Tracing from "@sentry/tracing";
@@ -19,10 +21,23 @@ app.use(cors());
 
 const IO_PORT = 3002;
 const server = http.createServer(app);
-export const io = new Server(server, { cors: "*" }).listen(IO_PORT);
+const io = new Server(server, { cors: "*" }).listen(IO_PORT);
 
-io.on("connect", (socket) => {
+io.on("connection", (socket) => {
   console.log("a user connected");
+
+  socket.on("receive trackId", ({ trackId, method }) => {
+    switch (method) {
+      case "email":
+        updateEmailDeliveryStatus(trackId);
+        break;
+      case "sms":
+        updateSmsDeliveryStatus(trackId);
+        break;
+      default:
+        break;
+    }
+  });
 
   socket.on("disconnect", () => {
     socket.removeAllListeners();
@@ -67,10 +82,10 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.use("/forms", formsRouter);
-app.use("/deliveries", deliveriesRouter);
-app.use("/email", emailRouter);
-app.use("/sms", smsRouter);
+app.use("/api/forms", formsRouter());
+app.use("/api/deliveries", deliveriesRouter(io));
+app.use("/api/email", emailRouter(io));
+app.use("/api/sms", smsRouter(io));
 
 // The error handler must be before any other error middleware and after all controllers
 app.use(Sentry.Handlers.errorHandler());

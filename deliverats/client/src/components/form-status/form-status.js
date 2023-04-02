@@ -118,8 +118,9 @@ const FormStatus = ({ delivery, getDelivery, getPDF }) => {
   useEffect(() => {
     const socket = io(socketUrl);
 
-    socket.on("send trackId", () => {
-      socket.emit("receive trackId", trackId);
+    socket.on("send trackId", (method) => {
+      console.log("method: ", method);
+      socket.emit("receive trackId", { trackId, method });
     });
 
     socket.on("sms delivered", () => {
