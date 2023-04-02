@@ -1,7 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
-import http from "http";
+import http from "https";
 import { Server } from "socket.io";
 import { sequelize } from "./datasource.js";
 import { formsRouter } from "./routers/forms_router.js";
@@ -82,10 +82,10 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.use("/forms", formsRouter());
-app.use("/deliveries", deliveriesRouter(io));
-app.use("/email", emailRouter(io));
-app.use("/sms", smsRouter(io));
+app.use("/api/forms", formsRouter());
+app.use("/api/deliveries", deliveriesRouter(io));
+app.use("/api/email", emailRouter(io));
+app.use("/api/sms", smsRouter(io));
 
 // The error handler must be before any other error middleware and after all controllers
 app.use(Sentry.Handlers.errorHandler());

@@ -3,15 +3,16 @@ kind: Ingress
 metadata:
   name: http-ingress
   annotations:
-    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     nginx.ingress.kubernetes.io/use-regex: "true"
-    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/proxy-body-size: "64m"
     cert-manager.io/cluster-issuer: lets-encrypt
 spec:
+  ingressClassName: nginx
   tls:
     - hosts:
-        - deliverats.live
-        - dvyo4yozoch9j.cloudfront.net
+      - deliverats.live
       secretName: microbot-ingress-tls
   rules:
     - host: deliverats.live
@@ -31,3 +32,10 @@ spec:
                 name: server-cluster-ip-service
                 port:
                   number: 3001
+          - path: /socket.io/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: socket-cluster-ip-service
+                port:
+                  number: 3002
