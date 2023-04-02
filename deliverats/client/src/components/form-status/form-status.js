@@ -119,8 +119,8 @@ const FormStatus = ({ delivery, getDelivery, getPDF }) => {
     const socket = io(socketUrl);
 
     socket.on("send trackId", (method) => {
-      console.log("method: ", method)
-      socket.emit("receive trackId", {trackId, method});
+      console.log("method: ", method);
+      socket.emit("receive trackId", { trackId, method });
     });
 
     socket.on("sms delivered", () => {

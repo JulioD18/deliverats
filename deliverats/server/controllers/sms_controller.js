@@ -1,4 +1,4 @@
-import { Delivery } from '../models/deliveries.js';
+import { Delivery } from "../models/deliveries.js";
 
 export const updateSmsDeliveryStatus = async (trackId) => {
   await Delivery.update(
@@ -9,4 +9,4 @@ export const updateSmsDeliveryStatus = async (trackId) => {
       where: { id: trackId },
     }
   );
-}
+};

@@ -26,7 +26,7 @@ const io = new Server(server, { cors: "*" }).listen(IO_PORT);
 io.on("connection", (socket) => {
   console.log("a user connected");
 
-  socket.on("receive trackId", ({trackId, method}) => {
+  socket.on("receive trackId", ({ trackId, method }) => {
     switch (method) {
       case "email":
         updateEmailDeliveryStatus(trackId);
@@ -37,7 +37,7 @@ io.on("connection", (socket) => {
       default:
         break;
     }
-  })
+  });
 
   socket.on("disconnect", () => {
     socket.removeAllListeners();

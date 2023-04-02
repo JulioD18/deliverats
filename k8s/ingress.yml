@@ -12,7 +12,7 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-      - deliverats.live
+        - deliverats.live
       secretName: microbot-ingress-tls
   rules:
     - host: deliverats.live
