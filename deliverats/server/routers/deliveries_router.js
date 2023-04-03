@@ -86,7 +86,9 @@ export const deliveriesRouter = (io) => {
   Total : ${total} \n
   Status : Your order was successfully placed! \n\n
 
-  You can follow your order status at ${process.env.TRACKING_URL}/track/${delivery.id}
+  You can follow your order status at ${process.env.TRACKING_URL}/track/${
+      delivery.id
+    }
 `;
 
     const subject = `Placed Order #${delivery.id}`;
