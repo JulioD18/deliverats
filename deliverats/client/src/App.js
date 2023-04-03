@@ -5,8 +5,6 @@ import { theme } from "./components/theme.js";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
-// import { configureStore } from "@reduxjs/toolkit";
-// import reducers from "./reducers/index.js";
 
 import Home from "./components/home.js";
 import NavBar from "./components/navbar.js";
@@ -26,9 +24,8 @@ Sentry.init({
   dsn: sentryDsn,
   integrations: [new BrowserTracing()],
   tracesSampleRate: 1.0,
+  environment: process.env.NODE_ENV,
 });
-
-// const store = configureStore({ reducers });
 
 function App() {
   return (
