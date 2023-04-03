@@ -13,8 +13,7 @@ export const emailRouter = (io) => {
     const body = req.body;
     const eventReceived = body[0].event;
 
-    io.emit("send trackId", "email");
-    io.emit("email delivered");
+    io.emit("send trackId", "email", body[0].email);
 
     console.log("Email event received: ", eventReceived);
     return res.json({ eventReceived, message: "Email was delivered!" });

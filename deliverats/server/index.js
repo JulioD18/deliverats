@@ -30,9 +30,11 @@ io.on("connection", (socket) => {
     switch (method) {
       case "email":
         updateEmailDeliveryStatus(trackId);
+        socket.emit("email delivered");
         break;
       case "sms":
         updateSmsDeliveryStatus(trackId);
+        socket.emit("sms delivered");
         break;
       default:
         break;
