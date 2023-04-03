@@ -116,27 +116,29 @@ const FormStatus = ({ delivery, getDelivery, getPDF }) => {
   };
 
   useEffect(() => {
-    const socket = io(socketUrl);
+    if (fetched) {
+      const socket = io(socketUrl);
 
-    socket.on("send trackId", (method) => {
-      console.log("method: ", method);
-      socket.emit("receive trackId", { trackId, method });
-    });
+      socket.on("send trackId", (method, to) => {
+        if (to === delivery.email || to.includes(delivery.phone))
+          socket.emit("receive trackId", { trackId, method });
+      });
 
-    socket.on("sms delivered", () => {
-      setSmsSent(true);
-    });
+      socket.on("sms delivered", () => {
+        setSmsSent(true);
+      });
 
-    socket.on("email delivered", () => {
-      setEmailSent(true);
-    });
+      socket.on("email delivered", () => {
+        setEmailSent(true);
+      });
 
-    socket.on("delivery status", ({ deliveryId, status }) => {
-      if (deliveryId === Number(trackId)) {
-        deliveryStatus(status);
-      }
-    });
-  }, [trackId]);
+      socket.on("delivery status", ({ deliveryId, status }) => {
+        if (deliveryId === Number(trackId)) {
+          deliveryStatus(status);
+        }
+      });
+    }
+  }, [delivery, trackId]);
 
   useEffect(() => {
     (async () => {
