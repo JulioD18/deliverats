@@ -13,6 +13,7 @@ import { sendEmail } from "../utils/send-grid.js";
 import { sendSms } from "../utils/sms.js";
 import { generatePDF } from "../utils/pdf.js";
 import fs from "fs";
+import { formatPhoneNumber, formatCurrency } from "../utils/formatters.js";
 
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
@@ -76,26 +77,36 @@ export const deliveriesRouter = (io) => {
     });
 
     const content = `
-  Name : ${name} \n
-  Last Name : ${lastName} \n
-  Email : ${email} \n
-  Phone : ${phone} \n
-  Address : ${address} \n
-  Suite : ${suite} \n
-  Items : ${items.map((item) => JSON.stringify(item, null, 4)).join("\n")} \n
-  Total : ${total} \n
-  Status : Your order was successfully placed! \n\n
-
-  You can follow your order status at ${process.env.TRACKING_URL}/track/${
+      New Order #${delivery.id} \n
+      Name : ${name} \n
+      Last Name : ${lastName} \n
+      Email : ${email} \n
+      Phone : ${formatPhoneNumber(phone)} \n
+      Address : ${address} \n
+      Suite : ${suite} \n
+      Items : \n
+      ${items
+        .map((item) => {
+          return (
+            `- ${item.quantity}x ${item.name}` +
+            (item.options && item.options.length > 0
+              ? "(" + item.options.map((option) => option.name).join(", ") + ")"
+              : "")
+          );
+        })
+        .join("\n")} \n
+      Total : ${formatCurrency(total)} \n
+      Status : Your order was successfully placed! \n\n
+      You can follow your order status at ${process.env.TRACKING_URL}/track/${
       delivery.id
     }
-`;
+    `;
 
     const subject = `Placed Order #${delivery.id}`;
 
     // Sending information to form owner mail and phone
-    await sendEmail({ email: form.email, subject, content });
-    await sendSms({ to: form.phone, body: content });
+    if (form.email) await sendEmail({ email: form.email, subject, content });
+    if (form.phone) await sendSms({ to: form.phone, body: content });
 
     // Sending information to user mail and phone
     await sendEmail({ email, subject, content });
