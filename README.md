@@ -51,3 +51,8 @@ Workflow:
   - ‘My forms’ page
   - ‘My Deliveries’ page
   - ‘Track delivery’ page
+
+## URLs:
+
+- Demo: https://www.youtube.com/watch?v=ahq-Fv4vQFw&ab_channel=JulioDelgado
+- Live Site: https://deliverats.live
