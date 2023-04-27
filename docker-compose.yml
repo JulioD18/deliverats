@@ -25,6 +25,7 @@ services:
       - DEFAULT_EMAIL=j.corral@mail.utoronto.ca
   postgres:
     image: "postgres:latest"
+    container_name: postgress
     environment:
       - POSTGRES_USER=$POSTGRES_USER
       - POSTGRES_DB=$POSTGRES_DB
