@@ -7,7 +7,7 @@ on:
       - main
     # Only run this workflow if the commit has modified files from frontend
     paths:
-      - deliverats/frontend/**
+      - deliverats/client/**
 
 env:
   IMAGE_NAME: deliverats-frontend
@@ -20,7 +20,7 @@ jobs:
     if: github.event_name == 'push'
     defaults:
       run:
-        working-directory: frontend
+        working-directory: deliverats/client
 
     steps:
       - uses: actions/checkout@v2
