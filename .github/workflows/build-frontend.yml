@@ -9,7 +9,6 @@ on:
     paths:
       - deliverats/frontend/**
 
-
 env:
   IMAGE_NAME: deliverats-frontend
 
