@@ -46,8 +46,8 @@ services:
     container_name: backend
     restart: always
     expose:
-      - 3000
+      - 3001
     environment:
       - VIRTUAL_HOST=api.deliverats.live
       - LETSENCRYPT_HOST=api.deliverats.live
-      - VIRTUAL_PORT=3000
+      - VIRTUAL_PORT=3001
