@@ -47,7 +47,6 @@ services:
     restart: always
     expose:
       - 3000
-    network_mode: bridge
     environment:
       - VIRTUAL_HOST=api.deliverats.live
       - LETSENCRYPT_HOST=api.deliverats.live
