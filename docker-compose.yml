@@ -45,6 +45,8 @@ services:
     image: deliverats-backend
     container_name: backend
     restart: always
+    volumes:
+      - ./deliverats/server/receipts:/app/receipts
     expose:
       - 3001
       - 3002
