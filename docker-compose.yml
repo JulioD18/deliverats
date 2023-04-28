@@ -51,5 +51,3 @@ services:
       - VIRTUAL_HOST=api.deliverats.live
       - LETSENCRYPT_HOST=api.deliverats.live
       - VIRTUAL_PORT=3000
-      - VIRTUAL_PROTO=fastcgi
-      - VIRTUAL_ROOT=/var/www/
